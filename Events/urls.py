@@ -18,12 +18,12 @@ from django.urls import path
 
 from viewer.models import Event, EventType
 
-from viewer.views import main
+from viewer.views import EventsView
 
 admin.site.register(Event)
 admin.site.register(EventType)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('main_page/', main)
+    path('main_page/', EventsView.as_view())
 ]

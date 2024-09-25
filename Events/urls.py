@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from viewer.models import Event
+from viewer.models import Event, EventType
 
 admin.site.register(Event)
+admin.site.register(EventType)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

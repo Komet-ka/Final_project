@@ -1,10 +1,23 @@
-<html>
-  <body>
-    <h1>Welcome to Event manager!</h1>
-    {% for adjective in adjectives %}
-      {% if adjective != 'cruel' %}
-        <p>This is a {{ adjective }} world...</p>
-      {% endif %}
+{% extends "base.html" %}
+{% block main_title %} {{ title }} {% endblock %}
+{% block content %}
+<h1>Event manager</h1>
+
+<ul>
+    {% for event in events %}
+      <li>
+        {{ event.name }}
+        <a href="/detail/{{event.pk}}" class="button">
+            Prohlédnout událost
+        </a>
+          <br><br>
+      </li>
+
     {% endfor %}
-  </body>
-</html>
+</ul>
+<br>
+<a href="{% url 'event_create' %}" class="button">
+           Přidat novou událost
+</a>
+
+{% endblock %}

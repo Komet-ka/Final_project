@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from viewer.models import Event, EventType
+from viewer.models import Event, EventType, Comment
 
 from viewer.views import detail
 
@@ -25,6 +25,7 @@ from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDel
 
 admin.site.register(Event)
 admin.site.register(EventType)
+admin.site.register(Comment)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,7 +38,7 @@ urlpatterns = [
     path('main_page/delete/<pk>', EventDeleteView.as_view(), name='event_delete'),
 
     path('types', EventTypeView.as_view(), name='types'),
-    path('type/create', EventTypeCreateView.as_view(), name='event_type_create'),
-    path('type/update/<pk>', EventTypeUpdateView.as_view(), name='event_type_update'),
-    path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='event_type_delete'),
+    path('type/create', EventTypeCreateView.as_view(), name='type_create'),
+    path('type/update/<pk>', EventTypeUpdateView.as_view(), name='type_update'),
+    path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='type_delete'),
 ]

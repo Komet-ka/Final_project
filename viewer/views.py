@@ -74,17 +74,17 @@ class EventTypeDeleteView(LoginRequiredMixin, DeleteView):
   success_url = reverse_lazy('types')
 
 
-def detail(request, event_pk):
+def detail(request, pk):
   if "comment" in request.POST:
     new_comment = Comment()
     new_comment.uzivatel = request.POST.get("uzivatel", "")
-    new_comment.comment = request.POST.get("komentar", "")
-    new_comment.event = Event.objects.get(pk=event_pk)
+    new_comment.comment = request.POST.get("comment", "")
+    new_comment.event = Event.objects.get(pk=pk)
     new_comment.save()
     pass
 
   return render(
     request, template_name='detail.html',
-    context={'event': Event.objects.get(pk=event_pk),
-             'coments': Comment.objects.filter(event__pk=event_pk)}
+    context={'event': Event.objects.get(pk=pk),
+             'comments': Comment.objects.filter(event__pk=pk)}
   )

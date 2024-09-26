@@ -5,7 +5,16 @@
     <title>{% block title %}{% endblock %}</title>
   </head>
 <body>
-{% block content %}
-{% endblock %}
+    <nav>
+        <ul>
+            <li><a href="{% url 'main_page' %}">Events</a></li>
+            <li><a href="{% url 'types' %}">Event Type</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+
 </body>
 </html>

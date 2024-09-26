@@ -10,10 +10,9 @@
           <a href="{% url 'type_update' type.pk %}"> Update </a>
           <a href="{% url 'type_delete' type.pk %}"> Delete </a>
       </li>
+    {% endfor %}
+  </ul>
 
     <br><br>
     <a href="{% url 'type_create' %}"> Add new type </a>
-    {% endfor %}
-  </ul>
-    
 {% endblock %}

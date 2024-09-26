@@ -37,7 +37,7 @@ urlpatterns = [
     path('main_page/delete/<pk>', EventDeleteView.as_view(), name='event_delete'),
 
     path('types', EventTypeView.as_view(), name='types'),
-    path('type/create', EventTypeCreateView.as_view(), name='event_create'),
-    path('type/update/<pk>', EventTypeUpdateView.as_view(), name='event_update'),
-    path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='event_delete'),
+    path('type/create', EventTypeCreateView.as_view(), name='event_type_create'),
+    path('type/update/<pk>', EventTypeUpdateView.as_view(), name='event_type_update'),
+    path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='event_type_delete'),
 ]

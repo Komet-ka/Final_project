@@ -11,6 +11,9 @@
             Prohlédnout událost
         </a>
           <br><br>
+          <a href="{% url 'event_update' event.pk %}"> Update </a>
+          <a href="{% url 'event_delete' event.pk %}"> Delete </a>
+          <br><br>
       </li>
 
     {% endfor %}

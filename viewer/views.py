@@ -37,7 +37,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
       LOGGER.warning('User provided invalid data while updating a movie.')
       return super().form_invalid(form)
 
-class EventDeleteView(DeleteView):
+class EventDeleteView(LoginRequiredMixin, DeleteView):
   template_name = 'event_confirm_delete.html'
   model = Event
   success_url = reverse_lazy('main_page')

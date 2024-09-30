@@ -18,6 +18,8 @@ from django.urls import path
 
 from viewer.models import Event, EventType, Comment
 
+from django.contrib.auth.views import LoginView, LogoutView
+
 from viewer.views import detail
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
@@ -41,4 +43,7 @@ urlpatterns = [
     path('type/create', EventTypeCreateView.as_view(), name='type_create'),
     path('type/update/<pk>', EventTypeUpdateView.as_view(), name='type_update'),
     path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='type_delete'),
+
+    path('accounts/login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]

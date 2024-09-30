@@ -1,7 +1,8 @@
+<h1>Event manager</h1>
+
 {% extends "base.html" %}
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
-<h1>Event manager</h1>
 
 <ul>
     {% for event in events %}
@@ -18,6 +19,7 @@
 
     {% endfor %}
 </ul>
+
 <br>
 <a href="{% url 'event_create' %}" class="button">
            Přidat novou událost

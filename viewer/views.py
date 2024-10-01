@@ -15,14 +15,14 @@ from viewer.models import Event, EventType, Comment
 LOGGER = getLogger()
 
 class EventsView(TemplateView):
-  template_name = 'main_page.html'
+  template_name = 'events.html'
   extra_context = {'events': Event.objects.all()}
 
 class EventCreateView(PermissionRequiredMixin, CreateView):
 
   template_name = 'form.html'
   form_class = EventForm
-  success_url = reverse_lazy('main_page')
+  success_url = reverse_lazy('events')
   permission_required = 'viewer.add_event'
 
   def form_invalid(self, form):
@@ -33,7 +33,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
   template_name = 'form.html'
   model = Event
   form_class = EventForm
-  success_url = reverse_lazy('main_page')
+  success_url = reverse_lazy('events')
 
   def form_invalid(self, form):
       LOGGER.warning('User provided invalid data while updating a movie.')
@@ -42,7 +42,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
 class EventDeleteView(LoginRequiredMixin, DeleteView):
   template_name = 'event_confirm_delete.html'
   model = Event
-  success_url = reverse_lazy('main_page')
+  success_url = reverse_lazy('events')
 
 
 class EventTypeView(ListView):

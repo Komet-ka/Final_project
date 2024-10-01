@@ -15,8 +15,9 @@ class EventType(Model):
 class Event(Model):
     name = CharField(max_length=128)
     #date = DateField(default=timezone.now)
-    place = CharField(max_length=128)
-    entry = BooleanField(default=True)
+    #datetime = DateTimeField
+    place = CharField(max_length=128, default="")
+    entry = BooleanField(default=False)
     #eventType = ManyToManyField(EventType, on_delete=DO_NOTHING)
 
 

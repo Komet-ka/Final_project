@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.shortcuts import get_object_or_404, redirect
 
+from django.views.generic import TemplateView, ListView
 from django.views.generic import CreateView, UpdateView, DeleteView
+
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -76,15 +78,18 @@ class EventTypeDeleteView(LoginRequiredMixin, DeleteView):
 
 def detail(request, pk):
   if "comment" in request.POST:
-    new_comment = Comment()
-    new_comment.uzivatel = request.POST.get("uzivatel", "")
-    new_comment.comment = request.POST.get("comment", "")
-    new_comment.event = Event.objects.get(pk=pk)
-    new_comment.save()
-    pass
+    if request.user.is_authenticated:
+      new_comment = Comment()
+      new_comment.user = request.user  # Používáme aktuálního přihlášeného uživatele
+      new_comment.comment = request.POST.get("comment", "")
+      new_comment.event = get_object_or_404(Event, pk=pk)
+      new_comment.save()
+    else:
+      # Pokud uživatel není přihlášen, můžeš vrátit nějakou chybovou hlášku nebo přesměrovat
+      return redirect('login')
 
   return render(
     request, template_name='detail.html',
-    context={'event': Event.objects.get(pk=pk),
+    context={'event': get_object_or_404(Event, pk=pk),
              'comments': Comment.objects.filter(event__pk=pk)}
   )

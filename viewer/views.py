@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.shortcuts import get_object_or_404, redirect
 
+from django.views.generic import TemplateView, ListView
 from django.views.generic import CreateView, UpdateView, DeleteView
+
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -13,14 +15,14 @@ from viewer.models import Event, EventType, Comment
 LOGGER = getLogger()
 
 class EventsView(TemplateView):
-  template_name = 'main_page.html'
+  template_name = 'events.html'
   extra_context = {'events': Event.objects.all()}
 
 class EventCreateView(PermissionRequiredMixin, CreateView):
 
   template_name = 'form.html'
   form_class = EventForm
-  success_url = reverse_lazy('main_page')
+  success_url = reverse_lazy('events')
   permission_required = 'viewer.add_event'
 
   def form_invalid(self, form):
@@ -31,7 +33,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
   template_name = 'form.html'
   model = Event
   form_class = EventForm
-  success_url = reverse_lazy('main_page')
+  success_url = reverse_lazy('events')
 
   def form_invalid(self, form):
       LOGGER.warning('User provided invalid data while updating a movie.')
@@ -40,7 +42,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
 class EventDeleteView(LoginRequiredMixin, DeleteView):
   template_name = 'event_confirm_delete.html'
   model = Event
-  success_url = reverse_lazy('main_page')
+  success_url = reverse_lazy('events')
 
 
 class EventTypeView(ListView):
@@ -76,15 +78,18 @@ class EventTypeDeleteView(LoginRequiredMixin, DeleteView):
 
 def detail(request, pk):
   if "comment" in request.POST:
-    new_comment = Comment()
-    new_comment.uzivatel = request.POST.get("uzivatel", "")
-    new_comment.comment = request.POST.get("comment", "")
-    new_comment.event = Event.objects.get(pk=pk)
-    new_comment.save()
-    pass
+    if request.user.is_authenticated:
+      new_comment = Comment()
+      new_comment.user = request.user  # Používáme aktuálního přihlášeného uživatele
+      new_comment.comment = request.POST.get("comment", "")
+      new_comment.event = get_object_or_404(Event, pk=pk)
+      new_comment.save()
+    else:
+      # Pokud uživatel není přihlášen, můžeš vrátit nějakou chybovou hlášku nebo přesměrovat
+      return redirect('login')
 
   return render(
     request, template_name='detail.html',
-    context={'event': Event.objects.get(pk=pk),
+    context={'event': get_object_or_404(Event, pk=pk),
              'comments': Comment.objects.filter(event__pk=pk)}
   )

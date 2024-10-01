@@ -35,11 +35,12 @@ urlpatterns = [
     path('', EventsView.as_view(), name='main_page'),  # Class based view
     path('detail/<pk>', detail),
 
-    path('main_page/create', EventCreateView.as_view(), name='event_create'),
-    path('main_page/update/<pk>', EventUpdateView.as_view(), name='event_update'),
-    path('main_page/delete/<pk>', EventDeleteView.as_view(), name='event_delete'),
+    path('events/', EventsView.as_view(), name='events'),
+    path('events/create', EventCreateView.as_view(), name='event_create'),
+    path('events/update/<pk>', EventUpdateView.as_view(), name='event_update'),
+    path('events/delete/<pk>', EventDeleteView.as_view(), name='event_delete'),
 
-    path('types', EventTypeView.as_view(), name='types'),
+    path('types/', EventTypeView.as_view(), name='types'),
     path('type/create', EventTypeCreateView.as_view(), name='type_create'),
     path('type/update/<pk>', EventTypeUpdateView.as_view(), name='type_update'),
     path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='type_delete'),

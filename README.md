@@ -15,3 +15,5 @@ https://validator.w3.org/#validate_by_input)
 - [ ] GIT repozitář - merge, komentáře commitů, gitignore soubor
 - [ ] readme soubor (toto vypadá jako nepodstatná maličkost, ale je to přesně ta první věc, kterou každý návštěvník vašeho online repozitáře uvidí, je to vaše vizitka a stručný popis celého projektu)
 - [ ] celková kvalita kódu - ukázka views, tříd, metod a funkcí
+
+python .\manage.py makemigrations viewer

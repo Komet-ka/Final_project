@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block main_title %} {{ title }} {% endblock %}
+{% block content %}
+<h3>Event manager - konkretní událost</h3>
+
+<h4>{{ event.name }}</h4>
+
+    <style>
+        p {
+            border: 1px solid black;
+            padding: 10px;
+            width: 30%;
+        }
+    </style>
+
+<p>{{ event.describtion }}</p><br><br>
+<a href="{% url 'event_update' event.pk %}"> Upravit popisek </a>
+
+{% if user.is_authenticated %}
+<h4>Komentáře</h4>
+
+          <form action="/detail/{{event.pk}}" method="POST">
+            {% csrf_token %}
+              váš nový komentář:
+              <textarea name="comment" style="width: 400px; height: 150px;"></textarea></br><br>
+            <input type="submit" value="Přidat nový komentář">
+          </form>
+{% else %}
+    <p>Musíte být přihlášeni, abyste mohli přidávat komentáře.</p>
+{% endif %}
+
+<ul>
+    {% for comment in comments %}
+      <li>
+        {{ comment.user.username }} ({{ comment.comment }}) - {{ comment.comment_date }}
+          <br><br>
+      </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

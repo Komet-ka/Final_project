@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block main_title %} {{ title }} {% endblock %}
+{% block content %}
+  <h1>All event types</h1>
+
+  <ul>
+    {% for type in object_list %}
+      <li>
+          {{ type.name }}
+          <a href="{% url 'type_update' type.pk %}"> Update </a>
+          <a href="{% url 'type_delete' type.pk %}"> Delete </a>
+          <br>
+          <a href="{% url 'type_filter' type.pk %}"> zobrazit všechny {{ type.name }} události </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+    <br><br>
+    <a href="{% url 'type_create' %}"> Add new type </a>
+{% endblock %}

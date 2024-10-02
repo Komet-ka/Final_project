@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event manager</title>
+
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            margin-top: 20px;
+        }
+
+        .logo {
+            font-size: 40px;
+            align-items: center;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0px;
+            margin-right: 0px;
+            align-items: flex-end;
+        }
+
+        .nav-bar a {
+            text-decoration: none;
+            padding: 5px 10px;
+            color: #000;
+        }
+
+        .nav-bar a:hover {
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">
+            Event manager
+        </div>
+        <nav class="nav-bar">
+            <a href="{% url 'main_page' %}">Novinky</a>
+            <a href="{% url 'events' %}">Events</a>
+            <a href="{% url 'types' %}">Event Type</a>
+            <a href="{% url 'login' %}">Log in</a>
+            <a href="{% url 'logout' %}">Log out</a>
+        </nav>
+    </div>
+
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

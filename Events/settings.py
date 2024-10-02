@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = 'main_page'
+LOGOUT_REDIRECT_URL = 'main_page'
 
 # Application definition
 
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'Events.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "viewer/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

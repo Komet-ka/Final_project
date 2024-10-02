@@ -15,7 +15,6 @@ class EventType(Model):
 class Event(Model):
   name = CharField(max_length=128)
   describtion = CharField(max_length=128, default="")
-  # time = DateTimeField
   eventType = ManyToManyField(EventType)
   date = DateField(default=timezone.now)
   create_date = DateTimeField(default=datetime.datetime.now)

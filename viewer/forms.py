@@ -1,5 +1,6 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from viewer.models import Event, EventType
+from viewer.models import Event, EventType, User
 import re
 
 class EventForm(ModelForm):
@@ -22,3 +23,19 @@ class EventTypeForm(ModelForm):
   class Meta:
     model = EventType
     fields = '__all__'
+
+
+class SignUpForm(UserCreationForm):
+
+  class Meta(UserCreationForm.Meta):
+    fields = ['username', 'first_name', 'last_name']
+
+  def save(self, commit=True):
+    self.instance.is_active = True
+    return super().save(commit)
+
+
+class UserForm(ModelForm):
+  class Meta:
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email']

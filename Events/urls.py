@@ -19,11 +19,14 @@ from django.urls import path
 from viewer.models import Event, EventType, Comment
 
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import views
 
-from viewer.views import detail
+from viewer.views import detail, my_page, main_page
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
-                          EventTypeView, EventTypeCreateView, EventTypeUpdateView, EventTypeDeleteView)
+                          EventTypeView, EventTypeCreateView, EventTypeUpdateView,
+                          EventTypeDeleteView, SubmittablePasswordChangeView, SignUpView,
+                          UserUpdateView)
 
 admin.site.register(Event)
 admin.site.register(EventType)
@@ -31,8 +34,8 @@ admin.site.register(Comment)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('main_page/', EventsView.as_view()),
-    path('', EventsView.as_view(), name='main_page'),  # Class based view
+    path('main_page/', main_page, name='main_page'),
+    path('', main_page, name='main_page'),  # Class based view
     path('detail/<pk>', detail),
 
     path('events/', EventsView.as_view(), name='events'),
@@ -46,5 +49,16 @@ urlpatterns = [
     path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='type_delete'),
 
     path('accounts/login/', LoginView.as_view(), name='login'),
+    path('my_page/', my_page, name='my_page'),
+    path('my_page/update/', UserUpdateView.as_view(), name='user_update'),
     path('logout/', LogoutView.as_view(), name='logout'),
+
+    path('password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'),
+    path('password_change/done/', views.PasswordChangeDoneView.as_view(), name='password_change_done'),
+
+    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('sign_up/', SignUpView.as_view(), name='sign_up'),
 ]

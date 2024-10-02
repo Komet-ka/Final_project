@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
-<h1>Events</h1>
 
-<ul>
-    {% for event in events %}
-      <li>
-        {{ event.name }}
-        <a href="/detail/{{event.pk}}" class="button">
-            Prohlédnout událost
-        </a>
-          <br><br>
-          <a href="{% url 'event_update' event.pk %}"> Update </a>
-          <a href="{% url 'event_delete' event.pk %}"> Delete </a>
-          <br><br>
-      </li>
+<h3>Nově přidané události</h3>
 
-    {% endfor %}
-</ul>
+{% for event in newest_events %}
+<p>Datum přidání: {{ event.create_date }}  {{ event.name }}
+    <a href="{% url 'detail' event.pk %}">Detail- {{event.pk}}</a></p></p>
+{% endfor %}
 <br>
-<a href="{% url 'event_create' %}" class="button">
-           Přidat novou událost
-</a>
+
+<h3>Blížící se události</h3>
+{% for event in nearest_events %}
+<p>Datum konání: {{ event.date }}  {{ event.name }}
+    <a href="{% url 'detail' event.pk %}">Detail- {{event.pk}}</a></p></p>
+{% endfor %}
+<br>
+
+<h3>Nejnovější komentáře</h3>
+
+{% for comment in newest_comments %}
+<p>Nejnovější komentář: {{ comment.comment_date }} - {{ comment.comment }}</p>
+{% endfor %}
+<br>
 
 {% endblock %}

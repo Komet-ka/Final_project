@@ -7,10 +7,12 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.views import PasswordChangeView
+
 from logging import getLogger
 
-from viewer.forms import EventForm, EventTypeForm
-from viewer.models import Event, EventType, Comment
+from viewer.forms import EventForm, EventTypeForm, SignUpForm, UserForm
+from viewer.models import Event, EventType, Comment, User
 
 LOGGER = getLogger()
 
@@ -93,3 +95,44 @@ def detail(request, pk):
     context={'event': get_object_or_404(Event, pk=pk),
              'comments': Comment.objects.filter(event__pk=pk)}
   )
+
+def my_page(request):
+    return render(
+      request,
+      "my_page.html",
+      context={}
+    )
+
+
+def main_page(request):
+  return render(
+    request,
+    "main_page.html",
+    context={
+          "newest_events": Event.objects.order_by("-create_date").all()[:5],
+          "nearest_events": Event.objects.order_by("-date").all()[:5],
+          "newest_comments": Comment.objects.order_by("-comment_date").all()[:5],
+    }
+  )
+
+class SignUpView(CreateView):
+    template_name = 'form.html'
+    form_class = SignUpForm
+    success_url = reverse_lazy('my_page')
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+  template_name = 'form.html'
+  model = User
+  form_class = UserForm
+  success_url = reverse_lazy('my_page')
+
+  def get_object(self):
+    return self.request.user
+
+  def form_invalid(self, form):
+    LOGGER.warning('User provided invalid data while updating their profile.')
+    return super().form_invalid(form)
+
+class SubmittablePasswordChangeView(PasswordChangeView):
+    template_name = 'form.html'

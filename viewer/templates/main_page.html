@@ -3,7 +3,21 @@
 {% block content %}
 
 
+<h3>Nově přidané události</h3>
 
+{% for event in newest_events %}
+<p>Datum přidání: {{ event.create_date }}  {{ event.name }}
+    <a href="{% url 'detail' event.pk %}">Detail- {{event.pk}}</a></p></p>
+{% endfor %}
+<br>
+
+<h3>Blížící se události</h3>
+
+{% for event in nearest_events %}
+<p>Datum konání: {{ event.date }}  {{ event.name }}
+    <a href="{% url 'detail' event.pk %}">Detail- {{event.pk}}</a></p></p>
+{% endfor %}
+<br>
 
 
 <h3>Nejnovější komentáře</h3>

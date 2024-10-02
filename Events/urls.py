@@ -36,8 +36,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('main_page/', main_page, name='main_page'),
     path('', main_page, name='main_page'),  # Class based view
-    path('detail/<pk>', detail),
-    path('type_filter/', EventFilterView.as_view(), name='type_filter'),
+    path('detail/<pk>', detail, name='detail'),
+    path('type_filter/<pk>', EventFilterView.as_view(), name='type_filter'),
 
     path('events/', EventsView.as_view(), name='events'),
     path('events/create', EventCreateView.as_view(), name='event_create'),

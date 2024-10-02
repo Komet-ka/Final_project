@@ -26,7 +26,7 @@ from viewer.views import detail, my_page, main_page
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
                           EventTypeDeleteView, SubmittablePasswordChangeView, SignUpView,
-                          UserUpdateView)
+                          UserUpdateView, EventFilterView)
 
 admin.site.register(Event)
 admin.site.register(EventType)
@@ -37,6 +37,7 @@ urlpatterns = [
     path('main_page/', main_page, name='main_page'),
     path('', main_page, name='main_page'),  # Class based view
     path('detail/<pk>', detail),
+    path('type_filter/', EventFilterView.as_view(), name='type_filter'),
 
     path('events/', EventsView.as_view(), name='events'),
     path('events/create', EventCreateView.as_view(), name='event_create'),

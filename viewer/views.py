@@ -20,6 +20,14 @@ class EventsView(TemplateView):
   template_name = 'events.html'
   extra_context = {'events': Event.objects.all()}
 
+class EventFilterView(TemplateView):
+  template_name = 'type_filter.html'
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['events'] = Event.objects.filter(pk=kwargs.get('pk'))
+    return context
+
 class EventCreateView(PermissionRequiredMixin, CreateView):
 
   template_name = 'form.html'

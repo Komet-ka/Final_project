@@ -18,7 +18,7 @@ class Event(Model):
   # time = DateTimeField
   #eventType = ManyToManyField(EventType)
   date = DateField(default=timezone.now)
-  #create_date = DateTimeField(default=datetime.datetime.now)
+  create_date = DateTimeField(default=datetime.datetime.now)
   place = CharField(max_length=128, default="")
   entry = BooleanField(default=False)
 

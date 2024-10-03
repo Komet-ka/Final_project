@@ -1,10 +1,11 @@
 # Final_project
 
-- [ ] zprovoznit git
-- [ ] vytvořit aplikaci
-- [ ] dostat se do admin rozhraní
-- [ ] vytvořit modely a udělat migrace
-- [ ] vytvořit hlavní HTML stránku
+- [x] zprovoznit git
+- [x] vytvořit aplikaci
+- [x] dostat se do admin rozhraní
+- [x] vytvořit modely a udělat migrace
+- [x] vytvořit hlavní HTML stránku
+- [ ] doplnit podmínku pro editaci eventů pouze pro adminy a na zbytek vytvořit validátory
 - [ ] prezentační vrstva - templates (předveďte dědičnost v šablonách, rozmístění šablon do     jednotlivých adresářů (dle daných aplikací), struktura kódu (správné odsazení, čitelnost, případně komentáře), výslednou html stránku pak můžete otestovat na webu:
 https://validator.w3.org/#validate_by_input)
 - [ ] databázová vrstva - ER diagram, propojení modelů

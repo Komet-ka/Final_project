@@ -21,7 +21,7 @@ from viewer.models import Event, EventType, Comment
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views
 
-from viewer.views import detail, my_page, main_page
+from viewer.views import detail, my_page, main_page, logout_view
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
@@ -52,7 +52,7 @@ urlpatterns = [
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('my_page/', my_page, name='my_page'),
     path('my_page/update/', UserUpdateView.as_view(), name='user_update'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', logout_view, name='logout'),
 
     path('password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', views.PasswordChangeDoneView.as_view(), name='password_change_done'),

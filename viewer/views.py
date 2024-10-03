@@ -14,6 +14,10 @@ from logging import getLogger
 from viewer.forms import EventForm, EventTypeForm, SignUpForm, UserForm
 from viewer.models import Event, EventType, Comment, User
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.contrib import messages
+
 LOGGER = getLogger()
 
 class EventsView(TemplateView):
@@ -144,3 +148,9 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
 class SubmittablePasswordChangeView(PasswordChangeView):
     template_name = 'form.html'
+
+
+def logout_view(request):
+  logout(request)
+  messages.success(request, 'Úspěšně jste se odhlásili.')
+  return redirect('main_page')

@@ -47,6 +47,22 @@
             border-radius: 5px;
             color: #155724;
         }
+
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            width: 50%;
+            margin: 0 auto;
+            position: fixed;
+            top: 30%;
+            left: 0;
+            right: 0;
+        }
+
     </style>
 </head>
 <body>
@@ -70,15 +86,24 @@
         </nav>
     </div>
 
-    <div>
         {% if messages %}
-            <ul class="messages">
+            <div id="messages">
                 {% for message in messages %}
-                    <li>{{ message }}</li>
+                    <div class="message-success">
+                        {{ message }}
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         {% endif %}
-    </div>
+
+    <script>
+    setTimeout(function() {
+        var messages = document.getElementById('messages');
+        if (messages) {
+            messages.style.display = 'none';
+                     }
+            }, 3000);
+    </script>
 
     <div>
         {% block content %}{% endblock %}

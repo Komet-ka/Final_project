@@ -3,6 +3,24 @@
 {% block content %}
 <h3>Event manager - konkretní událost</h3>
 
+{% if user.is_authenticated %}
+    {% with event.attendees.all as attendees %}
+        {% if user in attendees %}
+            <form action="{% url 'attendees' event.id %}" method="post" style="text-align: right;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Odhlásit se</button>
+            </form>
+        {% else %}
+            <form action="{% url 'attendees' event.id %}" method="post" style="text-align: right;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Přihlásit se na akci</button>
+            </form>
+        {% endif %}
+    {% endwith %}
+{% else %}
+    <p>Pro přihlášení se na akci se prosím nejprve přihlaste.</p>
+{% endif %}
+
 <h4>{{ event.name }}</h4>
 
     <style>

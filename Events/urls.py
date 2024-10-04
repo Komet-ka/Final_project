@@ -16,21 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from viewer.models import Event, EventType, Comment
-
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views
 
-from viewer.views import detail, my_page, main_page, logout_view
+from viewer.views import detail, my_page, main_page, logout_view, attendees
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
                           EventTypeDeleteView, SubmittablePasswordChangeView, SignUpView,
-                          UserUpdateView, EventFilterView)
-
-admin.site.register(Event)
-admin.site.register(EventType)
-admin.site.register(Comment)
+                          UserUpdateView, EventFilterView, MyEventsView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -53,6 +47,9 @@ urlpatterns = [
     path('my_page/', my_page, name='my_page'),
     path('my_page/update/', UserUpdateView.as_view(), name='user_update'),
     path('logout/', logout_view, name='logout'),
+    path('attendees/<pk>', attendees, name='attendees'),
+    path('my_attendees/', MyEventsView.as_view(), name='my_attendees'),
+
 
     path('password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', views.PasswordChangeDoneView.as_view(), name='password_change_done'),

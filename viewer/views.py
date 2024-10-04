@@ -91,6 +91,9 @@ class EventTypeDeleteView(LoginRequiredMixin, DeleteView):
 
 
 def detail(request, pk):
+  event = get_object_or_404(Event, pk=pk)
+  user_is_attendee = event.attendees.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+
   if "comment" in request.POST:
     if request.user.is_authenticated:
       new_comment = Comment()
@@ -104,8 +107,9 @@ def detail(request, pk):
 
   return render(
     request, template_name='detail.html',
-    context={'event': get_object_or_404(Event, pk=pk),
-             'comments': Comment.objects.filter(event__pk=pk)}
+    context={'event': event,
+             'comments': Comment.objects.filter(event__pk=pk),
+             'user_is_attendee': user_is_attendee}
   )
 
 def my_page(request):
@@ -154,3 +158,27 @@ def logout_view(request):
   logout(request)
   messages.success(request, 'Úspěšně jste se odhlásili.')
   return redirect('main_page')
+
+def attendees(request, pk):
+  event = get_object_or_404(Event, pk=pk)
+  user = request.user
+
+  if request.method == "POST":
+    if user in event.attendees.all():  # Zkontroluj, zda je uživatel již účastníkem
+      event.attendees.remove(user)  # Odhlásit uživatele
+      messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
+    else:
+      event.attendees.add(user)  # Přihlásit uživatele
+      messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
+
+    return redirect('detail', pk=event.pk)
+
+
+class MyEventsView(TemplateView):
+  template_name = 'events.html'
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    # Filtrovat události podle přihlášeného uživatele
+    context['events'] = Event.objects.filter(attendees=self.request.user)
+    return context

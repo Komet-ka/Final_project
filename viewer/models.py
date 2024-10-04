@@ -2,6 +2,7 @@ import datetime
 from django.utils import timezone
 
 from django.contrib.auth import get_user_model
+from django.db import models
 User = get_user_model()
 
 from django.db.models import (
@@ -12,14 +13,22 @@ from django.db.models import (
 class EventType(Model):
     name = CharField(max_length=128)
 
+    def __str__(self):
+        return self.name
+
 class Event(Model):
   name = CharField(max_length=128)
   describtion = CharField(max_length=128, default="")
   eventType = ManyToManyField(EventType)
   date = DateField(default=timezone.now)
-  create_date = DateTimeField(default=datetime.datetime.now)
+  create_date = DateTimeField(auto_now_add=True)
   place = CharField(max_length=128, default="")
   entry = BooleanField(default=False)
+
+  attendees = models.ManyToManyField(User, related_name="events_attending", blank=True)
+
+  def __str__(self):
+      return self.name
 
 
 class Comment(Model):

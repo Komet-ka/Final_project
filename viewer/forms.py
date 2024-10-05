@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from viewer.models import Event, EventType, User
 import re
+from django.forms.widgets import DateInput
 
 class EventForm(ModelForm):
 
@@ -39,3 +40,11 @@ class UserForm(ModelForm):
   class Meta:
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
+
+class EventForm(ModelForm):
+  class Meta:
+    model = Event
+    fields = ['name', 'describtion', 'eventType', 'date', 'place', 'entry']
+    widgets = {
+        'date': DateInput(attrs={'type': 'date'})  # Kalendář pro výběr data
+    }

@@ -32,9 +32,9 @@ class EventFilterView(TemplateView):
     context['events'] = Event.objects.filter(eventType=kwargs.get('pk'))
     return context
 
-class EventCreateView(PermissionRequiredMixin, CreateView):
+class EventCreateView(LoginRequiredMixin, CreateView):
 
-  template_name = 'form.html'
+  template_name = 'event_update_create_form.html'
   form_class = EventForm
   success_url = reverse_lazy('events')
   permission_required = 'viewer.add_event'
@@ -44,7 +44,7 @@ class EventCreateView(PermissionRequiredMixin, CreateView):
     return super().form_invalid(form)
 
 class EventUpdateView(LoginRequiredMixin, UpdateView):
-  template_name = 'form.html'
+  template_name = 'event_update_create_form.html'
   model = Event
   form_class = EventForm
   success_url = reverse_lazy('events')
@@ -137,7 +137,7 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('my_page')
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UserUpdateView(PermissionRequiredMixin, UpdateView):
   template_name = 'form.html'
   model = User
   form_class = UserForm

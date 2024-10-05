@@ -4,8 +4,7 @@
   <form method="post">
     {% csrf_token %} 
     <p>
-      Are you sure you want to delete event type "{{ object.name }}
-        (pk {{ object.pk }})" from database?
+      Opravdu chcete smazat "{{ object.name }}" z databáze?
     </p> 
     <input type="submit" value="Submit" class="btn btn-danger">
   </form> 

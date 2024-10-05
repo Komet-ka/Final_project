@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from viewer.models import Event, EventType, User
 import re
-from django.forms.widgets import DateInput
+from django.forms.widgets import Textarea, DateInput
 
 class EventForm(ModelForm):
 
@@ -46,5 +46,6 @@ class EventForm(ModelForm):
     model = Event
     fields = ['name', 'describtion', 'eventType', 'date', 'place', 'entry']
     widgets = {
+        'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
         'date': DateInput(attrs={'type': 'date'})  # Kalendář pro výběr data
     }

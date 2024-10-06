@@ -75,7 +75,7 @@ class EventForm(ModelForm):
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField(label='Hledat')
+    query = forms.CharField(label='Vyhledávání')
 
     def search(self):
         query = self.cleaned_data.get('query')

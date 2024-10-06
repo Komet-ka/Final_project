@@ -9,7 +9,6 @@
           {{ type.name }}
           <a href="{% url 'type_update' type.pk %}"> Upravit </a>
           <a href="{% url 'type_delete' type.pk %}"> Smazat </a>
-          <br>
           <a href="{% url 'type_filter' type.pk %}"> zobrazit všechny {{ type.name }} události </a>
       </li>
     {% endfor %}

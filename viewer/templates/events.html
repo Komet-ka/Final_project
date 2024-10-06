@@ -7,11 +7,8 @@
     {% for event in events %}
       <li>
         {{ event.name }}
-        <a href="/detail/{{event.pk}}" class="button">
-            Prohlédnout událost
-        </a>
-          <br>
-          <a href="{% url 'event_update' event.pk %}"> Upravit </a><br>
+        <a href="/detail/{{event.pk}}" class="button">Prohlédnout událost</a>
+          <a href="{% url 'event_update' event.pk %}"> Upravit </a>
           <a href="{% url 'event_delete' event.pk %}"> Smazat </a>
           <br>
       </li>

@@ -3,6 +3,13 @@ from django.forms import ModelForm
 from viewer.models import Event, EventType, User
 import re
 from django.forms.widgets import Textarea, DateInput
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(label='Uživatelské jméno')
+    password = forms.CharField(label='Heslo', widget=forms.PasswordInput)
 
 class EventForm(ModelForm):
 
@@ -24,13 +31,17 @@ class EventTypeForm(ModelForm):
   class Meta:
     model = EventType
     fields = '__all__'
-
+    labels = {'name': 'Název',
+            }
 
 class SignUpForm(UserCreationForm):
 
   class Meta(UserCreationForm.Meta):
     fields = ['username', 'first_name', 'last_name']
-
+    labels = {'username': 'Uživatelské jméno',
+              'first_name': 'Jméno',
+              'last_name': 'Příjmení',
+              }
   def save(self, commit=True):
     self.instance.is_active = True
     return super().save(commit)
@@ -40,11 +51,23 @@ class UserForm(ModelForm):
   class Meta:
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
+    labels = {'username': 'Uživatelské jméno',
+              'first_name': 'Jméno',
+              'last_name': 'Příjmení',
+              'email': 'email',
+              }
 
 class EventForm(ModelForm):
   class Meta:
     model = Event
     fields = ['name', 'describtion', 'eventType', 'date', 'place', 'entry']
+    labels = {'name': 'Název',
+              'describtion': 'Popis',
+              'eventType': 'Typ akce',
+              'date': 'Datum',
+              'place': 'Místo',
+              'entry': 'Vstupné',
+              }
     widgets = {
         'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
         'date': DateInput(attrs={'type': 'date'})  # Kalendář pro výběr data

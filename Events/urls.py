@@ -43,7 +43,7 @@ urlpatterns = [
     path('type/update/<pk>', EventTypeUpdateView.as_view(), name='type_update'),
     path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='type_delete'),
 
-    path('accounts/login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('my_page/', my_page, name='my_page'),
     path('my_page/update/', UserUpdateView.as_view(), name='user_update'),
     path('logout/', logout_view, name='logout'),

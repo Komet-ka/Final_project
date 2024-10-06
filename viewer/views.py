@@ -20,6 +20,10 @@ from django.contrib import messages
 
 LOGGER = getLogger()
 
+from django.contrib.auth import views as auth_views
+from .forms import CustomAuthenticationForm
+
+
 class EventsView(TemplateView):
   template_name = 'events.html'
   extra_context = {'events': Event.objects.all()}
@@ -182,3 +186,6 @@ class MyEventsView(TemplateView):
     # Filtrovat události podle přihlášeného uživatele
     context['events'] = Event.objects.filter(attendees=self.request.user)
     return context
+
+class LoginView(auth_views.LoginView):
+  form_class = CustomAuthenticationForm

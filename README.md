@@ -5,12 +5,11 @@
 - [x] dostat se do admin rozhraní
 - [x] vytvořit modely a udělat migrace
 - [x] vytvořit hlavní HTML stránku
-- [ ] doplnit podmínku pro editaci eventů pouze pro adminy a na zbytek vytvořit validátory
 
 
 - [x] názvy přepsat do češtiny
 - [ ] upravit záhlaví
-- [ ] doplnit vyhledávací pole
+- [x] doplnit vyhledávací pole
 - [x] upravit event formulář
 - [x] prohodit logování a my account uživatele
 - [x] zvětšit description area
@@ -19,7 +18,7 @@
 - [x] schovat create date
 - [x] vstupné - odkázat na description
 - [ ] zkusit tam dát barvy a třeba i obrázky
-- [ ] event types - dát do levého panelu pod sebe
+- [x] event types - dát do levého panelu pod sebe
 - [ ] doplnit validátory k polím
 - [ ] oprávnění
 

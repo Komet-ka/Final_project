@@ -8,16 +8,16 @@
 - [ ] doplnit podmínku pro editaci eventů pouze pro adminy a na zbytek vytvořit validátory
 
 
-- [ ] názvy přepsat do češtiny
+- [x] názvy přepsat do češtiny
 - [ ] upravit záhlaví
 - [ ] doplnit vyhledávací pole
-- [ ] upravit event formulář
+- [x] upravit event formulář
 - [x] prohodit logování a my account uživatele
-- [ ] zvětšit description area
-- [ ] event type, ať se zobrazují názvy místo čísel
-- [ ] kalendář - výběr data
+- [x] zvětšit description area
+- [x] event type, ať se zobrazují názvy místo čísel
+- [x] kalendář - výběr data
 - [x] schovat create date
-- [ ] vstupné - odkázat na description
+- [x] vstupné - odkázat na description
 - [ ] zkusit tam dát barvy a třeba i obrázky
 - [ ] event types - dát do levého panelu pod sebe
 - [ ] doplnit validátory k polím

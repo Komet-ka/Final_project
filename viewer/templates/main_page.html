@@ -2,32 +2,79 @@
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
 
+<style>
+    .container {
+       display: flex;
+    }
 
-<h3>Nově přidané události</h3>
+    .left-sidebar {
+       flex: 1;
+       margin-right: 20px;
+    }
 
-{% for event in newest_events %}
-<p>Datum vytvoření: {{ event.create_date }}  {{ event.name }}
-    <a href="{% url 'detail' event.pk %}">Detail- {{event.pk}}</a></p></p>
-{% endfor %}
-<br>
+    .main-content {
+       flex: 3;
+    }
 
-<h3>Nadcházející události</h3>
+    p {
+       margin: 10px 0;
+    }
 
-{% for event in nearest_events %}
-<p>Datum: {{ event.date }}  {{ event.name }}
-    <a href="{% url 'detail' event.pk %}">Detail- {{event.pk}}</a></p></p>
-{% endfor %}
-<br>
+    a.button {
+      display: inline-block;
+      padding: 3px;
+      background-color: #008B8B;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+    }
+
+    a.button:hover {
+      background-color: #005f5f;
+    }
+
+</style>
+
+<div class="container">  <!-- Hlavní kontejner -->
+
+    <div class="left-sidebar">
+       <h3>Typy událostí</h3>
+       <ul>
+         {% for type in object_list %}
+             <li>{{ type.name }}</li>
+         {% endfor %}
+       </ul>
+    </div>
+
+    <div class="main-content">
+
+        <h3>Nově přidané události</h3>
+
+        {% for event in newest_events %}
+        <p>Datum vytvoření: {{ event.create_date }}  {{ event.name }}
+            <a href="{% url 'detail' event.pk %}" class="button">Detail- {{event.pk}}</a></p></p>
+        {% endfor %}
+        <br>
+
+        <h3>Nadcházející události</h3>
+
+        {% for event in nearest_events %}
+        <p>Datum: {{ event.date }}  {{ event.name }}
+            <a href="{% url 'detail' event.pk %}" class="button">Detail- {{event.pk}}</a></p></p>
+        {% endfor %}
+        <br>
 
 
-<h3>Nejnovější komentáře</h3>
+        <h3>Nejnovější komentáře</h3>
 
-{% for comment in newest_comments %}
-<p>Komentář k události {{ comment.event.name }}: {{ comment.comment_date }} - {{ comment.comment }}</p>
-        <a href="/detail/{{event.pk}}" class="button">
-            Podívat se na událost
-        </a>
-{% endfor %}
-<br>
+        {% for comment in newest_comments %}
+        <p>Komentář k události {{ comment.event.name }}: {{ comment.comment_date }} - {{ comment.comment }}
+                <a href="/detail/{{event.pk}}" class="button">Podívat se na událost</a></p>
+        {% endfor %}
+        <br>
+
+  </div>
+
+</div>
 
 {% endblock %}

@@ -19,7 +19,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views
 
-from viewer.views import detail, my_page, main_page, logout_view, attendees
+from viewer.views import detail, my_page, main_page, logout_view, attendees, search_view
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
@@ -59,4 +59,5 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('sign_up/', SignUpView.as_view(), name='sign_up'),
+    path('search/', search_view, name='search'),
 ]

@@ -5,7 +5,7 @@ import re
 from django.forms.widgets import Textarea, DateInput
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.db.models import Q
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(label='Uživatelské jméno')
@@ -72,3 +72,21 @@ class EventForm(ModelForm):
         'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
         'date': DateInput(attrs={'type': 'date'})  # Kalendář pro výběr data
     }
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label='Hledat')
+
+    def search(self):
+        query = self.cleaned_data.get('query')
+        # Příklad vyhledávání v několika modelech
+        from .models import Event, EventType
+        results = []
+
+        # Procházení modelů a hledání podle zadaného dotazu
+        results += EventType.objects.filter(name__icontains=query)
+        results += Event.objects.filter(
+            Q(name__icontains=query) | Q(place__icontains=query) | Q(describtion__icontains=query) | Q(date__icontains=query)
+        )
+
+        return results

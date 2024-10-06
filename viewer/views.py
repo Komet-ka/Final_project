@@ -11,7 +11,7 @@ from django.contrib.auth.views import PasswordChangeView
 
 from logging import getLogger
 
-from viewer.forms import EventForm, EventTypeForm, SignUpForm, UserForm
+from viewer.forms import EventForm, EventTypeForm, SignUpForm, UserForm, SearchForm
 from viewer.models import Event, EventType, Comment, User
 
 from django.contrib.auth import logout
@@ -189,3 +189,13 @@ class MyEventsView(TemplateView):
 
 class LoginView(auth_views.LoginView):
   form_class = CustomAuthenticationForm
+
+
+def search_view(request):
+    form = SearchForm(request.GET or None)
+    results = []
+
+    if form.is_valid():
+        results = form.search()
+
+    return render(request, 'search.html', {'form': form, 'results': results})

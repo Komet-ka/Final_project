@@ -18,6 +18,10 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib import messages
 
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseForbidden
+
+
 LOGGER = getLogger()
 
 from django.contrib.auth import views as auth_views
@@ -214,7 +218,14 @@ def search_view(request):
     return render(request, 'search.html', {'results': results})
 
 
-
 def global_data(request):
     data = EventType.objects.all()
     return {'type_list': data}
+
+
+def custom_403_view(request, exception):
+  return render(request, '403.html', status=403)
+
+  def my_view(request):
+    if not request.user.has_perm('viewer.add_eventtype'):
+      raise PermissionDenied("Nemáte oprávnění k provedení této akce.")

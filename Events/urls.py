@@ -26,6 +26,8 @@ from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDel
                           EventTypeDeleteView, SubmittablePasswordChangeView, SignUpView,
                           UserUpdateView, EventFilterView, MyEventsView)
 
+handler403 = 'viewer.views.custom_403_view'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('main_page/', main_page, name='main_page'),

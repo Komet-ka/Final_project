@@ -1,59 +1,69 @@
 {% extends "base.html" %}
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
-<h3>Event manager - konkretní událost</h3>
 
-{% if user.is_authenticated %}
-    {% with event.attendees.all as attendees %}
-        {% if user in attendees %}
-            <form action="{% url 'attendees' event.id %}" method="post" style="text-align: right;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Odhlásit se</button>
-            </form>
+<br>
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    <h2>{{ event.name }}</h2>
+
+    {% if user.is_authenticated %}
+        {% with event.attendees.all as attendees %}
+            {% if user in attendees %}
+                <form action="{% url 'attendees' event.id %}" method="post" style="text-align: right;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Odhlásit se</button>
+                </form>
+            {% else %}
+                <form action="{% url 'attendees' event.id %}" method="post" style="text-align: right;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Přihlásit se na akci</button>
+                </form>
+            {% endif %}
+        {% endwith %}
+    {% else %}
+        <p>Pro přihlášení se na akci se prosím nejprve přihlaste.</p>
+    {% endif %}
+</div>
+
+    <p><strong>Popis:</strong> {{ event.describtion }}</p>
+
+    <p><strong>Datum:</strong> {{ event.date }}</p>
+
+    <p><strong>Místo:</strong> {{ event.place }}</p>
+
+    <strong>Vstupné: </strong>
+        {% if event.entry %}
+            <strong>Ano</strong> - více informací v popisu.
         {% else %}
-            <form action="{% url 'attendees' event.id %}" method="post" style="text-align: right;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Přihlásit se na akci</button>
-            </form>
+            Ne
         {% endif %}
-    {% endwith %}
-{% else %}
-    <p>Pro přihlášení se na akci se prosím nejprve přihlaste.</p>
-{% endif %}
-
-<h4>{{ event.name }}</h4>
-
-    <style>
-        p {
-            border: 1px solid black;
-            padding: 10px;
-            width: 30%;
-        }
-    </style>
-
-<p>{{ event.describtion }}</p><br><br>
+<br>
+<br>
 <a href="{% url 'event_update' event.pk %}"> Upravit popisek </a>
+
 
 {% if user.is_authenticated %}
 <h4>Komentáře</h4>
 
+    <ul>
+        {% for comment in comments %}
+          <li>
+            {{ comment.user.username }} ({{ comment.comment }}) - {{ comment.comment_date }}
+              <br><br>
+          </li>
+        {% endfor %}
+    </ul>
+
           <form action="/detail/{{event.pk}}" method="POST">
             {% csrf_token %}
-              váš nový komentář:
-              <textarea name="comment" style="width: 400px; height: 150px;"></textarea></br><br>
+              <p>Nový komentář:</p>
+              <textarea name="comment" style="width: 400px; height: 50px;"></textarea>
             <input type="submit" value="Přidat nový komentář">
           </form>
 {% else %}
     <p>Musíte být přihlášeni, abyste mohli přidávat komentáře.</p>
 {% endif %}
 
-<ul>
-    {% for comment in comments %}
-      <li>
-        {{ comment.user.username }} ({{ comment.comment }}) - {{ comment.comment_date }}
-          <br><br>
-      </li>
-    {% endfor %}
-</ul>
+
 
 {% endblock %}

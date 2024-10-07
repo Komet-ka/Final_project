@@ -19,7 +19,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views
 
-from viewer.views import detail, my_page, main_page, logout_view, attendees
+from viewer.views import detail, my_page, main_page, logout_view, attendees, search_view
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
@@ -43,7 +43,7 @@ urlpatterns = [
     path('type/update/<pk>', EventTypeUpdateView.as_view(), name='type_update'),
     path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='type_delete'),
 
-    path('accounts/login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('my_page/', my_page, name='my_page'),
     path('my_page/update/', UserUpdateView.as_view(), name='user_update'),
     path('logout/', logout_view, name='logout'),
@@ -59,4 +59,5 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('sign_up/', SignUpView.as_view(), name='sign_up'),
+    path('search/', search_view, name='search'),
 ]

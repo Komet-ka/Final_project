@@ -11,7 +11,7 @@ from django.contrib.auth.views import PasswordChangeView
 
 from logging import getLogger
 
-from viewer.forms import EventForm, EventTypeForm, SignUpForm, UserForm
+from viewer.forms import EventForm, EventTypeForm, SignUpForm, UserForm, SearchForm
 from viewer.models import Event, EventType, Comment, User
 
 from django.contrib.auth import logout
@@ -19,6 +19,10 @@ from django.shortcuts import redirect
 from django.contrib import messages
 
 LOGGER = getLogger()
+
+from django.contrib.auth import views as auth_views
+from .forms import CustomAuthenticationForm
+
 
 class EventsView(TemplateView):
   template_name = 'events.html'
@@ -32,9 +36,9 @@ class EventFilterView(TemplateView):
     context['events'] = Event.objects.filter(eventType=kwargs.get('pk'))
     return context
 
-class EventCreateView(PermissionRequiredMixin, CreateView):
+class EventCreateView(LoginRequiredMixin, CreateView):
 
-  template_name = 'form.html'
+  template_name = 'event_update_create_form.html'
   form_class = EventForm
   success_url = reverse_lazy('events')
   permission_required = 'viewer.add_event'
@@ -44,7 +48,7 @@ class EventCreateView(PermissionRequiredMixin, CreateView):
     return super().form_invalid(form)
 
 class EventUpdateView(LoginRequiredMixin, UpdateView):
-  template_name = 'form.html'
+  template_name = 'event_update_create_form.html'
   model = Event
   form_class = EventForm
   success_url = reverse_lazy('events')
@@ -137,7 +141,7 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('my_page')
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UserUpdateView(PermissionRequiredMixin, UpdateView):
   template_name = 'form.html'
   model = User
   form_class = UserForm
@@ -182,4 +186,17 @@ class MyEventsView(TemplateView):
     # Filtrovat události podle přihlášeného uživatele
     context['events'] = Event.objects.filter(attendees=self.request.user)
     return context
+
+class LoginView(auth_views.LoginView):
+  form_class = CustomAuthenticationForm
+
+
+def search_view(request):
+    form = SearchForm(request.GET or None)
+    results = []
+
+    if form.is_valid():
+        results = form.search()
+
+    return render(request, 'search.html', {'form': form, 'results': results})
 

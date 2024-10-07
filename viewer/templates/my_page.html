@@ -2,24 +2,30 @@
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
 
-  <h3>Page of user {{ request.user.username }}</h3>
+  <h3>Stránka uživatele {{ request.user.username }}</h3>
 
     <ul>
-    <li>Username {{ user.username }}</li>
-    <li>First name {{ user.first_name }}</li>
-    <li>Last name {{ user.last_name }}</li>
-    <li>Email {{ user.email }}</li>
-    <li>is_active {{ user.is_active }}</li>
-    <li>date_joined {{ user.date_joined }}</li>
+    <li>Uživatelské jméno: {{ user.username }}</li>
+    <li>Jméno: {{ user.first_name }}</li>
+    <li>Příjmení: {{ user.last_name }}</li>
+    <li>Email: {{ user.email }}</li>
+    <li>Aktivní uživatel:
+      {% if user.is_active %}
+      Ano
+      {% else %}
+      Ne
+      {% endif %}
+    </li>
+    <li>Datum registrace: {{ user.date_joined }}</li>
 
 
     </ul>
     <br>
-    <a href="{% url 'user_update' %}" class="btn btn-outline-info">upravit osobní údaje</a>
+    <a href="{% url 'user_update' %}" class="btn btn-outline-info">Upravit osobní údaje</a>
     <br><br>
-    <a href="{% url 'password_change' %}" class="btn btn-outline-info">Change password</a>
+    <a href="{% url 'password_change' %}" class="btn btn-outline-info">Změnit heslo</a>
     <br>
-    <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Logout</a>
+    <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Odhlásit se</a>
     <br>
 
 

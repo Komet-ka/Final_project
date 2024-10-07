@@ -2,6 +2,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from viewer.models import Event, EventType, User
 import re
+from django.forms.widgets import Textarea, DateInput
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(label='Uživatelské jméno')
+    password = forms.CharField(label='Heslo', widget=forms.PasswordInput)
 
 class EventForm(ModelForm):
 
@@ -23,13 +31,17 @@ class EventTypeForm(ModelForm):
   class Meta:
     model = EventType
     fields = '__all__'
-
+    labels = {'name': 'Název',
+            }
 
 class SignUpForm(UserCreationForm):
 
   class Meta(UserCreationForm.Meta):
     fields = ['username', 'first_name', 'last_name']
-
+    labels = {'username': 'Uživatelské jméno',
+              'first_name': 'Jméno',
+              'last_name': 'Příjmení',
+              }
   def save(self, commit=True):
     self.instance.is_active = True
     return super().save(commit)
@@ -39,3 +51,42 @@ class UserForm(ModelForm):
   class Meta:
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
+    labels = {'username': 'Uživatelské jméno',
+              'first_name': 'Jméno',
+              'last_name': 'Příjmení',
+              'email': 'email',
+              }
+
+class EventForm(ModelForm):
+  class Meta:
+    model = Event
+    fields = ['name', 'describtion', 'eventType', 'date', 'place', 'entry']
+    labels = {'name': 'Název',
+              'describtion': 'Popis',
+              'eventType': 'Typ akce',
+              'date': 'Datum',
+              'place': 'Místo',
+              'entry': 'Vstupné',
+              }
+    widgets = {
+        'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
+        'date': DateInput(attrs={'type': 'date'})  # Kalendář pro výběr data
+    }
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label='Vyhledávání')
+
+    def search(self):
+        query = self.cleaned_data.get('query')
+        # Příklad vyhledávání v několika modelech
+        from .models import Event, EventType
+        results = []
+
+        # Procházení modelů a hledání podle zadaného dotazu
+        results += EventType.objects.filter(name__icontains=query)
+        results += Event.objects.filter(
+            Q(name__icontains=query) | Q(place__icontains=query) | Q(describtion__icontains=query) | Q(date__icontains=query)
+        )
+
+        return results

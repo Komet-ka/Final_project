@@ -24,6 +24,7 @@ class Event(Model):
   create_date = DateTimeField(auto_now_add=True)
   place = CharField(max_length=128, default="")
   entry = BooleanField(default=False)
+  user = ForeignKey(User, on_delete=DO_NOTHING, default=1)
 
   attendees = models.ManyToManyField(User, related_name="events_attending", blank=True)
 

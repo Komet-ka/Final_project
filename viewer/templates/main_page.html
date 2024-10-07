@@ -17,7 +17,7 @@
 
         {% for event in nearest_events %}
         <p>Datum: {{ event.date }}  {{ event.name }}
-            <a href="{% url 'detail' event.pk %}" class="button">Detail- {{event.pk}}</a></p></p>
+            <a href="{% url 'detail' event.pk %}" class="button">Přejít na událost</a></p></p>
         {% endfor %}
         <br>
 
@@ -26,7 +26,7 @@
 
         {% for comment in newest_comments %}
         <p>Komentář k události {{ comment.event.name }}: {{ comment.comment_date }} - {{ comment.comment }}
-                <a href="/detail/{{event.pk}}" class="button">Podívat se na událost</a></p>
+                <a href="/detail/{{comment.event.pk}}" class="button">Podívat se na událost</a></p>
         {% endfor %}
         <br>
 

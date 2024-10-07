@@ -1,3 +1,16 @@
+ALBERT
+
+Proč nefunguje v base?
+
+            {% if user.has_perm 'viewer.add_eventtype' %}
+                <a href="{% url 'types' %}">Typy událostí</a>
+            {% endif %}
+
+
+
+
+
+
 API pro jiné weby - seznam událostí
 (API by mělo splňovat doporučení REST. metoda by měla vrátit seznam všech budoucích událostí.
 volitelně může dodatečně povolit filtrování vrácených událostí na časové období.)
@@ -26,3 +39,7 @@ class EventFromEventManager(TemplateView):
         r = request.get("www.eventmanager.cz/api/get/all_upcoming_events/"). json      (nebo se tam da ip adresa lokální)(tato funkce request si tu cizí stránku zavolá a vytáhne z ní data)
         context['events'] = r ["all_events"]
         return context
+
+
+
+

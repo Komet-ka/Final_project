@@ -13,6 +13,10 @@ from django.db.models import (
 class EventType(Model):
     name = CharField(max_length=128)
 
+    class Meta:
+        permissions = [
+            ('custom_add_eventtype', 'Can add event type'),  # změňte název na něco jedinečného
+        ]
     def __str__(self):
         return self.name
 

@@ -11,7 +11,7 @@
         .header {
             display: flex;
             justify-content: space-between;
-            padding-left: 20px;
+            padding-left: 10px;
             margin-top: 20px;
             background-color: #A9A9A9;
 
@@ -19,7 +19,7 @@
 
         .logo {
             font-size: 50px;
-            align-items: center;
+            align-items: left;
             font-weight: bold;
             margin-center: 50px;
             background-color: #A9A9A9;
@@ -29,16 +29,17 @@
         .nav-bar {
             display: flex;
             font-size: 20px;
-            justify-content: flex-end;
-            gap: 0px;
+            justify-content: center;
+            gap: 10px;
             margin-right: 0px;
             align-items: flex-end;
             background-color: #A9A9A9;
+            width: fit-content;
         }
 
         .nav-bar a {
             text-decoration: none;
-            padding: 5px 10px;
+            padding: 5px 5px;
             color: #000;
         }
 
@@ -75,27 +76,31 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-          </ul>
+    <nav class="header">
+        <div class="logo">
+            Event manager
+        </div>
+
+        <nav class="nav-bar">
+            <a href="{% url 'main_page' %}">Novinky</a>
+            <a href="{% url 'events' %}">Události</a>
+            <a href="{% url 'types' %}">Typy událostí</a>
+
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'my_attendees' %}">Moje akce</a>
+                <a href="{% url 'my_page' %}">Můj účet - {{ request.user.username }}</a>
+                <a href="{% url 'logout' %}">Odhlásit se</a>
+            {% else %}
+                <a href="{% url 'sign_up' %}">Zaregistrovat se</a>
+                <a href="{% url 'login' %}">Přihlásit se</a>
+            {% endif %}
+
             <form class="d-flex" method="get" action="{% url 'search' %}">
                 <input type="text" name="query" class="form-control me-2" placeholder="Hledat" aria-label="Search" required="" id="id_query">
                 {{ form.query }}
                 <button class="btn btn-outline-success" type="submit">Hledat</button>
             </form>
-        </div>
+        </nav>
       </div>
     </nav>
 

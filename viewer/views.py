@@ -210,3 +210,8 @@ def search_view(request):
 
     return render(request, 'search.html', {'form': form, 'results': results})
 
+
+
+def global_data(request):
+    data = EventType.objects.all()
+    return {'type_list': data}

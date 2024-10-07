@@ -150,7 +150,7 @@
             <div class="left-sidebar"> <!-- Postranní lišta vlevo -->
                <h3>Typy událostí</h3>
                <ul>
-                 {% for type in object_list %}
+                 {% for type in type_list %}
                      <li><a href="{% url 'type_filter' type.pk %}">{{ type.name }}</a></li>
                  {% endfor %}
                </ul>

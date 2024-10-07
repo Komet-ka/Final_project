@@ -14,10 +14,9 @@
           <a href="{% url 'event_update' event.pk %}"> Update </a>
           <a href="{% url 'event_delete' event.pk %}"> Delete </a>
           <br><br>
-          <a href="{% url 'event_update' event.pk %}"> Přihlásit se </a>
+          <a href="{% url 'attendees' event.pk %}"> Odhlásit se </a>
           <br><br>
       </li>
-
     {% endfor %}
 </ul>
 <br>

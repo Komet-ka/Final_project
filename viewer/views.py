@@ -182,3 +182,4 @@ class MyEventsView(TemplateView):
     # Filtrovat události podle přihlášeného uživatele
     context['events'] = Event.objects.filter(attendees=self.request.user)
     return context
+

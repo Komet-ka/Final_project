@@ -36,62 +36,65 @@ class EventFilterView(TemplateView):
     context['events'] = Event.objects.filter(eventType=kwargs.get('pk'))
     return context
 
-class EventCreateView(LoginRequiredMixin, CreateView):
+class EventCreateView(PermissionRequiredMixin, CreateView):
 
   template_name = 'event_update_create_form.html'
   form_class = EventForm
   success_url = reverse_lazy('events')
   permission_required = 'viewer.add_event'
-
   def form_invalid(self, form):
     LOGGER.warning(f'User provided invalid data. {form.errors}')
     return super().form_invalid(form)
 
-class EventUpdateView(LoginRequiredMixin, UpdateView):
+class EventUpdateView(PermissionRequiredMixin, UpdateView):
   template_name = 'event_update_create_form.html'
   model = Event
   form_class = EventForm
   success_url = reverse_lazy('events')
+  permission_required = 'viewer.add_event'
 
   def form_invalid(self, form):
       LOGGER.warning('User provided invalid data while updating a movie.')
       return super().form_invalid(form)
 
-class EventDeleteView(LoginRequiredMixin, DeleteView):
+class EventDeleteView(PermissionRequiredMixin, DeleteView):
   template_name = 'event_confirm_delete.html'
   model = Event
   success_url = reverse_lazy('events')
-
+  permission_required = 'viewer.add_event'
 
 class EventTypeView(ListView):
   template_name = 'types.html'
   model = EventType
 
 
-class EventTypeCreateView(LoginRequiredMixin, CreateView):
+class EventTypeCreateView(PermissionRequiredMixin, CreateView):
   template_name = 'form.html'
   form_class = EventTypeForm
   success_url = reverse_lazy('types')
+  permission_required = 'viewer.add_eventtype'
 
   def form_invalid(self, form):
       LOGGER.warning(f'User provided invalid data. {form.errors}')
       return super().form_invalid(form)
 
-class EventTypeUpdateView(LoginRequiredMixin, UpdateView):
+class EventTypeUpdateView(PermissionRequiredMixin, UpdateView):
   template_name = 'form.html'
   model = EventType
   form_class = EventTypeForm
   success_url = reverse_lazy('types')
+  permission_required = 'viewer.add_eventtype'
 
   def form_invalid(self, form):
       LOGGER.warning('User provided invalid data while updating a movie.')
       return super().form_invalid(form)
 
 
-class EventTypeDeleteView(LoginRequiredMixin, DeleteView):
+class EventTypeDeleteView(PermissionRequiredMixin, DeleteView):
   template_name = 'type_confirm_delete.html'
   model = EventType
   success_url = reverse_lazy('types')
+  permission_required = 'viewer.add_eventtype'
 
 
 def detail(request, pk):
@@ -141,7 +144,7 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('my_page')
 
 
-class UserUpdateView(PermissionRequiredMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
   template_name = 'form.html'
   model = User
   form_class = UserForm

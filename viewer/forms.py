@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from viewer.models import Event, EventType, User
+from viewer.models import Event, EventType, User, Comment
 import re
 from django.forms.widgets import Textarea, DateInput
 from django import forms
@@ -75,18 +75,27 @@ class EventForm(ModelForm):
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField(label='Vyhledávání')
+    query = forms.CharField(
+        label='',  # Schováme label
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control me-2',  # Třídy Bootstrapu
+                'placeholder': 'Hledat',  # Placeholder pro vyhledávací pole
+                'aria-label': 'Search'  # Atribut pro přístupnost
+            }
+        )
+    )
 
     def search(self):
         query = self.cleaned_data.get('query')
         # Příklad vyhledávání v několika modelech
-        from .models import Event, EventType
         results = []
-
-        # Procházení modelů a hledání podle zadaného dotazu
-        results += EventType.objects.filter(name__icontains=query)
-        results += Event.objects.filter(
-            Q(name__icontains=query) | Q(place__icontains=query) | Q(describtion__icontains=query) | Q(date__icontains=query)
-        )
-
+        if query:
+            # Procházení modelů a hledání podle zadaného dotazu
+            results += EventType.objects.filter(name__icontains=query)
+            results += Comment.objects.filter(comment__icontains=query)
+            results += Event.objects.filter(
+                Q(name__icontains=query) | Q(place__icontains=query) |
+                Q(describtion__icontains=query) | Q(date__icontains=query)
+            )
         return results

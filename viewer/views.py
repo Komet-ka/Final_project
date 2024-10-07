@@ -211,7 +211,7 @@ def search_view(request):
     if form.is_valid():
         results = form.search()
 
-    return render(request, 'search.html', {'form': form, 'results': results})
+    return render(request, 'search.html', {'results': results})
 
 
 

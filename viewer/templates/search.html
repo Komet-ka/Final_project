@@ -2,27 +2,9 @@
 
 {% block content %}
 
-<style>
-    .search-form {
-        display: flex;
-        align-items: center; /* Vertikálně centrovat */
-        margin-top: 10px; /* Prostor nad formulářem */
-    }
-
-    .search-form input[type="text"] {
-        margin-left: 10px; /* Prostor mezi nadpisem a vstupním polem */
-        margin-right: 10px; /* Prostor mezi vstupním polem a tlačítkem */
-    }
-
-    .search-form button {
-        padding: 8px 16px; /* Pro přidání mezery kolem tlačítka */
-    }
-</style>
-
-    <form method="get" action="{% url 'search' %}" class="search-form">
-        {{ form.as_p }}
-        <button type="submit">Hledat</button>
-    </form>
+    <h3>
+        Výsledek vyhledávání:
+    </h3>
 
     {% if results %}
         <ul>

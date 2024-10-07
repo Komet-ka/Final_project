@@ -176,10 +176,20 @@ def attendees(request, pk):
       messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
 
     return redirect('detail', pk=event.pk)
+  else:
+    if user in event.attendees.all():  # Zkontroluj, zda je uživatel již účastníkem
+      event.attendees.remove(user)  # Odhlásit uživatele
+      messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
+    else:
+      event.attendees.add(user)  # Přihlásit uživatele
+      messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
+
+    return redirect('my_attendees')
+
 
 
 class MyEventsView(TemplateView):
-  template_name = 'events.html'
+  template_name = 'my_attendees.html'
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)

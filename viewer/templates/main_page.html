@@ -2,56 +2,6 @@
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
 
-<style>
-    .container {
-       display: flex;
-    }
-
-    .left-sidebar {
-       flex: 1;
-       margin-right: 0px;
-       background-color: #008cba;
-       padding-left: 20px;
-
-    }
-
-    .main-content {
-       flex: 4;
-       background-color: #D3D3D3;
-       margin-right: 0px;
-       margin-left: 0px;
-       padding-left: 20px;
-    }
-
-    p {
-       margin: 10px 0;
-    }
-
-    a.button {
-      display: inline-block;
-      padding: 5px;
-      background-color: #008B8B;
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-    }
-
-    a.button:hover {
-      background-color: #005f5f;
-    }
-
-</style>
-
-<div class="container">  <!-- Hlavní kontejner -->
-
-    <div class="left-sidebar">
-       <h3>Typy událostí</h3>
-       <ul>
-         {% for type in object_list %}
-             <li>{{ type.name }}</li>
-         {% endfor %}
-       </ul>
-    </div>
 
     <div class="main-content">
 

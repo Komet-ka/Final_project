@@ -113,9 +113,57 @@
             }, 2000);
     </script>
 
-    <div>
-        {% block content %}{% endblock %}
-    </div>
 
-</body>
+        <style>
+            .container {
+                display: flex; /* Flexbox pro horizontální rozložení */
+            }
+
+            .left-sidebar {
+                width: auto; /* Šířka se přizpůsobí obsahu */
+                padding: 20px; /* Odsazení uvnitř postranní lišty */
+                background-color: #008cba; /* Světlé pozadí pro odlišení */
+                border: 1px solid #ddd; /* Ohraničení kolem postranní lišty */
+                margin-right: 20px; /* Odsazení od hlavního obsahu */
+            }
+
+            .content {
+                flex-grow: 1; /* Hlavní obsah zabírá zbytek místa */
+            }
+
+            h3 {
+                margin-bottom: 10px;
+            }
+
+            ul {
+                list-style-type: none; /* Zrušení odrážek u seznamu */
+                padding-left: 0;
+            }
+
+            li {
+                margin-bottom: 5px;
+            }
+        </style>
+
+        <div class="container">  <!-- Hlavní kontejner -->
+
+            <div class="left-sidebar"> <!-- Postranní lišta vlevo -->
+               <h3>Typy událostí</h3>
+               <ul>
+                 {% for type in object_list %}
+                     <li><a href="{% url 'type_filter' type.pk %}">{{ type.name }}</a></li>
+                 {% endfor %}
+               </ul>
+            </div>
+
+            <div class="content">
+                <!-- Hlavní obsah stránky -->
+                        <div>
+                        {% block content %}{% endblock %}
+                        </div>
+            </div>
+
+        </div>
+
+    </body>
 </html>

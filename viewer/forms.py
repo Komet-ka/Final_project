@@ -60,12 +60,13 @@ class UserForm(ModelForm):
 class EventForm(ModelForm):
   class Meta:
     model = Event
-    fields = ['name', 'describtion', 'eventType', 'date', 'place', 'entry']
+    fields = ['name', 'describtion', 'eventType', 'date', 'place', 'link', 'entry']
     labels = {'name': 'Název',
               'describtion': 'Popis',
               'eventType': 'Typ akce',
               'date': 'Datum',
               'place': 'Místo',
+              'link': 'Odkaz',
               'entry': 'Vstupné',
               }
     widgets = {
@@ -101,3 +102,4 @@ class SearchForm(forms.Form):
                 Q(describtion__icontains=query) | Q(date__icontains=query)
             )
         return results
+

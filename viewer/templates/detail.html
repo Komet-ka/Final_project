@@ -31,6 +31,9 @@
 
     <p><strong>Místo:</strong> {{ event.place }}</p>
 
+    {% if event.link %}
+        <p><strong>Odkaz:</strong> <a href="{{ event.link }}" target="_blank">{{ event.link }}</a></p>
+    {% endif %}
     <strong>Vstupné: </strong>
         {% if event.entry %}
             <strong>Ano</strong> - více informací v popisu.

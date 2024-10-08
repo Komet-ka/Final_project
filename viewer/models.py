@@ -8,7 +8,7 @@ User = get_user_model()
 
 from django.db.models import (
     DO_NOTHING, CharField, DateField, DateTimeField, ForeignKey, IntegerField,
-    Model, TextField, BooleanField, ManyToManyField
+    Model, TextField, BooleanField, ManyToManyField, URLField
 )
 
 class EventType(Model):
@@ -30,7 +30,7 @@ class Event(Model):
   place = CharField(max_length=128, default="")
   entry = BooleanField(default=False)
   user = ForeignKey(User, on_delete=DO_NOTHING, default=1)
-
+  link = URLField(max_length=200, default="")
   attendees = models.ManyToManyField(User, related_name="events_attending", blank=True)
 
   def __str__(self):

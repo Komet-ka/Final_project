@@ -282,3 +282,5 @@ def custom_403_view(request, exception):
   def my_view(request):
     if not request.user.has_perm('viewer.add_eventtype'):
       raise PermissionDenied("Nemáte oprávnění k provedení této akce.")
+
+

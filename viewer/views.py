@@ -49,7 +49,22 @@ class EventFilterView(TemplateView):
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
-    context['events'] = Event.objects.filter(eventType=kwargs.get('pk'))
+
+    # Filtrovat události podle eventType a 'pk'
+    events = Event.objects.filter(eventType=kwargs.get('pk'))
+
+    # Získání event typu podle 'pk'
+    event_type = EventType.objects.get(pk=kwargs.get('pk'))
+
+    # Stránkování - 6 událostí na stránku
+    paginator = Paginator(events, 6)
+    page_number = self.request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Přidat stránkovaný objekt do kontextu
+    context['page_obj'] = page_obj
+    context['event_type'] = event_type  # Přidání event typu do kontextu
+
     return context
 
 class EventCreateView(PermissionRequiredMixin, CreateView):
@@ -214,6 +229,22 @@ class MyEventsView(TemplateView):
     context = super().get_context_data(**kwargs)
     # Filtrovat události podle přihlášeného uživatele
     context['events'] = Event.objects.filter(attendees=self.request.user)
+    return context
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+
+    # Filtrovat události podle přihlášeného uživatele
+    events = Event.objects.filter(attendees=self.request.user)
+
+    # Stránkování - 6 událostí na stránku
+    paginator = Paginator(events, 6)
+    page_number = self.request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Přidat stránkovaný objekt do kontextu
+    context['page_obj'] = page_obj
+
     return context
 
 class LoginView(auth_views.LoginView):

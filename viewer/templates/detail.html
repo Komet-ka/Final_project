@@ -42,7 +42,9 @@
         {% endif %}
 <br>
 <br>
-<a href="{% url 'event_update' event.pk %}"> Upravit popisek </a>
+    {% if user == event.user or perms.auth.user.jeadmin %}
+    <a href="{% url 'event_update' event.pk %}"> Upravit popisek </a>
+    {% endif %}
 
 
 {% if user.is_authenticated %}
@@ -63,19 +65,19 @@
               <textarea name="comment" style="width: 400px; height: 50px;"></textarea>
             <input type="submit" value="Přidat nový komentář">
           </form>
-{% else %}
-    <p>Musíte být přihlášeni, abyste mohli přidávat komentáře.</p>
-{% endif %}
+    {% else %}
+        <p>Musíte být přihlášeni, abyste mohli přidávat komentáře.</p>
+    {% endif %}
 
-<div>Momentální počet přihlášených uživatelů: {{ attendee_count }}</div><br>
-<p>Uživatelé:</p>
-<ul>
-    {% for attendee in attendees %}
-        <li>{{ attendee.username }}</li>  <!-- Zobrazí uživatelské jméno -->
-    {% empty %}
-        <li>Žádní přihlášení uživatelé.</li>
-    {% endfor %}
-</ul>
+    <div>Momentální počet přihlášených uživatelů: {{ attendee_count }}</div><br>
+    <p>Uživatelé:</p>
+    <ul>
+        {% for attendee in attendees %}
+            <li>{{ attendee.username }}</li>  <!-- Zobrazí uživatelské jméno -->
+        {% empty %}
+            <li>Žádní přihlášení uživatelé.</li>
+        {% endfor %}
+    </ul>
 
 
 

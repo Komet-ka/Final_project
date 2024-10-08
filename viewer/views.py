@@ -20,8 +20,6 @@ from django.shortcuts import redirect
 from django.contrib import messages
 
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseForbidden
-
 
 LOGGER = getLogger()
 
@@ -42,8 +40,6 @@ class EventsView(TemplateView):
     page_obj = paginator.get_page(page_number)
 
     context['page_obj'] = page_obj
-    context['request'] = self.request
-    context['hasadd'] = self.request.user.has_perm('viewer.add_eventtype')
 
     return context
 
@@ -158,7 +154,8 @@ def detail(request, pk):
              'comments': Comment.objects.filter(event__pk=pk),
              'attendees': event.attendees.all(),
              'user_is_attendee': user_is_attendee,
-             'attendee_count':event.attendees.count()}
+             'attendee_count': event.attendees.count(),
+             }
   )
 
 def my_page(request):
@@ -282,5 +279,4 @@ def custom_403_view(request, exception):
   def my_view(request):
     if not request.user.has_perm('viewer.add_eventtype'):
       raise PermissionDenied("Nemáte oprávnění k provedení této akce.")
-
 

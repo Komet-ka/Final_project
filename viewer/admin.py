@@ -2,6 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
+from django.contrib.auth.models import Permission
+
 from .models import Event, EventType,Comment
 
 class AttendeeInline(admin.TabularInline):
@@ -15,3 +17,4 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(EventType)
 admin.site.register(Comment)
 admin.site.register(Event, EventAdmin)
+admin.site.register(Permission)

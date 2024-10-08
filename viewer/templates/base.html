@@ -84,9 +84,11 @@
         <nav class="nav-bar">
             <a href="{% url 'main_page' %}">Novinky</a>
             <a href="{% url 'events' %}">Události</a>
-            {% if perms.viewer.add_eventtype %}
+
+            {%  if perms.auth.jeadmin %}
                 <a href="{% url 'types' %}">Typy událostí</a>
             {% endif %}
+
             {% if request.user.is_authenticated %}
                 <a href="{% url 'my_attendees' %}">Moje akce</a>
                 <a href="{% url 'my_page' %}">Můj účet - {{ request.user.username }}</a>

@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 
@@ -30,7 +31,18 @@ from .forms import CustomAuthenticationForm
 
 class EventsView(TemplateView):
   template_name = 'events.html'
-  extra_context = {'events': Event.objects.all()}
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+
+    events = Event.objects.all()
+    paginator = Paginator(events, 6)  # 6 událostí na stránku
+
+    page_number = self.request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context['page_obj'] = page_obj
+    return context
 
 class EventFilterView(TemplateView):
   template_name = 'type_filter.html'

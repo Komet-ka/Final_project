@@ -72,7 +72,10 @@ class EventForm(ModelForm):
         'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
         'date': DateInput(attrs={'type': 'date'})  # Kalendář pro výběr data
     }
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Přidání skrytého pole pro uživatele
+        self.fields['user'] = forms.HiddenInput()  # Skryté pole pro 'user'
 
 class SearchForm(forms.Form):
     query = forms.CharField(

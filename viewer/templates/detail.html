@@ -64,6 +64,16 @@
     <p>Musíte být přihlášeni, abyste mohli přidávat komentáře.</p>
 {% endif %}
 
+<div>Momentální počet přihlášených uživatelů: {{ attendee_count }}</div><br>
+<p>Uživatelé:</p>
+<ul>
+    {% for attendee in attendees %}
+        <li>{{ attendee.username }}</li>  <!-- Zobrazí uživatelské jméno -->
+    {% empty %}
+        <li>Žádní přihlášení uživatelé.</li>
+    {% endfor %}
+</ul>
+
 
 
 {% endblock %}

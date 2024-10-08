@@ -42,6 +42,8 @@ class EventsView(TemplateView):
     page_obj = paginator.get_page(page_number)
 
     context['page_obj'] = page_obj
+    context['request'] = self.request
+
     return context
 
 class EventFilterView(TemplateView):
@@ -67,15 +69,21 @@ class EventFilterView(TemplateView):
 
     return context
 
+
 class EventCreateView(PermissionRequiredMixin, CreateView):
 
   template_name = 'event_update_create_form.html'
   form_class = EventForm
   success_url = reverse_lazy('events')
   permission_required = 'viewer.add_event'
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user  # Nastav aktuálně přihlášeného uživatele
+    return super().form_valid(form)
   def form_invalid(self, form):
     LOGGER.warning(f'User provided invalid data. {form.errors}')
     return super().form_invalid(form)
+
 
 class EventUpdateView(PermissionRequiredMixin, UpdateView):
   template_name = 'event_update_create_form.html'
@@ -147,7 +155,9 @@ def detail(request, pk):
     request, template_name='detail.html',
     context={'event': event,
              'comments': Comment.objects.filter(event__pk=pk),
-             'user_is_attendee': user_is_attendee}
+             'attendees': event.attendees.all(),
+             'user_is_attendee': user_is_attendee,
+             'attendee_count':event.attendees.count()}
   )
 
 def my_page(request):
@@ -156,7 +166,6 @@ def my_page(request):
       "my_page.html",
       context={}
     )
-
 
 def main_page(request):
   return render(

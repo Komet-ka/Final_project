@@ -9,7 +9,7 @@
     {% if results %}
         <ul>
         {% for result in results %}
-            <li>{{ result }}</li>
+            <li><a href="{% url 'detail' result.id %}">{{ result }}</a></li>
         {% endfor %}
         </ul>
     {% else %}

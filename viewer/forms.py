@@ -95,7 +95,6 @@ class SearchForm(forms.Form):
         results = []
         if query:
             # Procházení modelů a hledání podle zadaného dotazu
-            results += EventType.objects.filter(name__icontains=query)
             results += Comment.objects.filter(comment__icontains=query)
             results += Event.objects.filter(
                 Q(name__icontains=query) | Q(place__icontains=query) |

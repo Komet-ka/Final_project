@@ -9,7 +9,7 @@
 
         {% for event in newest_events %}
         <p>Datum vytvoření: {{ event.create_date }}  {{ event.name }}
-            <a href="{% url 'detail' event.pk %}" class="button">Detail- {{event.pk}}</a></p></p>
+            <a href="{% url 'detail' event.pk %}" class="button">Přejít na událost</a></p></p>
         {% endfor %}
         <br>
 

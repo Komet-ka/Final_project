@@ -15,7 +15,7 @@
                     <br><br>
                     <a href="{% url 'attendees' event.pk %}" class="btn btn-primary"> Přihlásit/Odhlásit </a>
                     <br><br>
-                    {% if request.user == event.user or request.user.is_superuser or request.user.is_staff%}
+                    {% if request.user == event.user or request.user.is_superuser%}
                         <a href="{% url 'event_update' event.pk %}"> Upravit </a><br>
                         <a href="{% url 'event_delete' event.pk %}"> Smazat </a>
                     {% endif %}

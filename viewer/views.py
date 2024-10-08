@@ -43,6 +43,7 @@ class EventsView(TemplateView):
 
     context['page_obj'] = page_obj
     context['request'] = self.request
+    context['hasadd'] = self.request.user.has_perm('viewer.add_eventtype')
 
     return context
 

@@ -25,6 +25,10 @@
     {% endif %}
 </div>
 
+    {% if event.image %}
+      <p><strong>Obrázek:</strong> <img src="{{ event.image.url }}" alt="{{ event.title }}"></p>
+    {% endif %}
+
     <p><strong>Popis:</strong> {{ event.describtion }}</p>
 
     <p><strong>Datum:</strong> {{ event.date }}</p>

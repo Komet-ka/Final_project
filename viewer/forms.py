@@ -60,7 +60,7 @@ class UserForm(ModelForm):
 class EventForm(ModelForm):
   class Meta:
     model = Event
-    fields = ['name', 'describtion', 'eventType', 'date', 'place', 'link', 'entry']
+    fields = ['name', 'describtion', 'eventType', 'date', 'place', 'link', 'entry', 'image']
     labels = {'name': 'Název',
               'describtion': 'Popis',
               'eventType': 'Typ akce',
@@ -68,6 +68,7 @@ class EventForm(ModelForm):
               'place': 'Místo',
               'link': 'Odkaz',
               'entry': 'Vstupné',
+              'image':'Obrázek',
               }
     widgets = {
         'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),

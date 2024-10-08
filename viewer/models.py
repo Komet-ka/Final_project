@@ -1,4 +1,6 @@
 import datetime
+
+from django.forms import ImageField
 from django.utils import timezone
 
 from django.db import models
@@ -8,7 +10,7 @@ User = get_user_model()
 
 from django.db.models import (
     DO_NOTHING, CharField, DateField, DateTimeField, ForeignKey, IntegerField,
-    Model, TextField, BooleanField, ManyToManyField, URLField
+    Model, TextField, BooleanField, ManyToManyField, URLField, ImageField
 )
 
 class EventType(Model):
@@ -31,6 +33,7 @@ class Event(Model):
   entry = BooleanField(default=False)
   user = ForeignKey(User, on_delete=DO_NOTHING, default=1)
   link = URLField(max_length=200, default="")
+  image = ImageField(upload_to='event_images/', blank=True, null=True)  # Přidáno pole pro obrázek
   attendees = models.ManyToManyField(User, related_name="events_attending", blank=True)
 
   def __str__(self):

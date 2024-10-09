@@ -70,9 +70,12 @@ class EventForm(ModelForm):
               'entry': 'Vstupné',
               'image':'Obrázek',
               }
+
     widgets = {
         'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
-        'date': DateInput(attrs={'type': 'date'})  # Kalendář pro výběr data
+        'date': DateInput(attrs={'type': 'date'}),
+
+    # Kalendář pro výběr data
     }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

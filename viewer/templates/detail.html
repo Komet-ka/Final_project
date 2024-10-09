@@ -74,6 +74,7 @@
     {% endif %}
 
     <div>Momentální počet přihlášených uživatelů: {{ attendee_count }}</div><br>
+    {% if perms.auth.jeporadatel or perms.auth.jeadmin %}
     <p>Uživatelé:</p>
     <ul>
         {% for attendee in attendees %}
@@ -82,7 +83,7 @@
             <li>Žádní přihlášení uživatelé.</li>
         {% endfor %}
     </ul>
-
+    {% endif %}
 
 
 {% endblock %}

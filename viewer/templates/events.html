@@ -7,7 +7,11 @@
     {% for event in page_obj %}
       <li style="margin: 10px;">
           <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
+                {% if event.image %}
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
+                {% else %}
+                    <img src="..." class="card-img-top" alt="{{ event.title }}">
+                {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ event.name }}</h5>
                     <p class="card-text">{{ event.describtion|truncatechars:100 }} ...</p>

@@ -66,6 +66,33 @@ class EventFilterView(TemplateView):
 
     return context
 
+class MyEventsView(TemplateView):
+  template_name = 'my_attendees.html'
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+
+    # Filtrovat události podle přihlášeného uživatele
+    events = Event.objects.filter(attendees=self.request.user)
+    # Filtrovat události podle uživatele, který událost vytvořil
+    my_events = Event.objects.filter(user=self.request.user)
+
+    # Stránkování - 6 událostí na stránku
+    paginator = Paginator(events, 6)
+    page_number = self.request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Stránkování - 6 událostí na stránku
+    paginator = Paginator(my_events, 6)
+    page_number = self.request.GET.get('page')
+    page_my_obj = paginator.get_page(page_number)
+
+    # Přidat stránkovaný objekt do kontextu
+    context['page_obj'] = page_obj
+    context['page_my_obj'] = page_my_obj
+
+    return context
+
 
 class EventCreateView(PermissionRequiredMixin, CreateView):
 
@@ -227,32 +254,6 @@ def attendees(request, pk):
 
     return redirect('my_attendees')
 
-
-
-class MyEventsView(TemplateView):
-  template_name = 'my_attendees.html'
-
-  def get_context_data(self, **kwargs):
-    context = super().get_context_data(**kwargs)
-    # Filtrovat události podle přihlášeného uživatele
-    context['events'] = Event.objects.filter(attendees=self.request.user)
-    return context
-
-  def get_context_data(self, **kwargs):
-    context = super().get_context_data(**kwargs)
-
-    # Filtrovat události podle přihlášeného uživatele
-    events = Event.objects.filter(attendees=self.request.user)
-
-    # Stránkování - 6 událostí na stránku
-    paginator = Paginator(events, 6)
-    page_number = self.request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    # Přidat stránkovaný objekt do kontextu
-    context['page_obj'] = page_obj
-
-    return context
 
 class LoginView(auth_views.LoginView):
   form_class = CustomAuthenticationForm

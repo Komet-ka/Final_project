@@ -7,7 +7,11 @@
     {% for event in page_obj %}
       <li style="margin: 10px;">
           <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
+                {% if event.image %}
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
+                {% else %}
+                    <img src="..." class="card-img-top" alt="{{ event.title }}">
+                {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ event.name }}</h5>
                     <p class="card-text">{{ event.describtion|truncatechars:100 }} ...</p>
@@ -15,7 +19,7 @@
                     <br><br>
                     <a href="{% url 'attendees' event.pk %}" class="btn btn-primary"> Přihlásit/Odhlásit </a>
                     <br><br>
-                    {% if request.user == event.user or request.user.is_superuser or request.user.is_staff%}
+                    {% if user == event.user or perms.auth.user.jeadmin %}
                         <a href="{% url 'event_update' event.pk %}"> Upravit </a><br>
                         <a href="{% url 'event_delete' event.pk %}"> Smazat </a>
                     {% endif %}
@@ -73,8 +77,10 @@
     </nav>
 </div>
 <br>
-<a href="{% url 'event_create' %}" class="button">
-           Přidat novou událost
-</a>
+    {% if perms.auth.jeporadatel or perms.auth.jeadmin %}
+        <a href="{% url 'event_create' %}" class="button">
+               Přidat novou událost
+        </a>
+    {% endif %}
 
 {% endblock %}

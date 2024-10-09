@@ -32,8 +32,8 @@ class Event(Model):
   place = CharField(max_length=128, default="")
   entry = BooleanField(default=False)
   user = ForeignKey(User, on_delete=DO_NOTHING, default=1)
-  link = URLField(max_length=200, default="")
-  image = ImageField(upload_to='event_images/', blank=True, null=True)  # Přidáno pole pro obrázek
+  link = URLField(max_length=200, blank=True, null=True)
+  image = ImageField(upload_to='event_images/', blank=False, null=True)
   attendees = models.ManyToManyField(User, related_name="events_attending", blank=True)
 
   def __str__(self):

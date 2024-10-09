@@ -2,6 +2,15 @@
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
 <h1>Události</h1>
+<form action="{% url 'events' %}" method="GET">
+    <select name="event_type" >
+      <option value="">Vše</option>
+      <option value="7" {% if request.GET.event_type == '7' %}selected{% endif %}>Venkovní</option>
+      <option value="4" {% if request.GET.event_type == '4' %}selected{% endif %}>Hudební</option>
+    </select>
+    {% csrf_token %}
+    <input type="submit" value="Hledat">
+</form>
 
 <ul style="display: flex; flex-wrap: wrap; list-style-type: none; padding: 0;">
     {% for event in page_obj %}

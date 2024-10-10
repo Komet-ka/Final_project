@@ -58,29 +58,44 @@ class UserForm(ModelForm):
               }
 
 class EventForm(ModelForm):
-  class Meta:
-    model = Event
-    fields = ['name', 'describtion', 'eventType', 'date', 'place', 'link', 'entry', 'image']
-    labels = {'name': 'Název',
-              'describtion': 'Popis',
-              'eventType': 'Typ akce',
-              'date': 'Datum',
-              'place': 'Místo',
-              'link': 'Odkaz',
-              'entry': 'Vstupné',
-              'image':'Obrázek',
-              }
+    new_event_type = forms.CharField(
+        max_length=100,
+        required=False,
+        label="Vytvořit nový typ události a odeslat ke schválení"
+    )
 
-    widgets = {
-        'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
-        'date': DateInput(attrs={'type': 'date'}),
+    class Meta:
+        model = Event
+        fields = ['name', 'describtion', 'eventType', 'date', 'place', 'link', 'entry', 'image', 'is_capacity_limited', 'capacity', 'new_event_type']
+        labels = {
+            'name': 'Název',
+            'describtion': 'Popis',
+            'eventType': 'Typ akce',
+            'date': 'Datum',
+            'place': 'Místo',
+            'link': 'Odkaz',
+            'entry': 'Vstupné',
+            'image': 'Obrázek',
+        }
 
-    # Kalendář pro výběr data
-    }
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Přidání skrytého pole pro uživatele
-        self.fields['user'] = forms.HiddenInput()  # Skryté pole pro 'user'
+        widgets = {
+            'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
+            'date': DateInput(attrs={'type': 'date'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        is_capacity_limited = cleaned_data.get('is_capacity_limited')
+        capacity = cleaned_data.get('capacity')
+        new_event_type = cleaned_data.get('new_event_type')
+
+        if is_capacity_limited and capacity is None:
+            self.add_error('capacity', 'Zadejte kapacitu, pokud je omezena.')
+
+        if new_event_type and len(new_event_type) < 3:
+            self.add_error('new_event_type', 'Typ události musí mít alespoň 3 znaky.')
+
+        return cleaned_data
 
 class SearchForm(forms.Form):
     query = forms.CharField(

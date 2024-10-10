@@ -8,8 +8,39 @@
     <h3>Vytvořit událost</h3>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <label>{{ form.new_event_type.label }}: {{ form.new_event_type }}</label><br>
+
         {{ form.as_p }}
-     <input type="submit" value="Uložit" class="btn btn-primary">
+
+        <!-- Checkbox pro omezení kapacity -->
+        <div id="capacity-field" style="display: none;">
+            {{ form.capacity.label }}: {{ form.capacity }}<br>
+        </div>
+
+        <input type="submit" value="Uložit" class="btn btn-primary">
     </form>
+
+    <script>
+        // JavaScript pro zobrazení nebo skrytí pole pro kapacitu
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkbox = document.querySelector('input[name="is_capacity_limited"]');
+            const capacityField = document.getElementById('capacity-field');
+
+            // Funkce pro zobrazení nebo skrytí pole na základě stavu checkboxu
+            function toggleCapacityField() {
+                if (checkbox.checked) {
+                    capacityField.style.display = 'block';
+                } else {
+                    capacityField.style.display = 'none';
+                }
+            }
+
+            // Při načtení stránky zavolat toggleCapacityField pro nastavení výchozího stavu
+            toggleCapacityField();
+
+            // Při změně checkboxu volat toggleCapacityField
+            checkbox.addEventListener('change', toggleCapacityField);
+        });
+    </script>
 </body>
 </html>

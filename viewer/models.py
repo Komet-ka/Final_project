@@ -15,6 +15,7 @@ from django.db.models import (
 
 class EventType(Model):
     name = CharField(max_length=128)
+    is_approved = models.BooleanField(default=False)  # Výchozí hodnota je False (ne schváleno)
 
     class Meta:
         permissions = [
@@ -35,6 +36,12 @@ class Event(Model):
   link = URLField(max_length=200, blank=True, null=True)
   image = ImageField(upload_to='event_images/', blank=False, null=True)
   attendees = models.ManyToManyField(User, related_name="events_attending", blank=True)
+  # Nové pole pro maximální kapacitu
+  capacity = models.PositiveIntegerField(null=True, blank=True, default=None)  # None znamená neomezeno
+  # Pole pro indikaci, zda je kapacita omezena
+  is_capacity_limited = models.BooleanField(default=False)
+  # Nové pole pro schválení administrátorem
+  is_approved = models.BooleanField(default=False)  # Výchozí hodnota je False (ne schváleno)
 
   def __str__(self):
       return self.name

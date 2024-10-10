@@ -131,8 +131,41 @@ class EventDeleteView(PermissionRequiredMixin, DeleteView):
   permission_required = 'viewer.add_event'
 
 class EventTypeView(ListView):
-  template_name = 'types.html'
+  template_name = 'administrace.html'
   model = EventType
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+
+    # Filtrovat události podle schválení
+    events = Event.objects.filter(is_approved=False)
+    event_types = EventType.objects.filter(is_approved=False)
+
+    context['events'] = events  # Přidání událostí do kontextu
+    context['event_types'] = event_types  # Přidání událostí do kontextu
+
+    return context
+
+  def post(self, request, *args, **kwargs):
+    # Zpracování událostí
+    if 'event_ids' in request.POST:
+        event_ids = request.POST.getlist('event_ids')  # Získání seznamu ID událostí
+        for event_id in event_ids:
+            event = Event.objects.get(pk=event_id)
+            is_approved = f'is_approved' in request.POST and event_id in request.POST.getlist('is_approved')  # Zjistit, zda je zaškrtnuté
+            event.is_approved = is_approved
+            event.save()
+
+    # Zpracování typů událostí
+    if 'type_ids' in request.POST:
+        type_ids = request.POST.getlist('type_ids')  # Získání seznamu ID typů
+        for type_id in type_ids:
+            event_type = EventType.objects.get(pk=type_id)
+            is_approved = f'type_approved' in request.POST and type_id in request.POST.getlist('type_approved')  # Zjistit, zda je zaškrtnuté
+            event_type.is_approved = is_approved
+            event_type.save()
+
+    return redirect('administrace')  # Přesměrování zpět na stránku
 
 
 class EventTypeCreateView(PermissionRequiredMixin, CreateView):
@@ -149,7 +182,7 @@ class EventTypeUpdateView(PermissionRequiredMixin, UpdateView):
   template_name = 'form.html'
   model = EventType
   form_class = EventTypeForm
-  success_url = reverse_lazy('types')
+  success_url = reverse_lazy('administrace')
   permission_required = 'viewer.add_eventtype'
 
   def form_invalid(self, form):

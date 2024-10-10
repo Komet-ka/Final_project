@@ -17,7 +17,7 @@
             <a href="{% url 'main_page' %}">Novinky</a>
             <a href="{% url 'events' %}">Události</a>
             {% if perms.auth.jeadmin %}
-                <a href="{% url 'types' %}">Typy událostí</a>
+                <a href="{% url 'administrace' %}">Administrace</a>
             {% endif %}
             {% if request.user.is_authenticated %}
                 <a href="{% url 'my_attendees' %}">Moje akce</a>
@@ -56,7 +56,9 @@
             <h3>Typy událostí</h3>
             <ul>
                 {% for type in type_list %}
-                    <li><a href="{% url 'type_filter' type.pk %}">{{ type.name }}</a></li>
+                    {% if type.is_approved %}
+                        <li><a href="{% url 'type_filter' type.pk %}">{{ type.name }}</a></li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

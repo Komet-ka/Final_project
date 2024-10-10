@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block main_title %} {{ title }} {% endblock %}
+{% block content %}
+
+<h3>Žádosti o přidání události</h3>
+<form method="post">
+    {% csrf_token %}
+    <ul class="approved">
+        {% for event in events %}
+        <li>
+            {{ event.name }}
+            <a href="{% url 'detail' event.pk %}" class="button">Detail</a>
+            <input type="hidden" name="event_ids" value="{{ event.pk }}">
+            <input type="checkbox" name="is_approved" value="{{ event.pk }}" {% if event.is_approved %}checked{% endif %}> Schválit
+            <a href="{% url 'event_delete' event.pk %}"> Smazat </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <input type="submit" value="Uložit" class="btn btn-primary">
+</form>
+
+<h3>Žádosti o přidání typu události</h3>
+<form method="post">
+    {% csrf_token %}
+    <ul class="approved">
+        {% for type in event_types %}
+        <li>
+            {{ type.name }}
+            <input type="hidden" name="type_ids" value="{{ type.pk }}">
+            <input type="checkbox" name="type_approved" value="{{ type.pk }}" {% if type.is_approved %}checked{% endif %}> Schválit
+            <a href="{% url 'type_delete' type.pk %}"> Smazat </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <input type="submit" value="Uložit" class="btn btn-primary">
+</form>
+
+<h3>Typy událostí</h3>
+
+  <ul>
+    {% for type in object_list %}
+      {% if type.is_approved %}
+      <li>
+          {{ type.name }}
+          <a href="{% url 'type_update' type.pk %}"> Upravit </a>
+          <a href="{% url 'type_delete' type.pk %}"> Smazat </a>
+      </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+    <br><br>
+        <a href="{% url 'type_create' %}"> Přidat nový typ události </a>
+{% endblock %}

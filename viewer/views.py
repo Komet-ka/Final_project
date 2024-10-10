@@ -35,8 +35,8 @@ class EventsView(TemplateView):
 
     events = Event.objects.all()
     event_type_filter = self.request.GET.get("event_type", "")
-    if event_type_filter != "":
-      events = events.filter(eventType=int(event_type_filter))
+    if event_type_filter:
+        events = events.filter(eventType__id=int(event_type_filter))
 
     paginator = Paginator(events, 6)  # 6 událostí na stránku
 

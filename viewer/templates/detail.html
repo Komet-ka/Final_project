@@ -75,7 +75,7 @@
 
     <div>Momentální počet přihlášených uživatelů: {{ attendee_count }}</div><br>
     {% if perms.auth.jeporadatel or perms.auth.jeadmin %}
-    <p>Uživatelé:</p>
+    <p>Účastníci:</p>
     <ul>
         {% for attendee in attendees %}
             <li>{{ attendee.username }}</li>  <!-- Zobrazí uživatelské jméno -->

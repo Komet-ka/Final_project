@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
+
 <h1>{{ event_type.name }}</h1>
 
-<ul style="display: flex; flex-wrap: wrap; list-style-type: none; padding: 0;">
+<ul class="event-list">
     {% for event in page_obj %}
-      <li style="margin: 10px;">
-          <div class="card" style="width: 18rem;">
+      <li class="event-item">
+          <div class="card">
                 {% if event.image %}
                     <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
                 {% else %}

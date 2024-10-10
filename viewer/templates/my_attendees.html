@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
+
 <h1>Moje akce</h1>
 
 {% if perms.auth.jeporadatel %}
 <h4>Jako Pořadatel:</h4>
-<ul style="display: flex; flex-wrap: wrap; list-style-type: none; padding: 0;">
+<ul class="event-list">
     {% for event in page_my_obj %}
-      <li style="margin: 10px;">
-          <div class="card" style="width: 18rem;">
+      <li class="event-item">
+          <div class="card">
                 {% if event.image %}
                     <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
                 {% else %}
@@ -35,10 +36,10 @@
 {% if perms.auth.jeporadatel %}
 <h4>Jako Přihlášený:</h4>
 {% endif %}
-<ul style="display: flex; flex-wrap: wrap; list-style-type: none; padding: 0;">
+<ul class="event-list">
     {% for event in page_obj %}
-      <li style="margin: 10px;">
-          <div class="card" style="width: 18rem;">
+      <li class="event-item">
+          <div class="card">
                 {% if event.image %}
                     <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
                 {% else %}

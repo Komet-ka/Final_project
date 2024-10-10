@@ -1,94 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event manager</title>
 
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <style>
-        .header {
-            display: flex;
-            justify-content: space-between;
-            padding-left: 10px;
-            margin-top: 20px;
-            background-color: #A9A9A9;
-
-        }
-
-        .logo {
-            font-size: 50px;
-            align-items: left;
-            font-weight: bold;
-            margin-center: 50px;
-            background-color: #A9A9A9;
-
-        }
-
-        .nav-bar {
-            display: flex;
-            font-size: 20px;
-            justify-content: center;
-            gap: 10px;
-            margin-right: 0px;
-            align-items: flex-end;
-            background-color: #A9A9A9;
-            width: fit-content;
-        }
-
-        .nav-bar a {
-            text-decoration: none;
-            padding: 5px 5px;
-            color: #000;
-        }
-
-        .nav-bar a:hover {
-            background-color: #008B8B;
-            border-radius: 5px;
-        }
-
-        .messages {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            color: #155724;
-        }
-
-        .message-success {
-            background-color: #008cba;
-            color: #000000;
-            border: 1px solid #c3e6cb;
-            padding: 5px;
-            border-radius: 5px;
-            text-align: center;
-            width: 20%;
-            margin: 0 auto;
-            position: fixed;
-            top: 50%;
-            left: 0;
-            right: 0;
-        }
-
-    </style>
 </head>
 <body>
 
     <nav class="header">
-        <div class="logo">
-            Event manager
-        </div>
-
+        <div class="logo">Event manager</div>
         <nav class="nav-bar">
             <a href="{% url 'main_page' %}">Novinky</a>
             <a href="{% url 'events' %}">Události</a>
-
-            {%  if perms.auth.jeadmin %}
+            {% if perms.auth.jeadmin %}
                 <a href="{% url 'types' %}">Typy událostí</a>
             {% endif %}
-
             {% if request.user.is_authenticated %}
                 <a href="{% url 'my_attendees' %}">Moje akce</a>
                 <a href="{% url 'my_page' %}">Můj účet - {{ request.user.username }}</a>
@@ -97,86 +27,45 @@
                 <a href="{% url 'sign_up' %}">Zaregistrovat se</a>
                 <a href="{% url 'login' %}">Přihlásit se</a>
             {% endif %}
-
             <form class="d-flex" method="get" action="{% url 'search' %}">
                 <input type="text" name="query" class="form-control me-2" placeholder="Hledat" aria-label="Search" required="" id="id_query">
-                {{ form.query }}
                 <button class="btn btn-outline-success" type="submit">Hledat</button>
             </form>
         </nav>
-      </div>
     </nav>
 
-        {% if messages %}
-            <div id="messages">
-                {% for message in messages %}
-                    <div class="message-success">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+    {% if messages %}
+        <div id="messages">
+            {% for message in messages %}
+                <div class="message-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <script>
-    setTimeout(function() {
-        var messages = document.getElementById('messages');
-        if (messages) {
-            messages.style.display = 'none';
-                     }
-            }, 2000);
+        setTimeout(function() {
+            var messages = document.getElementById('messages');
+            if (messages) {
+                messages.style.display = 'none';
+            }
+        }, 2000);
     </script>
 
-
-        <style>
-            .container {
-                display: flex; /* Flexbox pro horizontální rozložení */
-            }
-
-            .left-sidebar {
-                width: auto; /* Šířka se přizpůsobí obsahu */
-                padding: 20px; /* Odsazení uvnitř postranní lišty */
-                background-color: #008cba; /* Světlé pozadí pro odlišení */
-                border: 1px solid #ddd; /* Ohraničení kolem postranní lišty */
-                margin-right: 20px; /* Odsazení od hlavního obsahu */
-            }
-
-            .content {
-                flex-grow: 1; /* Hlavní obsah zabírá zbytek místa */
-            }
-
-            h3 {
-                margin-bottom: 10px;
-            }
-
-            ul {
-                list-style-type: none; /* Zrušení odrážek u seznamu */
-                padding-left: 0;
-            }
-
-            li {
-                margin-bottom: 5px;
-            }
-        </style>
-
-        <div class="container">  <!-- Hlavní kontejner -->
-
-            <div class="left-sidebar"> <!-- Postranní lišta vlevo -->
-               <h3>Typy událostí</h3>
-               <ul>
-                 {% for type in type_list %}
-                     <li><a href="{% url 'type_filter' type.pk %}">{{ type.name }}</a></li>
-                 {% endfor %}
-               </ul>
-            </div>
-
-            <div class="content">
-                <!-- Hlavní obsah stránky -->
-                        <div>
-                        {% block content %}{% endblock %}
-                        </div>
-            </div>
-
+    <div class="container">
+        <div class="left-sidebar">
+            <h3>Typy událostí</h3>
+            <ul>
+                {% for type in type_list %}
+                    <li><a href="{% url 'type_filter' type.pk %}">{{ type.name }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
 
-    </body>
+        <div class="content">
+            <div>
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
 </html>

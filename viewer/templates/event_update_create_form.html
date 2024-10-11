@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+{% extends "base.html" %}
+{% block main_title %} {{ title }} {% endblock %}
+{% block content %}
     <h3>Vytvořit událost</h3>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -41,5 +37,4 @@
             checkbox.addEventListener('change', toggleCapacityField);
         });
     </script>
-</body>
-</html>
+{% endblock %}

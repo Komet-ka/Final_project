@@ -33,7 +33,7 @@ class EventsView(TemplateView):
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
 
-    events = Event.objects.all()
+    events = Event.objects.filter(is_approved=True)
     event_type_filter = self.request.GET.get("event_type", "")
     if event_type_filter:
         events = events.filter(eventType__id=int(event_type_filter))
@@ -54,7 +54,7 @@ class EventFilterView(TemplateView):
     context = super().get_context_data(**kwargs)
 
     # Filtrovat události podle eventType a 'pk'
-    events = Event.objects.filter(eventType=kwargs.get('pk'))
+    events = Event.objects.filter(eventType=kwargs.get('pk'), is_approved=True)
 
     # Získání event typu podle 'pk'
     event_type = EventType.objects.get(pk=kwargs.get('pk'))
@@ -307,7 +307,7 @@ def search_view(request):
 
 
 def global_data(request):
-    data = EventType.objects.all()
+    data = EventType.objects.filter(is_approved=True)
     return {'type_list': data}
 
 

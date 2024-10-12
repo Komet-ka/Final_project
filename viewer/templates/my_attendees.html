@@ -2,10 +2,10 @@
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
 
-<h1>Moje akce</h1>
+<h3>MOJE AKCE</h3>
 
 {% if perms.auth.jeporadatel %}
-<h4>Jako Pořadatel:</h4>
+<h4>JAKO POŘADATEL:</h4>
 <ul class="event-list">
     {% for event in page_my_obj %}
       <li class="event-item">
@@ -37,7 +37,7 @@
 {% endif %}
 
 {% if perms.auth.jeporadatel %}
-<h4>Jako Přihlášený:</h4>
+<h4>JAKO ÚČASTNÍK:</h4>
 {% endif %}
 <ul class="event-list">
     {% for event in page_obj %}

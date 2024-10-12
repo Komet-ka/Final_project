@@ -135,6 +135,7 @@ class EventDeleteView(PermissionRequiredMixin, DeleteView):
 class EventTypeView(ListView):
   template_name = 'administrace.html'
   model = EventType
+  ordering = ['name']
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
@@ -173,7 +174,7 @@ class EventTypeView(ListView):
 class EventTypeCreateView(PermissionRequiredMixin, CreateView):
   template_name = 'form.html'
   form_class = EventTypeForm
-  success_url = reverse_lazy('types')
+  success_url = reverse_lazy('administrace')
   permission_required = 'viewer.add_eventtype'
 
   def form_invalid(self, form):
@@ -195,7 +196,7 @@ class EventTypeUpdateView(PermissionRequiredMixin, UpdateView):
 class EventTypeDeleteView(PermissionRequiredMixin, DeleteView):
   template_name = 'type_confirm_delete.html'
   model = EventType
-  success_url = reverse_lazy('types')
+  success_url = reverse_lazy('administrace')
   permission_required = 'viewer.add_eventtype'
 
 

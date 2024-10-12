@@ -2,7 +2,7 @@
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
 
-<h3>Žádosti o přidání události</h3>
+<h3>ŽÁDOSTI O PŘIDÁNÍ UDÁLOSTÍ</h3>
 <form method="post">
     {% csrf_token %}
     <ul class="approved">
@@ -19,7 +19,7 @@
     <input type="submit" value="Uložit" class="btn btn-primary">
 </form>
 
-<h3>Žádosti o přidání typu události</h3>
+<h3>ŽÁDOSTI O PŘIDÁNÍ TYPU UDÁLOSTÍ</h3>
 <form method="post">
     {% csrf_token %}
     <ul class="approved">
@@ -35,7 +35,7 @@
     <input type="submit" value="Uložit" class="btn btn-primary">
 </form>
 
-<h3>Typy událostí</h3>
+<h3>TYPY UDÁLOSTÍ</h3>
 
   <ul>
     {% for type in object_list %}

@@ -1,7 +1,7 @@
-.ody {
-    font-family: Times, sans-serif; /* Zde můžete změnit font na jakýkoliv, který preferujete */
+body {
+    font-family: "Roboto Condensed", system-ui, sans-serif; /* Zde můžete změnit font na jakýkoliv, který preferujete */
     margin: 0
-
+}
 
 .container {
     display: flex; /* Flexbox pro horizontální rozložení */
@@ -18,7 +18,7 @@
 .left-sidebar {
     width: 200px; /* Nastavte pevnou šířku sidebaru */
     padding: 20px; /* Odsazení uvnitř postranní lišty */
-    background-color: #008cba; /* Světlé pozadí pro odlišení */
+    background-color: #D55140; /* Světlé pozadí pro odlišení */
     border: 1px solid #ddd; /* Ohraničení kolem postranní lišty */
     margin-right: 20px; /* Odsazení od hlavního obsahu */
 }

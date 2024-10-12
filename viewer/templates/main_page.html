@@ -5,7 +5,7 @@
 
     <div class="main-content">
 
-        <h3>Nově přidané události</h3>
+        <h3>NOVĚ PŘIDANÉ UDÁLOSTI</h3>
 
         {% for event in newest_events %}
         <p>Datum vytvoření: {{ event.create_date }}  {{ event.name }}
@@ -13,7 +13,7 @@
         {% endfor %}
         <br>
 
-        <h3>Nadcházející události</h3>
+        <h3>NADCHÁZEJÍCÍ UDÁLOSTI</h3>
 
         {% for event in nearest_events %}
         <p>Datum: {{ event.date }}  {{ event.name }}
@@ -22,7 +22,7 @@
         <br>
 
 
-        <h3>Nejnovější komentáře</h3>
+        <h3>NEJNOVĚJŠÍ KOMENTÁŘE</h3>
 
         {% for comment in newest_comments %}
         <p>Komentář k události {{ comment.event.name }}: {{ comment.comment_date }} - {{ comment.comment }}

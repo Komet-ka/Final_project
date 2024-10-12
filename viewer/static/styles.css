@@ -1,3 +1,7 @@
+.ody {
+    font-family: Times, sans-serif; /* Zde můžete změnit font na jakýkoliv, který preferujete */
+    margin: 0
+
 
 .container {
     display: flex; /* Flexbox pro horizontální rozložení */

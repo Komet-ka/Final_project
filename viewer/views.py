@@ -1,6 +1,8 @@
 from django.core.paginator import Paginator
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
+from django.utils import timezone
 
 from django.views.generic import TemplateView, ListView
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -317,4 +319,36 @@ def custom_403_view(request, exception):
   def my_view(request):
     if not request.user.has_perm('viewer.add_eventtype'):
       raise PermissionDenied("Nemáte oprávnění k provedení této akce.")
+
+
+
+def api_upcoming_events(request):
+    upcoming_events = Event.objects.filter(date__gt=timezone.now())
+    json_upcoming_events = {}
+    for event in upcoming_events:
+        json_upcoming_events[event.pk] = {
+            "Název": event.name,
+            "Datum": event.date
+        }
+    return JsonResponse(json_upcoming_events)
+def list_events(request):
+    import requests
+    responce = requests.get("http://127.0.0.1:8000/api/get/all_events/")
+    události = responce.json()
+    return render(request, "api_list_events.html", context={"events": události})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

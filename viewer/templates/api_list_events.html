@@ -1,0 +1,9 @@
+<h3>
+    Seznam nadcházejících událostí:
+</h3>
+
+{% for key, values in events.items %}
+
+<p><strong>Klíč:</strong> {{key}}<br> <strong>Název události:</strong> {{values.name}}<br> <strong>Datum konání:</strong> {{values.date}} <br></p>
+
+{% endfor %}

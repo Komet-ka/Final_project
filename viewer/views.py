@@ -237,8 +237,8 @@ def main_page(request):
     request,
     "main_page.html",
     context={
-          "newest_events": Event.objects.order_by("-create_date").all()[:5],
-          "nearest_events": Event.objects.order_by("-date").all()[:5],
+          "newest_events": Event.objects.order_by("-create_date").all()[:4],
+          "nearest_events": Event.objects.order_by("-date").all()[:4],
           "newest_comments": Comment.objects.order_by("-comment_date").all()[:5],
     }
   )

@@ -40,7 +40,7 @@ class EventsView(TemplateView):
     if event_type_filter:
         events = events.filter(eventType__id=int(event_type_filter))
 
-    paginator = Paginator(events, 6)  # 6 událostí na stránku
+    paginator = Paginator(events, 12)  # 6 událostí na stránku
 
     page_number = self.request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -62,7 +62,7 @@ class EventFilterView(TemplateView):
     event_type = EventType.objects.get(pk=kwargs.get('pk'))
 
     # Stránkování - 6 událostí na stránku
-    paginator = Paginator(events, 6)
+    paginator = Paginator(events, 12)
     page_number = self.request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -84,12 +84,12 @@ class MyEventsView(TemplateView):
     my_events = Event.objects.filter(user=self.request.user)
 
     # Stránkování - 6 událostí na stránku
-    paginator = Paginator(events, 6)
+    paginator = Paginator(events, 12)
     page_number = self.request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     # Stránkování - 6 událostí na stránku
-    paginator = Paginator(my_events, 6)
+    paginator = Paginator(my_events, 12)
     page_number = self.request.GET.get('page')
     page_my_obj = paginator.get_page(page_number)
 

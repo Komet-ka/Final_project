@@ -9,11 +9,11 @@
       <li class="event-item">
           <div class="card">
                 {% if event.image %}
-                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}" style="max-height: 200px; object-fit: cover;">
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
                 {% else %}
-                    <img src="..." class="card-img-top" alt="{{ event.title }}" style="max-height: 200px; object-fit: cover;">
+                    <img src="..." class="card-img-top" alt="{{ event.title }}">
                 {% endif %}
-                <div class="card-body" style="flex-grow: 1;">
+                <div class="card-body">
                     <h5 class="card-title">{{ event.name }}</h5>
                     <p class="card-text">{{ event.describtion|truncatechars:100 }} ...</p>
                     <a href="/detail/{{event.pk}}" class="btn btn-primary">Prohlédnout událost</a>

@@ -214,3 +214,12 @@ a:hover {
 a:active {
     color: #FFFFFF; /* Barva odkazu při kliknutí */
 }
+
+.carousel-image {
+    height: 150px !important; /* Nastav pevnou výšku a vynucené použití tohoto pravidla */
+    object-fit: cover !important; /* Zajistí, že obrázky vyplní zadanou výšku a šířku bez zkreslení */
+}
+.carousel {
+    max-width: 600px !important; /* Menší šířka banneru pro užší zobrazení */
+    margin: auto;
+}

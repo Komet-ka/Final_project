@@ -6,6 +6,7 @@
 
 <ul class="event-list">
     {% for event in page_obj %}
+    {% if event.date >= today %}
       <li class="event-item">
           <div class="card">
                 {% if event.image %}
@@ -27,6 +28,7 @@
                 </div>
             </div>
       </li>
+    {% endif %}
     {% endfor %}
 </ul>
 
@@ -83,4 +85,39 @@
                Přidat novou událost
         </a>
     {% endif %}
+<br><br>
+<a href="javascript:void(0);" id="toggle-past-events" class="button">
+    Prohlédnout již proběhlé události
+</a>
+
+<div id="past-events">
+    <h3>Již proběhlé události</h3>
+    <ul class="event-list">
+        {% for event in page_obj %}
+            {% if event.date < today and event.date >= one_year_ago %}
+                <li class="event-item">
+                    <div class="card">
+                        {% if event.image %}
+                            <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}" style="max-height: 200px; object-fit: cover;">
+                        {% else %}
+                            <img src="..." class="card-img-top" alt="{{ event.title }}" style="max-height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body" style="flex-grow: 1;">
+                            <h5 class="card-title">{{ event.name }}</h5>
+                            <p class="card-text">{{ event.describtion|truncatechars:100 }} ...</p>
+                            <a href="/detail/{{event.pk}}" class="btn btn-primary">Prohlédnout událost</a>
+                            <br><br>
+                            <a href="{% url 'attendees' event.pk %}" class="btn btn-primary"> Přihlásit/Odhlásit </a>
+                            <br><br>
+                            {% if user == event.user or perms.auth.user.jeadmin %}
+                                <a href="{% url 'event_update' event.pk %}"> Upravit </a><br>
+                                <a href="{% url 'event_delete' event.pk %}"> Smazat </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

@@ -1,5 +1,7 @@
+from datetime import timedelta
+
 from django.core.paginator import Paginator
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
@@ -30,24 +32,31 @@ from .forms import CustomAuthenticationForm
 
 
 class EventsView(TemplateView):
-  template_name = 'events.html'
+    template_name = 'events.html'
 
-  def get_context_data(self, **kwargs):
-    context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    events = Event.objects.filter(is_approved=True)
-    event_type_filter = self.request.GET.get("event_type", "")
-    if event_type_filter:
-        events = events.filter(eventType__id=int(event_type_filter))
+        # Získání aktuálního data a data před rokem
+        today = timezone.now().date()
+        one_year_ago = today - timedelta(days=365)
 
-    paginator = Paginator(events, 6)  # 6 událostí na stránku
+        # Načtení událostí
+        events = Event.objects.filter(is_approved=True)
+        event_type_filter = self.request.GET.get("event_type", "")
+        if event_type_filter:
+            events = events.filter(eventType__id=int(event_type_filter))
 
-    page_number = self.request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+        paginator = Paginator(events, 6)  # 6 událostí na stránku
 
-    context['page_obj'] = page_obj
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
-    return context
+        context['page_obj'] = page_obj
+        context['today'] = today
+        context['one_year_ago'] = one_year_ago  # Přidání do kontextu
+
+        return context
 
 class EventFilterView(TemplateView):
   template_name = 'type_filter.html'
@@ -131,6 +140,20 @@ class EventDeleteView(PermissionRequiredMixin, DeleteView):
   model = Event
   success_url = reverse_lazy('events')
   permission_required = 'viewer.add_event'
+
+  def delete(self, request, *args, **kwargs):
+      self.object = self.get_object()
+
+      # Odstranit všechny vazby účastníků
+      self.object.attendees.clear()  # Odstraní všechny účastníky
+
+      # Pokud máš další související záznamy, jako např. komentáře, které se vztahují na událost,
+      # musíš je také odstranit. Např.:
+      # self.object.comments.all().delete()  # (přizpůsob si podle svého modelu)
+
+      # Nyní můžeš událost smazat
+      self.object.delete()
+      return HttpResponseRedirect(self.get_success_url())
 
 class EventTypeView(ListView):
   template_name = 'administrace.html'

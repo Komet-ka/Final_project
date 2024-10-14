@@ -49,9 +49,9 @@ class Event(Model):
 
 class Comment(Model):
   comment = TextField(default="")
-  event = ForeignKey(Event, on_delete=DO_NOTHING, default="")
+  event = ForeignKey(Event, on_delete=models.CASCADE, default="")
   comment_date = DateTimeField(default=datetime.datetime.now)
-  user = ForeignKey(User, on_delete=DO_NOTHING, default=1)
+  user = ForeignKey(User, on_delete=models.CASCADE, default=1)
 
 
 

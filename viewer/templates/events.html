@@ -80,6 +80,7 @@
     </nav>
 </div>
 <br>
+
     {% if perms.auth.jeporadatel or perms.auth.jeadmin %}
         <a href="{% url 'event_create' %}" class="button">
                Přidat novou událost

@@ -223,3 +223,15 @@ a:active {
     max-width: 600px !important; /* Menší šířka banneru pro užší zobrazení */
     margin: auto;
 }
+.pagination .page-item .page-link {
+        background-color: #5F9EA0; /* Barva pozadí pro odkazy na stránkování */
+        color: white; /* Barva textu odkazu */
+    }
+.pagination .page-item.active .page-link {
+        background-color: #4a8b8b; /* Barva pozadí pro aktivní stránku */
+        color: white; /* Barva textu aktivního odkazu */
+    }
+.pagination .page-item .page-link:hover {
+        background-color: #4a8b8b; /* Barva pozadí pro hover */
+        color: white; /* Barva textu při hover */
+    }

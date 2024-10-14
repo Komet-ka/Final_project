@@ -59,54 +59,70 @@ class EventsView(TemplateView):
         return context
 
 class EventFilterView(TemplateView):
-  template_name = 'type_filter.html'
+    template_name = 'type_filter.html'
 
-  def get_context_data(self, **kwargs):
-    context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    # Filtrovat události podle eventType a 'pk'
-    events = Event.objects.filter(eventType=kwargs.get('pk'), is_approved=True)
+        # Získání aktuálního data a data před rokem
+        today = timezone.now().date()
+        one_year_ago = today - timedelta(days=365)
 
-    # Získání event typu podle 'pk'
-    event_type = EventType.objects.get(pk=kwargs.get('pk'))
+        # Filtrovat události podle eventType a 'pk'
+        events = Event.objects.filter(eventType=kwargs.get('pk'), is_approved=True)
 
-    # Stránkování - 6 událostí na stránku
-    paginator = Paginator(events, 6)
-    page_number = self.request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+        # Zahrnout pouze události, které jsou aktuální nebo byly uskutečněny v posledním roce
+        events = events.filter(date__gte=one_year_ago)
 
-    # Přidat stránkovaný objekt do kontextu
-    context['page_obj'] = page_obj
-    context['event_type'] = event_type  # Přidání event typu do kontextu
+        # Získání event typu podle 'pk'
+        event_type = EventType.objects.get(pk=kwargs.get('pk'))
 
-    return context
+        # Stránkování - 6 událostí na stránku
+        paginator = Paginator(events, 6)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        # Přidat stránkovaný objekt do kontextu
+        context['page_obj'] = page_obj
+        context['event_type'] = event_type  # Přidání event typu do kontextu
+        context['today'] = today  # Přidání aktuálního data do kontextu
+        context['one_year_ago'] = one_year_ago  # Přidání data před rokem do kontextu
+
+        return context
 
 class MyEventsView(TemplateView):
-  template_name = 'my_attendees.html'
+    template_name = 'my_attendees.html'
 
-  def get_context_data(self, **kwargs):
-    context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    # Filtrovat události podle přihlášeného uživatele
-    events = Event.objects.filter(attendees=self.request.user)
-    # Filtrovat události podle uživatele, který událost vytvořil
-    my_events = Event.objects.filter(user=self.request.user)
+        # Získání aktuálního data a data před rokem
+        today = timezone.now().date()
+        one_year_ago = today - timedelta(days=365)
 
-    # Stránkování - 6 událostí na stránku
-    paginator = Paginator(events, 6)
-    page_number = self.request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+        # Filtrovat události podle přihlášeného uživatele (události, na které se přihlásil)
+        events = Event.objects.filter(attendees=self.request.user, is_approved=True)
+        # Filtrovat události podle uživatele, který událost vytvořil
+        my_events = Event.objects.filter(user=self.request.user, is_approved=True)
 
-    # Stránkování - 6 událostí na stránku
-    paginator = Paginator(my_events, 6)
-    page_number = self.request.GET.get('page')
-    page_my_obj = paginator.get_page(page_number)
+        # Stránkování - 6 událostí na stránku
+        paginator = Paginator(events, 6)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
 
-    # Přidat stránkovaný objekt do kontextu
-    context['page_obj'] = page_obj
-    context['page_my_obj'] = page_my_obj
+        # Stránkování - 6 událostí na stránku pro moje události
+        paginator_my = Paginator(my_events, 6)
+        page_number_my = self.request.GET.get('page_my')  # Přidáme jiný parametr pro stránkování
+        page_my_obj = paginator_my.get_page(page_number_my)
 
-    return context
+        # Přidat stránkované objekty do kontextu
+        context['page_obj'] = page_obj  # Události, na které se přihlásil uživatel
+        context['page_my_obj'] = page_my_obj  # Události, které vytvořil uživatel
+
+        context['today'] = today  # Přidání aktuálního data do kontextu
+        context['one_year_ago'] = one_year_ago  # Přidání data před rokem do kontextu
+
+        return context
 
 
 class EventCreateView(PermissionRequiredMixin, CreateView):

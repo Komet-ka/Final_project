@@ -3,67 +3,79 @@
 {% block content %}
 
 
-    <h3>NOVĚ PŘIDANÉ UDÁLOSTI</h3>
-    <br>
-
-<div id="newEventsCarousel" class="carousel slide" data-bs-ride="carousel" style="max-width: 600px; margin: auto;">
+<h3>NOVĚ PŘIDANÉ UDÁLOSTI</h3>
+<br>
+<div class="carousel slide newest-carousel">
     <div class="carousel-inner">
         {% for event in newest_events %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <a href="/detail/{{event.pk}}">
-                <img src="{{ event.image.url }}" class="d-block w-100" alt="{{ event.title }}"
-                     style="height: 300px; object-fit: cover;">
+            <a href="/detail/{{ event.pk }}">
+                <img src="{{ event.image.url }}" alt="{{ event.title }}">
             </a>
         </div>
         {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+    <button class="prev" onclick="changeSlide('newest', -1)">&#10094;</button>
+    <button class="next" onclick="changeSlide('newest', 1)">&#10095;</button>
 </div>
 <br><br>
 
-        <h3>NADCHÁZEJÍCÍ UDÁLOSTI</h3>
-        <br>
-
-<div id="upcomingEventsCarousel" class="carousel slide" data-bs-ride="carousel" style="max-width: 600px; margin: auto;">
+<h3>NADCHÁZEJÍCÍ UDÁLOSTI</h3>
+<br>
+<div class="carousel slide nearest-carousel">
     <div class="carousel-inner">
         {% for event in nearest_events %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <a href="/detail/{{event.pk}}">
-                <img src="{{ event.image.url }}" class="d-block w-100" alt="{{ event.title }}"
-                     style="height: 300px; object-fit: cover;">
+            <a href="/detail/{{ event.pk }}">
+                <img src="{{ event.image.url }}" alt="{{ event.title }}">
             </a>
         </div>
         {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+    <button class="prev" onclick="changeSlide('nearest', -1)">&#10094;</button>
+    <button class="next" onclick="changeSlide('nearest', 1)">&#10095;</button>
 </div>
 <br><br>
 
-        <h3>NEJNOVĚJŠÍ KOMENTÁŘE</h3>
+<h3>NEJNOVĚJŠÍ KOMENTÁŘE</h3>
+{% for comment in newest_comments %}
+<p>Komentář k události {{ comment.event.name }}: {{ comment.comment_date }} - {{ comment.comment }}
+    <a href="/detail/{{comment.event.pk}}" class="button">Podívat se na událost</a></p>
+{% endfor %}
+<br>
 
-        {% for comment in newest_comments %}
-        <p>Komentář k události {{ comment.event.name }}: {{ comment.comment_date }} - {{ comment.comment }}
-                <a href="/detail/{{comment.event.pk}}" class="button">Podívat se na událost</a></p>
-        {% endfor %}
-        <br>
+<script>
+    function changeSlide(carouselClass, direction) {
+        const slides = document.querySelectorAll(`.${carouselClass}-carousel .carousel-item`);
+        let currentSlide = Array.from(slides).findIndex(slide => slide.classList.contains('active'));
 
+        if (currentSlide === -1) {
+            console.error('No active slide found');
+            return; // Přidáno pro ochranu
+        }
+
+        console.log(`Current slide: ${currentSlide}`); // Přidáno pro ladění
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + direction + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+
+        console.log(`Next slide: ${currentSlide}`); // Přidáno pro ladění
+    }
+
+    // Automatické změny po 3 sekundách pro každý karusel
+    setInterval(() => {
+        changeSlide('newest', 1);
+    }, 3000);
+
+    setInterval(() => {
+        changeSlide('nearest', 1);
+    }, 3000);
+</script>
+<br><br>
   </div>
-
 </div>
+
+
 
 {% endblock %}
 

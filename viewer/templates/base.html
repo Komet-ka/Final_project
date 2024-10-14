@@ -88,7 +88,6 @@
                 });
             });
         </script>
-
     </body>
 </html>
 
@@ -364,13 +363,49 @@ a:active {
     border-color: #007bff; /* Barva rámečku aktivní stránky */
 
 }
-.carousel-image {
-    height: 150px !important; /* Nastav pevnou výšku a vynucené použití tohoto pravidla */
-    object-fit: cover !important; /* Zajistí, že obrázky vyplní zadanou výšku a šířku bez zkreslení */
-}
 .carousel {
-    max-width: 600px !important; /* Menší šířka banneru pro užší zobrazení */
-    margin: auto;
+    display: flex;
+    justify-content: center; /* Centrovat karusel horizontálně */
+    align-items: center;     /* Centrovat karusel vertikálně */
+    margin: 0 auto;         /* Automatické okraje pro centrování */
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+    /* Pokud chceš obrázky vycentrovat */
+    display: flex;
+    justify-content: center;
+}
+
+.carousel img {
+    width: 600px;      /* Šířka obrázku */
+    height: auto;     /* Výška obrázku */
+    object-fit: cover;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
 }
 
 </style>

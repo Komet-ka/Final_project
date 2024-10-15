@@ -6,7 +6,6 @@
 
 <ul class="event-list">
     {% for event in page_obj %}
-    {% if event.date >= today %}
       <li class="event-item">
           <div class="card">
                 {% if event.image %}
@@ -28,7 +27,6 @@
                 </div>
             </div>
       </li>
-    {% endif %}
     {% endfor %}
 </ul>
 
@@ -94,8 +92,7 @@
 <div id="past-events">
     <h3>Již proběhlé události</h3>
     <ul class="event-list">
-        {% for event in page_obj %}
-            {% if event.date < today and event.date >= one_year_ago %}
+        {% for event in past_events %}
                 <li class="event-item">
                     <div class="card">
                         {% if event.image %}
@@ -117,7 +114,6 @@
                         </div>
                     </div>
                 </li>
-            {% endif %}
         {% endfor %}
     </ul>
 </div>

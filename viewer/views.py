@@ -37,24 +37,33 @@ class EventsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Získání aktuálního data a data před rokem
+        # Získání aktuálního data
         today = timezone.now().date()
         one_year_ago = today - timedelta(days=365)
 
-        # Načtení událostí
+        # Načtení schválených událostí
         events = Event.objects.filter(is_approved=True)
         event_type_filter = self.request.GET.get("event_type", "")
         if event_type_filter:
             events = events.filter(eventType__id=int(event_type_filter))
 
-        paginator = Paginator(events, 6)  # 6 událostí na stránku
+        # Rozdělení na proběhlé a aktuální události
+        past_events = events.filter(date__lt=today, date__gte=one_year_ago)
+        upcoming_events = events.filter(date__gte=today)
 
+        # Stránkování jen s aktuálními událostmi
+        paginator = Paginator(upcoming_events, 6)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
+        # Pokud je na stránce méně než 6 aktuálních událostí, doplň je dalšími
+        if len(page_obj) < 6:
+            remaining_count = 6 - len(page_obj)
+            additional_events = upcoming_events.exclude(id__in=[event.id for event in page_obj])[:remaining_count]
+            page_obj.object_list = list(page_obj.object_list) + list(additional_events)
+
         context['page_obj'] = page_obj
-        context['today'] = today
-        context['one_year_ago'] = one_year_ago  # Přidání do kontextu
+        context['past_events'] = past_events
 
         return context
 
@@ -71,22 +80,23 @@ class EventFilterView(TemplateView):
         # Filtrovat události podle eventType a 'pk'
         events = Event.objects.filter(eventType=kwargs.get('pk'), is_approved=True)
 
-        # Zahrnout pouze události, které jsou aktuální nebo byly uskutečněny v posledním roce
-        events = events.filter(date__gte=one_year_ago)
+        # Rozdělení na proběhlé a aktuální události
+        past_events = events.filter(date__lt=today, date__gte=one_year_ago)
+        upcoming_events = events.filter(date__gte=today)
 
-        # Získání event typu podle 'pk'
-        event_type = EventType.objects.get(pk=kwargs.get('pk'))
-
-        # Stránkování - 6 událostí na stránku
-        paginator = Paginator(events, 6)
+        # Stránkování jen s aktuálními událostmi
+        paginator = Paginator(upcoming_events, 6)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
-        # Přidat stránkovaný objekt do kontextu
+        # Pokud je na stránce méně než 6 aktuálních událostí, doplň je dalšími
+        if len(page_obj) < 6:
+            remaining_count = 6 - len(page_obj)
+            additional_events = upcoming_events.exclude(id__in=[event.id for event in page_obj])[:remaining_count]
+            page_obj.object_list = list(page_obj.object_list) + list(additional_events)
+
         context['page_obj'] = page_obj
-        context['event_type'] = event_type  # Přidání event typu do kontextu
-        context['today'] = today  # Přidání aktuálního data do kontextu
-        context['one_year_ago'] = one_year_ago  # Přidání data před rokem do kontextu
+        context['past_events'] = past_events
 
         return context
 
@@ -242,6 +252,10 @@ class EventTypeDeleteView(PermissionRequiredMixin, DeleteView):
 def detail(request, pk):
   event = get_object_or_404(Event, pk=pk)
   user_is_attendee = event.attendees.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+  if event.is_capacity_limited and event.capacity is not None:
+      remaining_capacity = event.capacity - event.attendees.count()
+  else:
+      remaining_capacity = None
 
   if "comment" in request.POST:
     if request.user.is_authenticated:
@@ -261,8 +275,16 @@ def detail(request, pk):
              'attendees': event.attendees.all(),
              'user_is_attendee': user_is_attendee,
              'attendee_count': event.attendees.count(),
+             'remaining_capacity': remaining_capacity,
              }
   )
+
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user == comment.user:  # Zkontroluj, zda je aktuální uživatel autorem komentáře
+        comment.delete()  # Smaž komentář
+    return redirect('detail', pk=comment.event.pk)  # Přesměruj na detail události
 
 def my_page(request):
     return render(
@@ -276,8 +298,8 @@ def main_page(request):
     request,
     "main_page.html",
     context={
-          "newest_events": Event.objects.order_by("-create_date").all()[:3],
-          "nearest_events": Event.objects.order_by("-date").all()[:3],
+          "newest_events": Event.objects.order_by("-create_date").all()[:5],
+          "nearest_events": Event.objects.order_by("date").all()[:5],
           "newest_comments": Comment.objects.order_by("-comment_date").all()[:5],
     }
   )
@@ -310,26 +332,37 @@ def logout_view(request):
   messages.success(request, 'Úspěšně jste se odhlásili.')
   return redirect('main_page')
 
+
 def attendees(request, pk):
-  event = get_object_or_404(Event, pk=pk)
-  user = request.user
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
 
-  if request.method == "POST":
-    if user in event.attendees.all():  # Zkontroluj, zda je uživatel již účastníkem
-      event.attendees.remove(user)  # Odhlásit uživatele
-      messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
-    else:
-      event.attendees.add(user)  # Přihlásit uživatele
-      messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
+    if request.method == "POST":
+        # Zkontroluj, zda je uživatel již účastníkem
+        if user in event.attendees.all():
+            event.attendees.remove(user)  # Odhlásit uživatele
+            messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
+        else:
+            # Zkontroluj, zda je kapacita omezena a zda je plná
+            if event.is_capacity_limited and event.attendees.count() >= event.capacity:
+                messages.error(request, "Nelze se přihlásit, kapacita je plná.")
+            else:
+                event.attendees.add(user)  # Přihlásit uživatele
+                messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
 
-    return redirect('detail', pk=event.pk)
-  else:
-    if user in event.attendees.all():  # Zkontroluj, zda je uživatel již účastníkem
-      event.attendees.remove(user)  # Odhlásit uživatele
-      messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
+        return redirect('detail', pk=event.pk)
+
+    # Pokud je metoda GET, odhlásit uživatele nebo přihlásit
+    if user in event.attendees.all():
+        event.attendees.remove(user)  # Odhlásit uživatele
+        messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
     else:
-      event.attendees.add(user)  # Přihlásit uživatele
-      messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
+        # Zkontroluj, zda je kapacita omezena a zda je plná
+        if event.is_capacity_limited and event.attendees.count() >= event.capacity:
+            messages.error(request, "Nelze se přihlásit, kapacita je plná.")
+        else:
+            event.attendees.add(user)  # Přihlásit uživatele
+            messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
 
     return redirect('my_attendees')
 

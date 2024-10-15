@@ -261,6 +261,7 @@ def detail(request, pk):
              'attendees': event.attendees.all(),
              'user_is_attendee': user_is_attendee,
              'attendee_count': event.attendees.count(),
+             'remaining_capacity': event.capacity - event.attendees.count(),
              }
   )
 
@@ -276,8 +277,8 @@ def main_page(request):
     request,
     "main_page.html",
     context={
-          "newest_events": Event.objects.order_by("-create_date").all()[:3],
-          "nearest_events": Event.objects.order_by("-date").all()[:3],
+          "newest_events": Event.objects.order_by("-create_date").all()[:5],
+          "nearest_events": Event.objects.order_by("date").all()[:5],
           "newest_comments": Comment.objects.order_by("-comment_date").all()[:5],
     }
   )
@@ -310,26 +311,37 @@ def logout_view(request):
   messages.success(request, 'Úspěšně jste se odhlásili.')
   return redirect('main_page')
 
+
 def attendees(request, pk):
-  event = get_object_or_404(Event, pk=pk)
-  user = request.user
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
 
-  if request.method == "POST":
-    if user in event.attendees.all():  # Zkontroluj, zda je uživatel již účastníkem
-      event.attendees.remove(user)  # Odhlásit uživatele
-      messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
-    else:
-      event.attendees.add(user)  # Přihlásit uživatele
-      messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
+    if request.method == "POST":
+        # Zkontroluj, zda je uživatel již účastníkem
+        if user in event.attendees.all():
+            event.attendees.remove(user)  # Odhlásit uživatele
+            messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
+        else:
+            # Zkontroluj, zda je kapacita omezena a zda je plná
+            if event.is_capacity_limited and event.attendees.count() >= event.capacity:
+                messages.error(request, "Nelze se přihlásit, kapacita je plná.")
+            else:
+                event.attendees.add(user)  # Přihlásit uživatele
+                messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
 
-    return redirect('detail', pk=event.pk)
-  else:
-    if user in event.attendees.all():  # Zkontroluj, zda je uživatel již účastníkem
-      event.attendees.remove(user)  # Odhlásit uživatele
-      messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
+        return redirect('detail', pk=event.pk)
+
+    # Pokud je metoda GET, odhlásit uživatele nebo přihlásit
+    if user in event.attendees.all():
+        event.attendees.remove(user)  # Odhlásit uživatele
+        messages.success(request, f"Úspěšně jste se odhlásili z akce {event.name}.")
     else:
-      event.attendees.add(user)  # Přihlásit uživatele
-      messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
+        # Zkontroluj, zda je kapacita omezena a zda je plná
+        if event.is_capacity_limited and event.attendees.count() >= event.capacity:
+            messages.error(request, "Nelze se přihlásit, kapacita je plná.")
+        else:
+            event.attendees.add(user)  # Přihlásit uživatele
+            messages.success(request, f"Úspěšně jste se přihlásili na akci {event.name}.")
 
     return redirect('my_attendees')
 

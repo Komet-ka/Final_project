@@ -73,12 +73,28 @@
         <p>Musíte být přihlášeni, abyste mohli přidávat komentáře.</p>
     {% endif %}
 
-    {% if is_capacity_limited %}
-    <div>Momentální počet přihlášených uživatelů / kapacita: {{ attendee_count }} / {{ event.capacity }}</div><br>
+{% if event.is_capacity_limited %}
+    Momentální počet přihlášených uživatelů / kapacita:
+    {% if attendee_count == event.capacity %}
+        <div style="color: red;">
+            {{ attendee_count }} / {{ event.capacity }}<br>
+            <span>Kapacita je plná</span>
+        </div>
+    {% elif remaining_capacity <= 3 %}
+        <div style="color: orange;">
+            {{ attendee_count }} / {{ event.capacity }}<br>
+            <span>Zbývají poslední {{ remaining_capacity }} místa </span>
+        </div>
     {% else %}
-    <div>Momentální počet přihlášených uživatelů - neomezená kapacita: {{ attendee_count }}</div><br>
+        <div style="color: green;">
+            {{ attendee_count }} / {{ event.capacity }}<br>
+            <span>Zbývá {{ remaining_capacity }} míst</span>
+        </div>
     {% endif %}
-
+{% else %}
+    <div>Momentální počet přihlášených uživatelů - neomezená kapacita: {{ attendee_count }}</div><br>
+{% endif %}
+<br>
     {% if user == event.user or perms.auth.user.jeadmin %}
     <p>Účastníci:</p>
     <ul>

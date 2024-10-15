@@ -37,24 +37,33 @@ class EventsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Získání aktuálního data a data před rokem
+        # Získání aktuálního data
         today = timezone.now().date()
         one_year_ago = today - timedelta(days=365)
 
-        # Načtení událostí
+        # Načtení schválených událostí
         events = Event.objects.filter(is_approved=True)
         event_type_filter = self.request.GET.get("event_type", "")
         if event_type_filter:
             events = events.filter(eventType__id=int(event_type_filter))
 
-        paginator = Paginator(events, 6)  # 6 událostí na stránku
+        # Rozdělení na proběhlé a aktuální události
+        past_events = events.filter(date__lt=today, date__gte=one_year_ago)
+        upcoming_events = events.filter(date__gte=today)
 
+        # Stránkování jen s aktuálními událostmi
+        paginator = Paginator(upcoming_events, 6)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
+        # Pokud je na stránce méně než 6 aktuálních událostí, doplň je dalšími
+        if len(page_obj) < 6:
+            remaining_count = 6 - len(page_obj)
+            additional_events = upcoming_events.exclude(id__in=[event.id for event in page_obj])[:remaining_count]
+            page_obj.object_list = list(page_obj.object_list) + list(additional_events)
+
         context['page_obj'] = page_obj
-        context['today'] = today
-        context['one_year_ago'] = one_year_ago  # Přidání do kontextu
+        context['past_events'] = past_events
 
         return context
 
@@ -71,22 +80,23 @@ class EventFilterView(TemplateView):
         # Filtrovat události podle eventType a 'pk'
         events = Event.objects.filter(eventType=kwargs.get('pk'), is_approved=True)
 
-        # Zahrnout pouze události, které jsou aktuální nebo byly uskutečněny v posledním roce
-        events = events.filter(date__gte=one_year_ago)
+        # Rozdělení na proběhlé a aktuální události
+        past_events = events.filter(date__lt=today, date__gte=one_year_ago)
+        upcoming_events = events.filter(date__gte=today)
 
-        # Získání event typu podle 'pk'
-        event_type = EventType.objects.get(pk=kwargs.get('pk'))
-
-        # Stránkování - 6 událostí na stránku
-        paginator = Paginator(events, 6)
+        # Stránkování jen s aktuálními událostmi
+        paginator = Paginator(upcoming_events, 6)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
-        # Přidat stránkovaný objekt do kontextu
+        # Pokud je na stránce méně než 6 aktuálních událostí, doplň je dalšími
+        if len(page_obj) < 6:
+            remaining_count = 6 - len(page_obj)
+            additional_events = upcoming_events.exclude(id__in=[event.id for event in page_obj])[:remaining_count]
+            page_obj.object_list = list(page_obj.object_list) + list(additional_events)
+
         context['page_obj'] = page_obj
-        context['event_type'] = event_type  # Přidání event typu do kontextu
-        context['today'] = today  # Přidání aktuálního data do kontextu
-        context['one_year_ago'] = one_year_ago  # Přidání data před rokem do kontextu
+        context['past_events'] = past_events
 
         return context
 

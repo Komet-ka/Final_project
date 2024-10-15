@@ -214,53 +214,6 @@ a:hover {
 a:active {
     color: #FFFFFF; /* Barva odkazu při kliknutí */
 }
-
-.carousel {
-    position: relative;
-    max-width: 600px; /* Můžeš změnit podle potřeby */
-    margin: auto;
-    overflow: hidden;
-    border-radius: 10px; /* Mírné zaoblení rohů */
-}
-
-.carousel-images {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.carousel-item {
-    min-width: 100%;
-}
-
-.carousel img {
-    width: 100%;
-    height: auto;
-    object-fit: cover; /* Přizpůsobí obrázek velikosti kontejneru */
-}
-
-.prev, .next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 50%;
-}
-
-.prev {
-    left: 10px;
-}
-
-.next {
-    right: 10px;
-}
-
-.prev:hover, .next:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-}
 .pagination .page-item .page-link {
         background-color: #5F9EA0; /* Barva pozadí pro odkazy na stránkování */
         color: white; /* Barva textu odkazu */

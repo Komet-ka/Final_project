@@ -22,7 +22,7 @@
                     <br><br>
                     <a href="{% url 'attendees' event.pk %}" class="btn btn-primary"> Přihlásit/Odhlásit </a>
                     <br><br>
-                    {% if user == event.user or perms.auth.user.jeadmin %}
+                    {% if user == event.user or perms.auth.jeadmin %}
                         {% if event.is_approved == False %}
                             <span style="color: red;">Neschválená</span><br>
                         {% endif %}
@@ -55,7 +55,7 @@
                     <br><br>
                     <a href="{% url 'attendees' event.pk %}" class="btn btn-primary"> Přihlásit/Odhlásit </a>
                     <br><br>
-                    {% if user == event.user or perms.auth.user.jeadmin %}
+                    {% if user == event.user or perms.auth.jeadmin %}
                         <a href="{% url 'event_update' event.pk %}" class="btn btn-primary"> Upravit </a><br>
                         <a href="{% url 'event_delete' event.pk %}" class="btn btn-primary"> Smazat </a>
                     {% endif %}

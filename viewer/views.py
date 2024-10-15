@@ -269,6 +269,13 @@ def detail(request, pk):
              }
   )
 
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user == comment.user:  # Zkontroluj, zda je aktuální uživatel autorem komentáře
+        comment.delete()  # Smaž komentář
+    return redirect('detail', pk=comment.event.pk)  # Přesměruj na detail události
+
 def my_page(request):
     return render(
       request,

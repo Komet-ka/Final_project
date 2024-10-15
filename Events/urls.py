@@ -21,7 +21,8 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views
 
-from viewer.views import detail, my_page, main_page, logout_view, attendees, search_view, api_upcoming_events, list_events
+from viewer.views import detail, my_page, main_page, logout_view, attendees, search_view, api_upcoming_events, \
+    list_events, delete_comment
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
@@ -35,6 +36,7 @@ urlpatterns = [
     path('main_page/', main_page, name='main_page'),
     path('', main_page, name='main_page'),  # Class based view
     path('detail/<pk>', detail, name='detail'),
+    path('delete_comment/<int:comment_id>/', delete_comment, name='delete_comment'),
     path('type_filter/<pk>', EventFilterView.as_view(), name='type_filter'),
     path('administrace/', EventTypeView.as_view(), name='administrace'),
 

@@ -242,6 +242,10 @@ class EventTypeDeleteView(PermissionRequiredMixin, DeleteView):
 def detail(request, pk):
   event = get_object_or_404(Event, pk=pk)
   user_is_attendee = event.attendees.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+  if event.is_capacity_limited and event.capacity is not None:
+      remaining_capacity = event.capacity - event.attendees.count()
+  else:
+      remaining_capacity = None
 
   if "comment" in request.POST:
     if request.user.is_authenticated:
@@ -261,7 +265,7 @@ def detail(request, pk):
              'attendees': event.attendees.all(),
              'user_is_attendee': user_is_attendee,
              'attendee_count': event.attendees.count(),
-             'remaining_capacity': event.capacity - event.attendees.count(),
+             'remaining_capacity': remaining_capacity,
              }
   )
 

@@ -75,12 +75,12 @@
 
 {% if event.is_capacity_limited %}
     Momentální počet přihlášených uživatelů / kapacita:
-    {% if attendee_count == event.capacity %}
+    {% if event.capacity is not None and attendee_count == event.capacity %}
         <div style="color: red;">
             {{ attendee_count }} / {{ event.capacity }}<br>
             <span>Kapacita je plná</span>
         </div>
-    {% elif remaining_capacity <= 3 %}
+    {% elif event.capacity is not None and remaining_capacity <= 3 %}
         <div style="color: orange;">
             {{ attendee_count }} / {{ event.capacity }}<br>
             <span>Zbývají poslední {{ remaining_capacity }} místa </span>

@@ -35,4 +35,4 @@ https://validator.w3.org/#validate_by_input)
 
 python .\manage.py makemigrations viewer
 
-![kabat](./img/kabat.jpg)
+![kabat](./img/ERDiagram.png)

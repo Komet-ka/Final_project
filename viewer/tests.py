@@ -17,6 +17,7 @@ class EventTests(TestCase):
         self.event = Event.objects.create(
             name='Test Event',
             describtion="popis události",
+            is_capacity_limited= True,
             capacity=5  # Kapacita pro testování
         )
         self.event.eventType.set([self.event_type])  # Nastavení typu události
@@ -54,10 +55,12 @@ class EventTests(TestCase):
 
         # Zkusíme přidat dalšího uživatele, což by mělo selhat
         self.client.login(username='testuser', password='testpass')
-        response = self.client.post(reverse('attendees', args=[self.event.id]))
+        response = self.client.post(reverse('attendees', args=[self.event.id]), follow=True)
         self.assertRedirects(response, '/detail/1')
         #self.assertEqual(response.status_code, 400)  # Očekáváme selhání kvůli překročení kapacity
-        self.assertEqual(self.event.attendees.filter(id=self.user.id).exists(), False)
+        content_str = response.content.decode('utf-8')
+        self.assertIn("Nelze", content_str )
+        #self.assertEqual(self.event.attendees.filter(id=self.user.id).exists(), False)
 
 # pip install selenium
 

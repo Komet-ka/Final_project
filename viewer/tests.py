@@ -55,8 +55,9 @@ class EventTests(TestCase):
         # Zkusíme přidat dalšího uživatele, což by mělo selhat
         self.client.login(username='testuser', password='testpass')
         response = self.client.post(reverse('attendees', args=[self.event.id]))
-        self.assertEqual(response.status_code, 400)  # Očekáváme selhání kvůli překročení kapacity
-        self.assertNotIn(self.user, self.event.attendees.all())
+        self.assertRedirects(response, '/detail/1')
+        #self.assertEqual(response.status_code, 400)  # Očekáváme selhání kvůli překročení kapacity
+        self.assertEqual(self.event.attendees.filter(id=self.user.id).exists(), False)
 
 # pip install selenium
 
@@ -90,4 +91,4 @@ class MySeleniumTests(LiveServerTestCase):
         self.selenium.find_element(By.XPATH, '//input[@type="submit"]').click()
         time.sleep(2)
         # Test that we successfully logged in (check for a successful redirect or message)
-        self.assertIn("User logged in: admin - Logout", self.selenium.page_source)
+        self.assertIn("MŮJ ÚČET - admin", self.selenium.page_source)

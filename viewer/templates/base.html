@@ -19,7 +19,7 @@
             <a href="{% url 'main_page' %}">NOVINKY</a>
             <a href="{% url 'events' %}">UDÁLOSTI</a>
             {% if perms.auth.jeadmin %}
-                <a href="{% url 'administrace' %}">ADMINISTRACE</a>
+                <a href="{% url 'administrace' %}">ADMIN</a>
             {% endif %}
             {% if request.user.is_authenticated %}
                 <a href="{% url 'my_attendees' %}">MOJE AKCE</a>

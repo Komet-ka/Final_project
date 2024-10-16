@@ -1,18 +1,45 @@
-<h3>Nově přidané události</h3>
+ALBERT
 
-{% for event in newest_events %}
-<p>Datum přidání: {{ event.create_date }}  {{ event.name }}
-    <a href="{% url 'detail' event.pk %}">Detail- {{event.pk}}</a></p></p>
-{% endfor %}
-<br>
+Proč nefunguje v base?
 
-<h3>Blížící se události</h3>
+            {% if user.has_perm 'viewer.add_eventtype' %}
+                <a href="{% url 'types' %}">Typy událostí</a>
+            {% endif %}
 
-{% for event in nearest_events %}
-<p>Datum konání: {{ event.date }}  {{ event.name }}
-    <a href="{% url 'detail' event.pk %}">Detail- {{event.pk}}</a></p></p>
-{% endfor %}
-<br>
 
-Event filter view pk
-migrace modely
+
+
+
+
+API pro jiné weby - seznam událostí
+(API by mělo splňovat doporučení REST. metoda by měla vrátit seznam všech budoucích událostí.
+volitelně může dodatečně povolit filtrování vrácených událostí na časové období.)
+
+path('api/get/all_upcoming_events/', all_upcoming_events)    (tohle je api routa pro přístup, bude se jich definovat víc pro jednotlivé typy)
+
+def all_upcoming_events(request):
+    return JsonResponse({
+    "all_events": Event.objects.all()           (api nám to v tomto formátu vrací)
+    })
+
+
+Aplikace zobrazující události stažené z API
+(je nutné sestavit druhou aplikaci (Django), která bude využívat API události a zobrazovat seznam v některých zobrazeních
+volitelné: přidání možnosti filtrování událostí v aplikaci podle zvoleného časového období pomocí filtrování na straně API)
+
+class EventFromEventManager(TemplateView):
+    template_name: = 'event.html'
+    extra_context= {
+    "events": None
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        import requests
+        r = request.get("www.eventmanager.cz/api/get/all_upcoming_events/"). json      (nebo se tam da ip adresa lokální)(tato funkce request si tu cizí stránku zavolá a vytáhne z ní data)
+        context['events'] = r ["all_events"]
+        return context
+
+
+
+

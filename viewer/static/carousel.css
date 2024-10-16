@@ -1,0 +1,50 @@
+.carousel {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+    max-width: 1200px !important; /* Menší šířka banneru pro užší zobrazení */
+
+}
+
+.carousel-images {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 150px !important; /* Nastav pevnou výšku a vynucené použití tohoto pravidla */
+    object-fit: cover !important; /* Zajistí, že obrázky vyplní zadanou výšku a šířku bez zkreslení */
+
+.carousel-item {
+    min-width: 100%;
+}
+
+.carousel img {
+    width: 100%;
+    height: auto;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+#newestCarousel .carousel-item img {
+    border-radius: 0px;
+}
+
+#upcomingCarousel .carousel-item img {
+    border-radius: 0px;
+}

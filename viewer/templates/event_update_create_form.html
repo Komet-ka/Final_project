@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block main_title %} {{ title }} {% endblock %}
+{% block content %}
+    <h3>Vytvořit událost</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+
+        <input type="submit" value="Uložit" class="btn btn-primary">
+    </form>
+
+    <script>
+        // JavaScript pro zobrazení nebo skrytí pole pro kapacitu
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkbox = document.querySelector('input[name="is_capacity_limited"]');
+            const capacityField = document.getElementById('id_capacity');
+            const capacityLabel = document.querySelector('label[for="id_capacity"]');
+
+            // Funkce pro zobrazení nebo skrytí pole na základě stavu checkboxu
+            function toggleCapacityField() {
+                if (checkbox.checked) {
+                    capacityField.style.display = 'inline-block';
+                    capacityLabel.style.display = 'inline-block';
+
+                } else {
+                    capacityField.style.display = 'none';
+                    capacityLabel.style.display = 'none';
+                }
+            }
+
+            // Při načtení stránky zavolat toggleCapacityField pro nastavení výchozího stavu
+            toggleCapacityField();
+
+            // Při změně checkboxu volat toggleCapacityField
+            checkbox.addEventListener('change', toggleCapacityField);
+        });
+    </script>
+{% endblock %}

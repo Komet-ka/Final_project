@@ -13,46 +13,49 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-
-from viewer.models import Event, EventType, Comment
 
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views
 
-from viewer.views import detail, my_page, main_page
+from viewer.views import detail, my_page, main_page, logout_view, attendees, search_view, api_upcoming_events, \
+    list_events, delete_comment
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
                           EventTypeDeleteView, SubmittablePasswordChangeView, SignUpView,
-                          UserUpdateView, EventFilterView)
+                          UserUpdateView, EventFilterView, MyEventsView)
 
-admin.site.register(Event)
-admin.site.register(EventType)
-admin.site.register(Comment)
+handler403 = 'viewer.views.custom_403_view'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('main_page/', main_page, name='main_page'),
     path('', main_page, name='main_page'),  # Class based view
     path('detail/<pk>', detail, name='detail'),
+    path('delete_comment/<int:comment_id>/', delete_comment, name='delete_comment'),
     path('type_filter/<pk>', EventFilterView.as_view(), name='type_filter'),
+    path('administrace/', EventTypeView.as_view(), name='administrace'),
 
     path('events/', EventsView.as_view(), name='events'),
     path('events/create', EventCreateView.as_view(), name='event_create'),
     path('events/update/<pk>', EventUpdateView.as_view(), name='event_update'),
     path('events/delete/<pk>', EventDeleteView.as_view(), name='event_delete'),
 
-    path('types/', EventTypeView.as_view(), name='types'),
     path('type/create', EventTypeCreateView.as_view(), name='type_create'),
     path('type/update/<pk>', EventTypeUpdateView.as_view(), name='type_update'),
     path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='type_delete'),
 
-    path('accounts/login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('my_page/', my_page, name='my_page'),
     path('my_page/update/', UserUpdateView.as_view(), name='user_update'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', logout_view, name='logout'),
+    path('attendees/<pk>', attendees, name='attendees'),
+    path('my_attendees/', MyEventsView.as_view(), name='my_attendees'),
+
 
     path('password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', views.PasswordChangeDoneView.as_view(), name='password_change_done'),
@@ -62,4 +65,16 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('sign_up/', SignUpView.as_view(), name='sign_up'),
+    path('search/', search_view, name='search'),
+
+    path('api/get/all_events/', api_upcoming_events, name='api_upcoming_events'),
+    path('list_events/', list_events, name='list_events'), #tohle je v jiné aplikaci
+
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

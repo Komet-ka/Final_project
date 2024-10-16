@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3>
+        Výsledek vyhledávání:
+    </h3>
+
+    {% if results %}
+        <ul>
+        {% for result in results %}
+            <li><a href="{% url 'detail' result.id %}">{{ result }}</a></li><br>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenalezeny žádné výsledky.</p>
+    {% endif %}
+{% endblock %}

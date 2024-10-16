@@ -1,26 +1,121 @@
 {% extends "base.html" %}
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
-<h1>Events</h1>
 
-<ul>
-    {% for event in events %}
-      <li>
-        {{ event.name }}<br>
-        <a href="/detail/{{event.pk}}" class="button">
-            Prohlédnout událost
-        </a>
-          <br><br>
-          <a href="{% url 'event_update' event.pk %}"> Update </a>
-          <a href="{% url 'event_delete' event.pk %}"> Delete </a>
-          <br><br>
+<h1>{{ event_type.name }}</h1>
+
+<ul class="event-list">
+    {% for event in page_obj %}
+      <li class="event-item">
+          <div class="card">
+                {% if event.image %}
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
+                {% else %}
+                    <img src="..." class="card-img-top" alt="{{ event.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.name }}</h5>
+                    <p class="card-text">{{ event.describtion|truncatechars:100 }} ...</p>
+                    <a href="/detail/{{event.pk}}" class="btn btn-primary">Prohlédnout událost</a>
+                    <br><br>
+                    <a href="{% url 'attendees' event.pk %}" class="btn btn-primary"> Přihlásit/Odhlásit </a>
+                    <br><br>
+                    {% if user == event.user or perms.auth.jeadmin %}
+                        <a href="{% url 'event_update' event.pk %}"> Upravit </a><br>
+                        <a href="{% url 'event_delete' event.pk %}"> Smazat </a>
+                    {% endif %}
+                </div>
+            </div>
       </li>
-
     {% endfor %}
 </ul>
+
+<!-- Stránkování -->
+<div style="text-align: center; margin-top: 20px;">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- Tlačítko zpět na první stránku -->
+            {% if page_obj.number > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">První stránka</a>
+                </li>
+            {% endif %}
+
+            <!-- Předchozí stránka -->
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            <!-- Odkazy na čísla stránek -->
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Další stránka -->
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            <!-- Tlačítko na poslední stránku -->
+            {% if page_obj.number < page_obj.paginator.num_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Poslední stránka</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 <br>
-<a href="{% url 'event_create' %}" class="button">
-           Přidat novou událost
+
+    {% if perms.auth.jeporadatel or perms.auth.jeadmin %}
+        <a href="{% url 'event_create' %}" class="button">
+               Přidat novou událost
+        </a>
+    {% endif %}
+<br><br>
+<a href="javascript:void(0);" id="toggle-past-events" class="button">
+    Prohlédnout již proběhlé události
 </a>
+
+<div id="past-events">
+    <h3>Již proběhlé události</h3>
+    <ul class="event-list">
+        {% for event in past_events %}
+                <li class="event-item">
+                    <div class="card">
+                        {% if event.image %}
+                            <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}" style="max-height: 200px; object-fit: cover;">
+                        {% else %}
+                            <img src="..." class="card-img-top" alt="{{ event.title }}" style="max-height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body" style="flex-grow: 1;">
+                            <h5 class="card-title">{{ event.name }}</h5>
+                            <p class="card-text">{{ event.describtion|truncatechars:100 }} ...</p>
+                            <a href="/detail/{{event.pk}}" class="btn btn-primary">Prohlédnout událost</a>
+                            <br><br>
+                            <a href="{% url 'attendees' event.pk %}" class="btn btn-primary"> Přihlásit/Odhlásit </a>
+                            <br><br>
+                            {% if user == event.user or perms.auth.jeadmin %}
+                                <a href="{% url 'event_update' event.pk %}"> Upravit </a><br>
+                                <a href="{% url 'event_delete' event.pk %}"> Smazat </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+        {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}

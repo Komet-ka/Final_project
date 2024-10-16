@@ -16,7 +16,7 @@ class EventTests(TestCase):
         self.event_type = EventType.objects.create(name='Konference')
         self.event = Event.objects.create(
             name='Test Event',
-            description="popis události",
+            describtion="popis události",
             capacity=5  # Kapacita pro testování
         )
         self.event.eventType.set([self.event_type])  # Nastavení typu události

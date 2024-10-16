@@ -34,3 +34,5 @@ https://validator.w3.org/#validate_by_input)
 - [ ] celková kvalita kódu - ukázka views, tříd, metod a funkcí
 
 python .\manage.py makemigrations viewer
+
+![kabat](./img/kabat.jpg)

@@ -50,7 +50,6 @@
     padding: 0px; /* Odsazení kolem obsahu */
     min-height: 100vh; /* Minimální výška pro celou stránku */
     margin-left: 0px !important; /* Minimální výška pro celou stránku */
-!important;
 }
 
 .content {
@@ -58,6 +57,7 @@
     padding-top: 20px; /* Odsazení pro hlavní obsah */
     padding-left: 40px;  /* Odsazení zleva */
     padding-right: 0px; /* Odsazení zprava */
+    min-width: 1200px;
 }
 
 .left-sidebar {
@@ -131,7 +131,7 @@
     list-style-type: none;
     padding: 0;
     gap: 10px;
-    width: 1200px;
+    min-width: 1200px;
 }
 
 
@@ -181,10 +181,17 @@ img {
 h3 {
     margin-bottom: 10px;
     font-size: 20px;
+    font-weight: bold; /* Nastaví tučné písmo */
+}
+
+h4 {
+    margin-bottom: 10px;
+    font-size: 17px;
+    font-weight: bold; /* Nastaví tučné písmo */
 }
 
 h5 {
-    font-size: 20px;
+    font-size: 15px;
 }
 
 a {

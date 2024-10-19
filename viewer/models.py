@@ -45,7 +45,7 @@ class Event(Model):
 class Comment(Model):
   comment = CharField(max_length=500)
   event = ForeignKey(Event, on_delete=models.CASCADE, default="")
-  comment_date = models.DateTimeField(default=timezone.now())
+  comment_date = models.DateTimeField(default=timezone.now)
   user = ForeignKey(User, on_delete=models.CASCADE, default=1)
 
 

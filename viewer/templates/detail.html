@@ -59,7 +59,7 @@
           <li>
             {{ comment.user.username }} ({{ comment.comment }}) - {{ comment.comment_date }}
             <br>
-            {% if user == comment.user or perms.auth.user.jeadmin%}  <!-- Zkontroluj, zda je uživatel autorem komentáře -->
+            {% if user == comment.user or perms.auth.jeadmin%}  <!-- Zkontroluj, zda je uživatel autorem komentáře -->
                 <form action="{% url 'delete_comment' comment.id %}" method="POST" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger btn-sm">Smazat</button>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block main_title %} {{ title }} {% endblock %}
+{% block content %}
+
+<h3>Odeslat e-mail účastníkovi {{ attendee.username }}</h3>
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="id_subject">Předmět:</label>
+        {{ form.subject }}
+    </div>
+    <div>
+        <label for="id_message">Zpráva:</label>
+        {{ form.message }}
+    </div>
+    <input type="submit" value="Odeslat e-mail">
+</form>
+
+{% endblock %}

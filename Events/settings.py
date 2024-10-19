@@ -136,3 +136,5 @@ DATETIME_FORMAT = "d.m.Y H:i"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Cesta k adresáři pro ukládání obrázků
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

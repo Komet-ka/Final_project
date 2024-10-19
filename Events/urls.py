@@ -22,7 +22,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views
 
 from viewer.views import detail, my_page, main_page, logout_view, attendees, search_view, api_upcoming_events, \
-    list_events, delete_comment
+    list_events, delete_comment, SendEmailToAllView, SendEmailToAttendeeView
 
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
@@ -56,6 +56,8 @@ urlpatterns = [
     path('attendees/<pk>', attendees, name='attendees'),
     path('my_attendees/', MyEventsView.as_view(), name='my_attendees'),
 
+    path('send_email/<int:attendee_id>/<int:event_pk>/', SendEmailToAttendeeView.as_view(), name='send_email'),
+    path('send_email_to_all/<int:event_pk>/', SendEmailToAllView.as_view(), name='send_email_to_all'),
 
     path('password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', views.PasswordChangeDoneView.as_view(), name='password_change_done'),

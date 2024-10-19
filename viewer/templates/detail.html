@@ -56,29 +56,46 @@
 
     <ul>
         {% for comment in comments %}
-          <li>
-            {{ comment.user.username }} ({{ comment.comment }}) - {{ comment.comment_date }}
-            <br>
-            {% if user == comment.user or perms.auth.jeadmin%}  <!-- Zkontroluj, zda je uživatel autorem komentáře -->
-                <form action="{% url 'delete_comment' comment.id %}" method="POST" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Smazat</button>
-                </form>
-            {% endif %}
-            <br><br>
-          </li>
+            <li>
+                {{ comment.user.username }} ({{ comment.comment }}) - {{ comment.comment_date }}
+                <br>
+                {% if user == comment.user or perms.auth.jeadmin %}  <!-- Zkontroluj, zda je uživatel autorem komentáře -->
+                    <form action="{% url 'delete_comment' comment.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Smazat</button>
+                    </form>
+                {% endif %}
+                <br><br>
+            </li>
         {% endfor %}
     </ul>
 
-          <form action="/detail/{{event.pk}}" method="POST">
-            {% csrf_token %}
-              <p>Nový komentář:</p>
-              <textarea name="comment" style="width: 400px; height: 50px;"></textarea>
-            <input type="submit" value="Přidat nový komentář">
-          </form>
-    {% else %}
-        <p>Musíte být přihlášeni, abyste mohli přidávat komentáře.</p>
-    {% endif %}
+    <div id="error-message" class="alert alert-danger" style="display: none;"></div> <!-- Div pro chybovou hlášku -->
+
+    <form id="comment-form" action="/detail/{{ event.pk }}" method="POST">
+        {% csrf_token %}
+        <p>Nový komentář:</p>
+        <textarea id="comment" name="comment" style="width: 400px; height: 100px;" maxlength="500" required></textarea>
+        <input type="submit" value="Přidat nový komentář">
+    </form>
+
+    <script>
+        const commentTextarea = document.getElementById('comment');
+        const errorMessageDiv = document.getElementById('error-message');
+
+        commentTextarea.addEventListener('input', function() {
+            if (commentTextarea.value.length > 499) {
+                errorMessageDiv.textContent = "Komentář může obsahovat maximálně 500 znaků.";
+                errorMessageDiv.style.display = 'block';
+            } else {
+                errorMessageDiv.style.display = 'none';
+            }
+        });
+    </script>
+{% else %}
+    <p>Musíte být přihlášeni, abyste mohli přidávat komentáře.</p>
+{% endif %}
+
 
 {% if event.is_capacity_limited %}
     Momentální počet přihlášených uživatelů / kapacita:

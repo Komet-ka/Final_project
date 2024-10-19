@@ -272,34 +272,43 @@ class EventTypeDeleteView(PermissionRequiredMixin, DeleteView):
 
 
 def detail(request, pk):
-  event = get_object_or_404(Event, pk=pk)
-  user_is_attendee = event.attendees.filter(id=request.user.id).exists() if request.user.is_authenticated else False
-  if event.is_capacity_limited and event.capacity is not None:
-      remaining_capacity = event.capacity - event.attendees.count()
-  else:
-      remaining_capacity = None
-
-  if "comment" in request.POST:
-    if request.user.is_authenticated:
-      new_comment = Comment()
-      new_comment.user = request.user  # Používáme aktuálního přihlášeného uživatele
-      new_comment.comment = request.POST.get("comment", "")
-      new_comment.event = get_object_or_404(Event, pk=pk)
-      new_comment.save()
+    event = get_object_or_404(Event, pk=pk)
+    user_is_attendee = event.attendees.filter(id=request.user.id).exists() if request.user.is_authenticated else False
+    if event.is_capacity_limited and event.capacity is not None:
+        remaining_capacity = event.capacity - event.attendees.count()
     else:
-      # Pokud uživatel není přihlášen, můžeš vrátit nějakou chybovou hlášku nebo přesměrovat
-      return redirect('login')
+        remaining_capacity = None
 
-  return render(
-    request, template_name='detail.html',
-    context={'event': event,
-             'comments': Comment.objects.filter(event__pk=pk).order_by('-comment_date'),
-             'attendees': event.attendees.all(),
-             'user_is_attendee': user_is_attendee,
-             'attendee_count': event.attendees.count(),
-             'remaining_capacity': remaining_capacity,
-             }
-  )
+    error_message = None  # Přidání proměnné pro chybovou hlášku
+
+    if "comment" in request.POST:
+        if request.user.is_authenticated:
+            comment_text = request.POST.get("comment", "")
+            if len(comment_text) > 500:
+                error_message = "Komentář může obsahovat maximálně 500 znaků."
+            else:
+                new_comment = Comment()
+                new_comment.user = request.user
+                new_comment.comment = comment_text
+                new_comment.event = event
+                new_comment.save()
+        else:
+            return redirect('login')
+
+    return render(
+        request,
+        template_name='detail.html',
+        context={
+            'event': event,
+            'comments': Comment.objects.filter(event__pk=pk).order_by('-comment_date'),
+            'attendees': event.attendees.all(),
+            'user_is_attendee': user_is_attendee,
+            'attendee_count': event.attendees.count(),
+            'remaining_capacity': remaining_capacity,
+            'error_message': error_message,  # Přidání chybové hlášky do kontextu
+        }
+    )
+
 
 
 def delete_comment(request, comment_id):

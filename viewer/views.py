@@ -58,12 +58,6 @@ class EventsView(TemplateView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
-        # Pokud je na stránce méně než 6 aktuálních událostí, doplň je dalšími
-        if len(page_obj) < 6:
-            remaining_count = 6 - len(page_obj)
-            additional_events = upcoming_events.exclude(id__in=[event.id for event in page_obj])[:remaining_count]
-            page_obj.object_list = list(page_obj.object_list) + list(additional_events)
-
         context['page_obj'] = page_obj
         context['past_events'] = past_events
 
@@ -91,12 +85,6 @@ class EventFilterView(TemplateView):
         paginator = Paginator(upcoming_events, 6)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-
-        # Pokud je na stránce méně než 6 aktuálních událostí, doplň je dalšími
-        if len(page_obj) < 6:
-            remaining_count = 6 - len(page_obj)
-            additional_events = upcoming_events.exclude(id__in=[event.id for event in page_obj])[:remaining_count]
-            page_obj.object_list = list(page_obj.object_list) + list(additional_events)
 
         context['page_obj'] = page_obj
         context['past_events'] = past_events

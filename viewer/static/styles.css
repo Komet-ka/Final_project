@@ -364,8 +364,10 @@ a:active {
 }
 
 
-dl, ol, ul {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: red;
+.helptext  {
+    color: red; /* Barva textu */
+    font-size: 17px; /* Velikost textu */
+    list-style-type: none; /* Skrytí odrážek seznamu */
+    padding: 0; /* Vynulování odsazení */
+    margin: 5px 0; /* Odstup okolo seznamu */
 }

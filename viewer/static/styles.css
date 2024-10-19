@@ -35,13 +35,13 @@
 
 .nav-bar a {
     text-decoration: none;
-    padding: 0px;
+    padding: 5px;
     color: white;
 }
 
 .nav-bar a:hover {
     background-color: #5F9EA0;
-    border-radius: 0px;
+    border-radius: 5px;
 }
 
 .container {
@@ -89,7 +89,7 @@
     color: white; /* Barva textu pro odkazy */
     text-decoration: none; /* Zrušení podtržení */
     display: block; /* Zajistěte, aby odkaz zabíral celou šířku */
-
+    border-radius: 5px;
     padding: 10px; /* Odsazení kolem odkazu */
 }
 
@@ -221,7 +221,7 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     color: white; /* Barva textu */
     border: none; /* Žádný okraj */
     padding: 0px 5px; /* Odsazení */
-    border-radius: 0px; /* Zaoblení rohů */
+    border-radius: 5px; /* Zaoblení rohů */
     font-size: 15px; /* Velikost písma */
     cursor: pointer; /* Změna kurzoru na ukazatel */
     transition: background-color 0.3s; /* Plynulý přechod pro změnu barvy */
@@ -238,7 +238,7 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     color: white; /* Barva textu */
     border: none; /* Žádný okraj */
     padding: 0px 0px; /* Vnitřní odsazení */
-    border-radius: 0px; /* Zaoblení rohů */
+    border-radius: 5px;
     font-size: 16px; /* Velikost písma */
     cursor: pointer; /* Změna kurzoru na ukazatel */
     text-decoration: none;
@@ -246,16 +246,19 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
 
 .button:hover {
     background-color: #000; /* Změna barvy pozadí při najetí myší */
+    border-radius: 5px;
+
 }
 
 .btn-outline-success {
-    background-color: #5F9EA0; /* Barva pozadí */
-    color: white; /* Barva textu */
-    border: none; /* Žádný okraj */
-    padding: 0px 0px; /* Odsazení */
-    border-radius: 10px; /* Zaoblení rohů */
-    font-size: 15px; /* Velikost písma */
-    cursor: pointer; /* Změna kurzoru na ukazatel */
+    background-color: #5F9EA0;
+    color: white;
+    border: none;
+    padding: 20px 5px; /* Odsazení pro horizontální prostor */
+    height: 20px; /* Nastavení pevné výšky */
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
 }
 
 .btn-outline-success:hover {
@@ -275,11 +278,15 @@ a:hover {
     color: #FFFFFF; /* Změna barvy při najetí myší */
     text-decoration: none; /* Podtržení při najetí myší */
     background-color: #000;
+    border-radius: 5px;
+
 }
 
 a:active {
     color: #FFFFFF; /* Barva odkazu při kliknutí */
     background-color: #5F9EA0;
+    border-radius: 5px;
+
 }
 
 .pagination {

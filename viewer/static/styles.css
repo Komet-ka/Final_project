@@ -97,6 +97,7 @@
     text-decoration: none; /* Podtržení při najetí myší */
     background-color: #000; /* Změna pozadí při najetí */
 }
+
 .messages {
     background-color: #5F9EA0;
     border: 1px solid #5F9EA0;
@@ -134,7 +135,6 @@
     min-width: 1200px;
 }
 
-
 .card {
     width: 312px;
     display: flex;
@@ -151,17 +151,18 @@
 }
 
 .card-body {
+    width: 290px;
     flex-grow: 1;
     background-color: #000; /* Barva pozadí pro celou stránku */
     color: white; /* Bílé písmo */
-    padding: 5px; /* Odsazení 5px od okrajů */
+    padding: 10px; /* Odsazení 5px od okrajů */
     flex-direction: column;
     justify-content: space-between;
 }
 
 .card a:hover {
     background-color: #5F9EA0; /* Pozadí při najetí myší */
-    border-radius: 0; /* Hranatý okraj */
+    border-radius: 5px; /* Hranatý okraj */
 }
 
 .card-body .btn {
@@ -171,6 +172,10 @@
 
 .card-text {
     font-size: 17px;
+}
+
+.card-title {
+    font-size: 20px !important;
 }
 
 img {
@@ -228,9 +233,29 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     text-decoration: none;
 }
 
+.btn-danger{
+    background-color: #5F9EA0;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger:hover{
+    background-color: #000;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .btn-primary {
     background-color: #5F9EA0;
     color: white;
+}
+
+.btn-primary:hover {
+    background-color: #5F9EA0;
+    color: white;
+    border-color: #5F9EA0;
 }
 
 .button {

@@ -110,7 +110,7 @@
 .message-success {
     background-color: #5F9EA0;
     color: white;
-    border: 5px solid #000;
+    border: 2px solid #000;
     padding: 15px;
     border-radius: 15px;
     text-align: center;
@@ -118,8 +118,9 @@
     margin: 0 auto;
     position: fixed;
     top: 50%;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Umožňuje vycentrovat zprávu */
+    z-index: 1000; /* Zajišťuje, že bude na popředí */
 }
 
 .event-item {
@@ -151,11 +152,11 @@
 }
 
 .card-body {
-    width: 290px;
+    width: 310px;
     flex-grow: 1;
     background-color: #000; /* Barva pozadí pro celou stránku */
     color: white; /* Bílé písmo */
-    padding: 10px; /* Odsazení 5px od okrajů */
+    padding: 15px; /* Odsazení 5px od okrajů */
     flex-direction: column;
     justify-content: space-between;
 }
@@ -175,7 +176,9 @@
 }
 
 .card-title {
-    font-size: 20px !important;
+    font-size: 20px;
+    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 img {
@@ -217,10 +220,25 @@ a {
     border: 1px solid #5F9EA0;
 }
 
-    /* Stylizace všech tlačítek */
-button,
-input[type="button"],
-input[type="submit"],
+.btn-outline-success {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 15px 0px; /* Odsazení pro horizontální prostor */
+    height: 5px; /* Nastavení pevné výšky */
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 0px 0 15px 0;
+}
+
+.btn-outline-success:hover {
+    color: #5F9EA0;
+    background-color: #000000;
+    border-color: #000000;
+    cursor: pointer;
+}
+
 a.btn { /* pokud máte třídu 'btn' pro odkazy */
     background-color: #5F9EA0; /* Barva pozadí */
     color: white; /* Barva textu */
@@ -238,18 +256,21 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     color: white;
     border-radius: 5px;
     cursor: pointer;
+    border-color: #5F9EA0;
 }
 
 .btn-danger:hover{
-    background-color: #000;
+    background-color: #FF0000;
     color: white;
     border-radius: 5px;
     cursor: pointer;
+    border-color: #FF0000;
 }
 
 .btn-primary {
     background-color: #5F9EA0;
     color: white;
+    border-color: #5F9EA0;
 }
 
 .btn-primary:hover {
@@ -262,7 +283,7 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     background-color: #5F9EA0; /* Barva pozadí tlačítka */
     color: white; /* Barva textu */
     border: none; /* Žádný okraj */
-    padding: 0px 0px; /* Vnitřní odsazení */
+    padding: 0px 5px; /* Vnitřní odsazení */
     border-radius: 5px;
     font-size: 16px; /* Velikost písma */
     cursor: pointer; /* Změna kurzoru na ukazatel */
@@ -273,23 +294,6 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     background-color: #000; /* Změna barvy pozadí při najetí myší */
     border-radius: 5px;
 
-}
-
-.btn-outline-success {
-    background-color: #5F9EA0;
-    color: white;
-    border: none;
-    padding: 20px 5px; /* Odsazení pro horizontální prostor */
-    height: 20px; /* Nastavení pevné výšky */
-    border-radius: 5px;
-    font-size: 15px;
-    cursor: pointer;
-}
-
-.btn-outline-success:hover {
-    color: #000000;
-    background-color: #FFFFFF;
-    border-color: #FFFFFF;
 }
 
 a {
@@ -344,3 +348,24 @@ a:active {
     color: white; /* Barva textu na aktivní stránce */
     border-color: #007bff; /* Barva rámečku aktivní stránky */
 
+.errorlist {
+    color: red; /* Barva textu */
+    font-size: 17px; /* Velikost textu */
+    list-style-type: none; /* Skrytí odrážek seznamu */
+    padding: 0; /* Vynulování odsazení */
+    margin: 5px 0; /* Odstup okolo seznamu */
+}
+
+.errorlist li {
+    margin-bottom: 5px; /* Odstup mezi jednotlivými chybami */
+    color: red; /* Barva textu */
+    font-size: 17px; /* Velikost textu */
+    list-style-type: none; /* Skrytí odrážek seznamu */
+}
+
+
+dl, ol, ul {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: red;
+}

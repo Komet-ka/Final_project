@@ -241,7 +241,25 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     border-radius: 5px; /* Zaoblení rohů */
     font-size: 15px; /* Velikost písma */
     cursor: pointer; /* Změna kurzoru na ukazatel */
+}
 
+.btn.danger {
+    background-color: #5F9EA0; /* Barva pozadí tlačítka */
+    color: white; /* Barva textu */
+    border: none; /* Žádný okraj */
+    padding: 0px 0px; /* Vnitřní odsazení */
+    border-radius: 5px;
+    font-size: 16px; /* Velikost písma */
+    cursor: pointer; /* Změna kurzoru na ukazatel */
+    text-decoration: none;
+}
+
+.btn-danger:hover {
+    background-color: #5F9EA0;
+    color: white;
+    border-radius: 5px; /* Zaoblení rohů */
+    font-size: 15px; /* Velikost písma */
+    cursor: pointer; /* Změna kurzoru na ukazatel */
 }
 
 .button {

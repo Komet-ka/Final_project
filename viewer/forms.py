@@ -82,8 +82,8 @@ class EventForm(ModelForm):
             'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
             'date': DateInput(attrs={'type': 'date'}),
         }
-    field_order = ['describtion', 'name', 'eventType', 'new_event_type' , 'date', 'place', 'link', 'entry', 'image',
-                       'is_capacity_limited', 'capacity', ]
+    field_order = ['describtion', 'name', 'eventType', 'new_event_type', 'date', 'place', 'link', 'entry', 'image',
+                   'is_capacity_limited', 'capacity', ]
 
     def clean(self):
         cleaned_data = super().clean()

@@ -148,6 +148,18 @@ class EventCreateView(PermissionRequiredMixin, CreateView):
 
   def form_valid(self, form):
     form.instance.user = self.request.user  # Nastav aktuálně přihlášeného uživatele
+
+    # Získání nového typu události z formuláře
+    new_event_type_name = form.cleaned_data.get('new_event_type')
+    if new_event_type_name:
+        # Vytvoření nebo získání typu události s tímto názvem
+        event_type, created = EventType.objects.get_or_create(
+            name=new_event_type_name,
+            defaults={'is_approved': False}  # Nový typ bude čekat na schválení
+        )
+        # Přidání nového typu k události
+        form.instance.eventType.add(event_type)
+
     return super().form_valid(form)
   def form_invalid(self, form):
     LOGGER.warning(f'User provided invalid data. {form.errors}')
@@ -162,7 +174,22 @@ class EventUpdateView(PermissionRequiredMixin, UpdateView):
   permission_required = 'viewer.add_event'
 
   def form_invalid(self, form):
-      LOGGER.warning('User provided invalid data while updating a movie.')
+
+      # Získání nového typu události z formuláře
+      new_event_type_name = form.cleaned_data.get('new_event_type')
+      if new_event_type_name:
+          # Vytvoření nebo získání typu události s tímto názvem
+          event_type, created = EventType.objects.get_or_create(
+              name=new_event_type_name,
+              defaults={'is_approved': False}  # Nový typ bude čekat na schválení
+          )
+          # Přidání nového typu k události
+          form.instance.eventType.add(event_type)
+
+      return super().form_valid(form)
+
+  def form_invalid(self, form):
+      LOGGER.warning('User provided invalid data while updating an event.')
       return super().form_invalid(form)
 
 

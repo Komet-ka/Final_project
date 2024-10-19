@@ -6,6 +6,7 @@ from django.forms.widgets import Textarea, DateInput
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
+from django.core.exceptions import ValidationError
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(label='Uživatelské jméno')
@@ -64,19 +65,22 @@ class EventForm(ModelForm):
         label="Vytvořit nový typ události a odeslat ke schválení"
     )
 
+    def validate_place(value):
+        if not value.isalpha():
+            raise ValidationError('Pole "Místo" může obsahovat pouze písmena.')
+        if not value[0].isupper():
+            raise ValidationError('První znak v poli "Místo" musí být velké písmeno.')
+
+    place = forms.CharField(
+        max_length=100,
+        validators=[validate_place],
+        label='Místo'
+    )
     class Meta:
         model = Event
         fields = ['name', 'describtion', 'eventType', 'date', 'place', 'link', 'entry', 'image', 'is_capacity_limited', 'capacity', 'new_event_type']
-        labels = {
-            'name': 'Název',
-            'describtion': 'Popis',
-            'eventType': 'Typ akce',
-            'date': 'Datum',
-            'place': 'Místo',
-            'link': 'Odkaz',
-            'entry': 'Vstupné',
-            'image': 'Obrázek',
-        }
+        labels = dict(name='Název', describtion='Popis', eventType='Typ akce', date='Datum', place='Místo',
+                      link='Odkaz', entry='Vstupné', image='Obrázek')
 
         widgets = {
             'describtion': Textarea(attrs={'rows': 5, 'cols': 40}),
@@ -84,6 +88,7 @@ class EventForm(ModelForm):
         }
     field_order = ['describtion', 'name', 'eventType', 'new_event_type', 'date', 'place', 'link', 'entry', 'image',
                    'is_capacity_limited', 'capacity', ]
+
 
     def clean(self):
         cleaned_data = super().clean()

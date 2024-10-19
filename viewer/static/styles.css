@@ -348,26 +348,14 @@ a:active {
     color: white; /* Barva textu na aktivní stránce */
     border-color: #007bff; /* Barva rámečku aktivní stránky */
 
+
+.alert-danger {
+    color: #ffffff; /* Barva textu */
+    background-color: #dc3545; /* Červené pozadí */
+    border-color: #dc3545; /* Okraj červené barvy */
+}
+
 .errorlist {
-    color: red; /* Barva textu */
-    font-size: 17px; /* Velikost textu */
-    list-style-type: none; /* Skrytí odrážek seznamu */
-    padding: 0; /* Vynulování odsazení */
-    margin: 5px 0; /* Odstup okolo seznamu */
-}
-
-.errorlist li {
-    margin-bottom: 5px; /* Odstup mezi jednotlivými chybami */
-    color: red; /* Barva textu */
-    font-size: 17px; /* Velikost textu */
-    list-style-type: none; /* Skrytí odrážek seznamu */
-}
-
-
-.helptext  {
-    color: red; /* Barva textu */
-    font-size: 17px; /* Velikost textu */
-    list-style-type: none; /* Skrytí odrážek seznamu */
-    padding: 0; /* Vynulování odsazení */
-    margin: 5px 0; /* Odstup okolo seznamu */
+    margin: 0; /* Odstraní margin */
+    padding: 0; /* Odstraní padding */
 }

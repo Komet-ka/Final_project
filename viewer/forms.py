@@ -124,3 +124,19 @@ class SearchForm(forms.Form):
             )
         return results
 
+class EmailForm(forms.Form):
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 4, 'placeholder': 'Zadejte zprávu'}),
+        label='',  # Pokud nechcete název, můžete nechat prázdné
+        required=True  # Povinné pole
+    )
+
+    def __init__(self, *args, include_subject=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        if include_subject:
+            self.fields['subject'] = forms.CharField(
+                max_length=128,  # Maximální délka pro předmět
+                label='Předmět',  # Název pole
+                required=True,  # Povinné pole
+                widget=forms.TextInput(attrs={'placeholder': 'Zadejte předmět'})  # Styl pro textové pole
+            )

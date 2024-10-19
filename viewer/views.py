@@ -1,10 +1,12 @@
 from datetime import timedelta
 
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
+from django.views import View
 
 from django.views.generic import TemplateView, ListView
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -16,7 +18,7 @@ from django.contrib.auth.views import PasswordChangeView
 
 from logging import getLogger
 
-from viewer.forms import EventForm, EventTypeForm, SignUpForm, UserForm, SearchForm
+from viewer.forms import EventForm, EventTypeForm, SignUpForm, UserForm, SearchForm, EmailForm
 from viewer.models import Event, EventType, Comment, User
 
 from django.contrib.auth import logout
@@ -67,6 +69,7 @@ class EventsView(TemplateView):
 
         return context
 
+
 class EventFilterView(TemplateView):
     template_name = 'type_filter.html'
 
@@ -99,6 +102,7 @@ class EventFilterView(TemplateView):
         context['past_events'] = past_events
 
         return context
+
 
 class MyEventsView(TemplateView):
     template_name = 'my_attendees.html'
@@ -161,6 +165,7 @@ class EventUpdateView(PermissionRequiredMixin, UpdateView):
       LOGGER.warning('User provided invalid data while updating a movie.')
       return super().form_invalid(form)
 
+
 class EventDeleteView(PermissionRequiredMixin, DeleteView):
   template_name = 'event_confirm_delete.html'
   model = Event
@@ -180,6 +185,7 @@ class EventDeleteView(PermissionRequiredMixin, DeleteView):
       # Nyní můžeš událost smazat
       self.object.delete()
       return HttpResponseRedirect(self.get_success_url())
+
 
 class EventTypeView(ListView):
   template_name = 'administrace.html'
@@ -230,6 +236,7 @@ class EventTypeCreateView(PermissionRequiredMixin, CreateView):
       LOGGER.warning(f'User provided invalid data. {form.errors}')
       return super().form_invalid(form)
 
+
 class EventTypeUpdateView(PermissionRequiredMixin, UpdateView):
   template_name = 'form.html'
   model = EventType
@@ -271,7 +278,7 @@ def detail(request, pk):
   return render(
     request, template_name='detail.html',
     context={'event': event,
-             'comments': Comment.objects.filter(event__pk=pk),
+             'comments': Comment.objects.filter(event__pk=pk).order_by('-comment_date'),
              'attendees': event.attendees.all(),
              'user_is_attendee': user_is_attendee,
              'attendee_count': event.attendees.count(),
@@ -287,6 +294,7 @@ def delete_comment(request, comment_id):
         comment.delete()  # Smaž komentář
     return redirect('detail', pk=comment.event.pk)  # Přesměruj na detail události
 
+
 def my_page(request):
     return render(
       request,
@@ -294,16 +302,18 @@ def my_page(request):
       context={}
     )
 
+
 def main_page(request):
   return render(
     request,
     "main_page.html",
     context={
-          "newest_events": Event.objects.order_by("-create_date").all()[:5],
-          "nearest_events": Event.objects.order_by("date").all()[:5],
-          "newest_comments": Comment.objects.order_by("-comment_date").all()[:5],
+        "newest_events": Event.objects.filter(date__gte=timezone.now().date(), is_approved=True).order_by("-create_date")[:5],
+        "nearest_events": Event.objects.filter(date__gte=timezone.now().date(), is_approved=True).order_by("date")[:5],
+        "newest_comments": Comment.objects.order_by("-comment_date").all()[:5],
     }
   )
+
 
 class SignUpView(CreateView):
     template_name = 'form.html'
@@ -317,12 +327,14 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
   form_class = UserForm
   success_url = reverse_lazy('my_page')
 
-  def get_object(self):
+
+  def get_object(self, **kwargs):
     return self.request.user
 
   def form_invalid(self, form):
     LOGGER.warning('User provided invalid data while updating their profile.')
     return super().form_invalid(form)
+
 
 class SubmittablePasswordChangeView(PasswordChangeView):
     template_name = 'form.html'
@@ -395,7 +407,6 @@ def custom_403_view(request, exception):
       raise PermissionDenied("Nemáte oprávnění k provedení této akce.")
 
 
-
 def api_upcoming_events(request):
     upcoming_events = Event.objects.filter(date__gt=timezone.now())
     json_upcoming_events = {}
@@ -405,6 +416,8 @@ def api_upcoming_events(request):
             "Datum": event.date
         }
     return JsonResponse(json_upcoming_events)
+
+
 def list_events(request):
     import requests
     responce = requests.get("http://127.0.0.1:8000/api/get/all_events/")
@@ -412,17 +425,56 @@ def list_events(request):
     return render(request, "api_list_events.html", context={"events": události})
 
 
+class SendEmailToAllView(View):
+    template_name = 'send_email_to_all.html'
+
+    def get(self, request, event_pk):
+        event = get_object_or_404(Event, pk=event_pk)
+        form = EmailForm()
+        return render(request, self.template_name, {'form': form, 'event': event})
+
+    def post(self, request, event_pk):
+        event = get_object_or_404(Event, pk=event_pk)
+        attendees = event.attendees.all()
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            messages.success(request, "Váš email byl úspěšně odeslán.")
+            message = form.cleaned_data['message']
+            recipient_list = [attendee.email for attendee in attendees]
+            send_mail(
+                subject=f"{event.name} - Oznámení organizátora",
+                message=message,
+                from_email='email@example.com',
+                recipient_list=recipient_list,
+            )
+            return redirect('detail', pk=event.pk)
+        return render(request, self.template_name, {'form': form, 'event': event})
 
 
+class SendEmailToAttendeeView(View):
+    def get(self, request, attendee_id, event_pk):
+        form = EmailForm(include_subject=True)  # Zahrnout předmět
+        attendee = get_object_or_404(User, id=attendee_id)  # Získat účastníka
+        return render(request, 'send_email_to_attendee.html', {'form': form, 'attendee': attendee})
 
+    def post(self, request, attendee_id, event_pk):
+        form = EmailForm(request.POST, include_subject=True)  # Zahrnout předmět
 
+        if form.is_valid():
+            subject = form.cleaned_data['subject']  # Získat předmět
+            message = form.cleaned_data['message']  # Získat zprávu
+            attendee = get_object_or_404(User, id=attendee_id)  # Získat účastníka
 
+            # Odeslat e-mail
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email='email@example.com',  # Změňte na svou e-mailovou adresu
+                recipient_list=[attendee.email]  # Odeslání e-mailu účastníkovi
+            )
 
+            messages.success(request, f"Váš email byl úspěšně odeslán účastníkovi: {attendee.username}.")
+            return redirect('detail', pk=event_pk)  # Přesměrování na detail události
 
-
-
-
-
-
-
+        return render(request, 'send_email_to_attendee.html', {'form': form, 'attendee': attendee_id})  # Zobrazit formulář znovu, pokud je neplatný
 

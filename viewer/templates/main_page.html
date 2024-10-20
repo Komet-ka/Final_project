@@ -78,7 +78,7 @@
 <h3>NEJNOVĚJŠÍ KOMENTÁŘE</h3>
 {% for comment in newest_comments %}
 <p>Komentář k události {{ comment.event.name }}: {{ comment.comment_date }} - {{ comment.comment }}
-    <a href="/detail/{{comment.event.pk}}" class="button">Podívat se na událost</a></p>
+    <a href="/detail/{{comment.event.pk}}" class="button">Detail</a></p>
 {% endfor %}
 <br>
 

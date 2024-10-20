@@ -139,7 +139,7 @@
                         {% endif %}
                         <div class="card-body" style="flex-grow: 1;">
                             <h5 class="card-title">{{ event.name }}</h5>
-                            <p class="card-text">{{ event.describtion|truncatechars:100 }} ...</p>
+                            <p class="card-text">{{ event.describtion|truncatechars:100 }} </p>
                             <a href="/detail/{{event.pk}}" class="btn btn-primary">Prohlédnout událost</a>
                             <br>
                             {% if user.is_authenticated %}

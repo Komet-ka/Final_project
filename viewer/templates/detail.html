@@ -39,7 +39,7 @@
     {% endif %}
     <strong>Vstupné: </strong>
         {% if event.entry %}
-            <strong>Ano</strong> - více informací v popisu.
+            <strong>Ano</strong> - více informací v popisu nebo odkazu.
         {% else %}
             Ne
         {% endif %}
@@ -53,11 +53,9 @@
 {% if user.is_authenticated %}
 <h4>Komentáře</h4>
 
-    <ul>
         {% for comment in comments %}
             <li>
-                {{ comment.user.username }} ({{ comment.comment }}) - {{ comment.comment_date }}
-                <br>
+                {{ comment.comment_date }} - <strong>{{ comment.user.username }}:</strong>  {{ comment.comment }}
                 {% if user == comment.user or perms.auth.jeadmin %}  <!-- Zkontroluj, zda je uživatel autorem komentáře -->
                     <form action="{% url 'delete_comment' comment.id %}" method="POST" style="display:inline;">
                         {% csrf_token %}
@@ -67,7 +65,7 @@
                 <br><br>
             </li>
         {% endfor %}
-    </ul>
+
 
     <div id="error-message" class="alert alert-danger" style="display: none;"></div> <!-- Div pro chybovou hlášku -->
 

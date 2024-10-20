@@ -1,35 +1,9 @@
-# Event Manager
-Popis aplikace: <br>Webová aplikace s názvem EventManager je psaná v programovacím jazyce Python (verzi 3.12) a postavena na webovém frameworku Django.
-<br><br>
-Cílem tohoto projektu je vytvoření platformy pro správu a evidenci různých událostí v podobě webové aplikace. <br>
-Pro zajištění efektivního využití jsou implementovány tři úrovně oprávnění, které umožňují různé možnosti správy a přístupu k událostem. 
-<br><br>
-- Nepřihlášený uživatel: <br>
-Nepřihlášeným uživatelům je umožněn pouze náhled veřejně dostupných událostí, včetně zobrazení jejich detailů a čtení komentářů. Uživatelé se mohou registrovat nebo přihlásit ke svému existujícímu účtu. 
-<br><br> 
-- Účastník:<br>
-Uživatel s tímto oprávněním může spravovat svůj uživatelský účet (změna jména, emailu, hesla) a přihlašovat se na jednotlivé akce. Dále může přidávat komentáře a také je později mazat. 
-<br>
-[ucastnik (Kints123)]
-<br><br>
-- Pořadatel: <br>
-Pořadatelé mají stejná oprávnění jako účastníci a navíc mohou vytvářet nové události. V jejich sekci "Moje akce" jsou události rozděleny na dvě části: jako účastník a jako pořadatel. Pořadatelé mohou své události upravovat a mazat, ale nově vytvořené události jsou nejprve odeslány ke schválení a nejsou tak na webu viditelné okamžitě. 
-<br>
-[poradatel (Letad123)]
-<br><br>
-- Administrátor:<br>
-Administrátor má všechna oprávnění pořadatele a účastníka a navíc má právo schvalovat nové události. Administrátor může upravovat a mazat všechny události, spravovat komentáře, a navíc má plnou kontrolu nad typy událostí, které nejsou přístupné jiným uživatelům.
-<br>
-[administrator (Rotar123)]
-<br><br>
-
-
+# Final_project
 ER diagram modelů:
 ![diagram](media/img/ERDiagram.png)
 
 Ukázka práce s Backlogem:
 ![backlog](media/img/Backlog.png)
-![backlog_detail](media/img/Backlog_detail.png)
 
 Checklist základních bodů ke splnění:
 - [x] zprovoznit git
@@ -51,8 +25,7 @@ Checklist základních bodů ke splnění:
 - [x] event types - dát do levého panelu pod sebe
 - [x] doplnit validátory k polím
 - [x] oprávnění
-- [x] doplnit styly
-- [x] zakomponovat JS
+
 
 Pro zajištění korektních migrací:
 python .\manage.py makemigrations viewer

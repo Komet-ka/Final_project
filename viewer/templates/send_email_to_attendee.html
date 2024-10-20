@@ -3,17 +3,20 @@
 {% block content %}
 
 <h3>Odeslat e-mail účastníkovi {{ attendee.username }}</h3>
+<br>
 <form method="post">
     {% csrf_token %}
     <div>
         <label for="id_subject">Předmět:</label>
-        {{ form.subject }}
+        {{ form.subject }}<br>
+
     </div>
-    <div>
+<br><div>
         <label for="id_message">Zpráva:</label>
-        {{ form.message }}
+        {{ form.message }}<br>
+<br>
     </div>
-    <input type="submit" value="Odeslat e-mail">
+    <button type="submit" class="btn btn-primary">Odeslat email</button>
 </form>
 
 {% endblock %}

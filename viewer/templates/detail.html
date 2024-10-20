@@ -2,7 +2,6 @@
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
 
-<br>
 <div style="display: flex; align-items: center; justify-content: space-between;">
     <h2>{{ event.name }}</h2>
 
@@ -45,11 +44,11 @@
             Ne
         {% endif %}
 <br>
-<br>
     {% if user == event.user or perms.auth.user.jeadmin %}
-    <a href="{% url 'event_update' event.pk %}"> Upravit popisek </a>
+    <a href="{% url 'event_update' event.pk %}" class="btn btn-primary"> Upravit popisek </a>
     {% endif %}
-
+<br>
+<br>
 
 {% if user.is_authenticated %}
 <h4>Komentáře</h4>

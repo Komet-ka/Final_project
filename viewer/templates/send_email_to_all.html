@@ -3,6 +3,8 @@
 {% block content %}
 
 <h3>Poslat email všem účastníkům události {{ event.name }}</h3>
+<br>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

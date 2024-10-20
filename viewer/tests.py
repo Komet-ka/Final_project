@@ -27,6 +27,8 @@ class EventTests(TestCase):
         response = self.client.post(reverse('attendees', args=[self.event.id]))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.event.attendees.filter(id=self.user.id).exists())
+        content_str = response.content.decode('utf-8')
+        self.assertIn("přihlásili", content_str)
 
     def test_user_can_cancel_registration(self):
         self.event.attendees.add(self.user)
@@ -34,6 +36,8 @@ class EventTests(TestCase):
         response = self.client.post(reverse('attendees', args=[self.event.id]))
         self.assertEqual(response.status_code, 302)
         self.assertFalse(self.event.attendees.filter(id=self.user.id).exists())
+        content_str = response.content.decode('utf-8')
+        self.assertIn("odhlásili", content_str)
 
     def test_permissions_for_event(self):
         response = self.client.get(reverse('event_update', args=[self.event.id]))
@@ -41,12 +45,18 @@ class EventTests(TestCase):
         self.assertNotIn(self.user, self.event.attendees.all())
 
     def test_event_data_validation(self):
+        # Odeslání POST požadavku s prázdnými povinnými poli
         response = self.client.post(reverse('event_create'), {
             'name': '',  # Chybí název
             'image': ''  # Chybí obrázek
         })
+
+        # Ověření, že formulář obsahuje chyby
         self.assertFormError(response, 'form', 'name', 'This field is required.')
         self.assertFormError(response, 'form', 'image', 'This field is required.')
+
+        # Ověření, že událost nebyla vytvořena
+        self.assertEqual(Event.objects.count(), 0)
 
     def test_event_capacity_exceeded(self):
         # Přidáme maximální počet účastníků
@@ -57,10 +67,9 @@ class EventTests(TestCase):
         self.client.login(username='testuser', password='testpass')
         response = self.client.post(reverse('attendees', args=[self.event.id]), follow=True)
         self.assertRedirects(response, '/detail/1')
-        #self.assertEqual(response.status_code, 400)  # Očekáváme selhání kvůli překročení kapacity
+        # Očekáváme selhání kvůli překročení kapacity, vypsání hlášky a přesměrování
         content_str = response.content.decode('utf-8')
-        self.assertIn("Nelze", content_str )
-        #self.assertEqual(self.event.attendees.filter(id=self.user.id).exists(), False)
+        self.assertIn("Nelze", content_str)
 
 # pip install selenium
 

@@ -145,3 +145,58 @@ class EmailForm(forms.Form):
                 required=True,  # Povinné pole
                 widget=forms.TextInput(attrs={'placeholder': 'Zadejte předmět'})  # Styl pro textové pole
             )
+
+
+class EventTests(TestCase):
+
+    def setUp(self):
+        # Vytvoření uživatele a typu události pro testy
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.event_type = EventType.objects.create(name='Konference')
+        self.event = Event.objects.create(
+            name='Test Event',
+            describtion="popis události",
+            is_capacity_limited= True,
+            capacity=5  # Kapacita pro testování
+        )
+        self.event.eventType.set([self.event_type])  # Nastavení typu události
+
+    def test_user_can_sign_up_for_event(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('attendees', args=[self.event.id]))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(self.event.attendees.filter(id=self.user.id).exists())
+
+    def test_user_can_cancel_registration(self):
+        self.event.attendees.add(self.user)
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('attendees', args=[self.event.id]))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(self.event.attendees.filter(id=self.user.id).exists())
+
+    def test_permissions_for_event(self):
+        response = self.client.get(reverse('event_update', args=[self.event.id]))
+        self.assertEqual(response.status_code, 400)  # Očekáváme zákaz přístupu
+        self.assertNotIn(self.user, self.event.attendees.all())
+
+    def test_event_data_validation(self):
+        response = self.client.post(reverse('event_create'), {
+            'name': '',  # Chybí název
+            'image': ''  # Chybí obrázek
+        })
+        self.assertFormError(response, 'form', 'name', 'This field is required.')
+        self.assertFormError(response, 'form', 'image', 'This field is required.')
+
+    def test_event_capacity_exceeded(self):
+        # Přidáme maximální počet účastníků
+        for i in range(self.event.capacity):
+            self.event.attendees.add(User.objects.create_user(username=f'user{i}', password='testpass'))
+
+        # Zkusíme přidat dalšího uživatele, což by mělo selhat
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('attendees', args=[self.event.id]), follow=True)
+        self.assertRedirects(response, '/detail/1')
+        # Očekáváme selhání kvůli překročení kapacity, vypsání hlášky a přesměrování
+        content_str = response.content.decode('utf-8')
+        self.assertIn("Nelze", content_str )
+        #self.assertEqual(self.event.attendees.filter(id=self.user.id).exists(), False)

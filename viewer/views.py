@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
+from django.template.defaultfilters import urlencode
 from django.utils import timezone
 from django.views import View
 
@@ -44,9 +45,17 @@ class EventsView(TemplateView):
 
         # Načtení schválených událostí
         events = Event.objects.filter(is_approved=True)
-        event_type_filter = self.request.GET.get("event_type", "")
-        if event_type_filter:
-            events = events.filter(eventType__id=int(event_type_filter))
+
+        # Aplikace filtru na 'entry'
+        entry = self.request.GET.get('entry')
+        if entry:
+            events = events.filter(entry=(entry == 'yes'))
+
+        # Aplikace filtru na datum - mezi zadanými daty
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        if start_date and end_date:
+            events = events.filter(date__range=[start_date, end_date])
 
         # Rozdělení na proběhlé a aktuální události
         past_events = events.filter(date__lt=today, date__gte=one_year_ago)
@@ -57,13 +66,14 @@ class EventsView(TemplateView):
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
+        # Přidání výsledků do kontextu
         context['page_obj'] = page_obj
         context['past_events'] = past_events
 
         return context
 
 
-class EventFilterView(TemplateView):
+class EventFilterByTypeView(TemplateView):
     template_name = 'type_filter.html'
 
     def get_context_data(self, **kwargs):
@@ -488,46 +498,23 @@ class SendEmailToAttendeeView(View):
             message = form.cleaned_data['message']  # Získat zprávu
             attendee = get_object_or_404(User, id=attendee_id)  # Získat účastníka
 
-            # Odeslat e-mail
-            send_mail(
-                subject=subject,
-                message=message,
-                from_email='email@example.com',  # Změňte na svou e-mailovou adresu
-                recipient_list=[attendee.email]  # Odeslání e-mailu účastníkovi
-            )
+            if not attendee.email:  # Kontrola, zda má uživatel vyplněný email
+                messages.warning(request, f"Uživatel {attendee.username} nemá vyplněný email.")
+            else:
+                # Odeslat e-mail
+                send_mail(
+                    subject=subject,
+                    message=message,
+                    from_email='email@example.com',  # Změňte na svou e-mailovou adresu
+                    recipient_list=[attendee.email]  # Odeslání e-mailu účastníkovi
+                )
 
-            messages.success(request, f"Váš email byl úspěšně odeslán účastníkovi: {attendee.username}.")
+                messages.success(request, f"Váš email byl úspěšně odeslán účastníkovi: {attendee.username}.")
+
             return redirect('detail', pk=event_pk)  # Přesměrování na detail události
 
-        return render(request, 'send_email_to_attendee.html', {'form': form, 'attendee': attendee_id})  # Zobrazit formulář znovu, pokud je neplatný
+        # Zobrazit formulář znovu, pokud je neplatný
+        return render(request, 'send_email_to_attendee.html', {'form': form, 'attendee': attendee_id})
 
-
-
-
-
-def event_list(request):
-    events = Event.objects.all()
-
-    # Získání parametrů z GET požadavku
-    entry = request.GET.get('entry')
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-
-    # Aplikace filtru na 'entry'
-    if entry == 'yes':
-        events = events.filter(entry=True)
-    elif entry == 'no':
-        events = events.filter(entry=False)
-
-    # Aplikace filtru na datum - mezi zadanými daty
-    if start_date and end_date:
-        events = events.filter(date__range=[start_date, end_date])
-
-    # Přidání stránkování, pokud je potřeba
-    paginator = Paginator(events, 10)  # Například 10 událostí na stránku
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, 'events.html', {'page_obj': page_obj})
 
 #THANK YOU, BEYONCÉ!

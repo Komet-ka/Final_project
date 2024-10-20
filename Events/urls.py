@@ -24,11 +24,10 @@ from django.contrib.auth import views as auth_views
 
 from viewer.views import detail, my_page, main_page, logout_view, attendees, search_view, api_upcoming_events, \
     list_events, delete_comment, SendEmailToAllView, SendEmailToAttendeeView
-from viewer.views import event_list
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
                           EventTypeDeleteView, SubmittablePasswordChangeView, SignUpView,
-                          UserUpdateView, EventFilterView, MyEventsView)
+                          UserUpdateView, MyEventsView, EventFilterByTypeView)
 
 handler403 = 'viewer.views.custom_403_view'
 
@@ -38,14 +37,13 @@ urlpatterns = [
     path('', main_page, name='main_page'),  # Class based view
     path('detail/<pk>', detail, name='detail'),
     path('delete_comment/<int:comment_id>/', delete_comment, name='delete_comment'),
-    path('type_filter/<pk>', EventFilterView.as_view(), name='type_filter'),
+    path('type_filter/<pk>', EventFilterByTypeView.as_view(), name='type_filter'),
     path('administrace/', EventTypeView.as_view(), name='administrace'),
 
     path('events/', EventsView.as_view(), name='events'),
     path('events/create', EventCreateView.as_view(), name='event_create'),
     path('events/update/<pk>', EventUpdateView.as_view(), name='event_update'),
     path('events/delete/<pk>', EventDeleteView.as_view(), name='event_delete'),
-    path('events_filter/', event_list, name='event_list'),
 
     path('type/create', EventTypeCreateView.as_view(), name='type_create'),
     path('type/update/<pk>', EventTypeUpdateView.as_view(), name='type_update'),

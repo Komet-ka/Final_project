@@ -32,11 +32,10 @@ Ukázka práce s Backlogem:
 ![backlog_detail](media/img/Backlog_detail.png)
 
 - K aplikaci se můžete dostat jednoduše pomocí git clone https://github.com/Komet-ka/Final_project.git
-
+- Následné spuštění zařídí příkaz: python .\manage.py runserver
+- Pro zajištění korektních migrací byl využíván příkaz: python .\manage.py makemigrations viewer
 - API poskytující seznam všech plánovaných událostí je dostupné zde: 127.0.0.1:8000/list_events/
 
-Pro zajištění korektních migrací byl využíván příkaz: python .\manage.py makemigrations viewer
-Následné spuštění zařídí příkaz: python .\manage.py runserver
 <br><br>
 
 Checklist základních bodů ke splnění:

@@ -4,7 +4,6 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
-from django.template.defaultfilters import urlencode
 from django.utils import timezone
 from django.views import View
 
@@ -25,7 +24,6 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib import messages
 
-from django.core.exceptions import PermissionDenied
 
 LOGGER = getLogger()
 
@@ -427,14 +425,6 @@ def search_view(request):
 def global_data(request):
     data = EventType.objects.filter(is_approved=True)
     return {'type_list': data}
-
-
-def custom_403_view(request, exception):
-  return render(request, '403.html', status=403)
-
-  def my_view(request):
-     if not request.user.has_perm('viewer.add_eventtype'):
-        raise PermissionDenied("Nemáte oprávnění k provedení této akce.")
 
 
 def api_upcoming_events(request):

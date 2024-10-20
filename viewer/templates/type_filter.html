@@ -2,7 +2,7 @@
 {% block main_title %} {{ title }} {% endblock %}
 {% block content %}
 
-<h3> UDÁLOSTI V KATEGORII: {{ event_type.name }}</h3>
+<h3> {{ event_type.name }} </h3>
 
 <ul class="event-list">
     {% for event in page_obj %}

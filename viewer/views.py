@@ -80,6 +80,9 @@ class EventFilterView(TemplateView):
         past_events = events.filter(date__lt=today, date__gte=one_year_ago)
         upcoming_events = events.filter(date__gte=today)
 
+        # Získání event typu podle 'pk'
+        event_type = EventType.objects.get(pk=kwargs.get('pk'))
+
         # Stránkování jen s aktuálními událostmi
         paginator = Paginator(upcoming_events, 6)
         page_number = self.request.GET.get('page')
@@ -87,6 +90,7 @@ class EventFilterView(TemplateView):
 
         context['page_obj'] = page_obj
         context['past_events'] = past_events
+        context['event_type'] = event_type
 
         return context
 

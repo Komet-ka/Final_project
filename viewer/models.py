@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 from django.db.models import (
-    DO_NOTHING, CharField, DateField, DateTimeField, ForeignKey, IntegerField,
-    Model, TextField, BooleanField, ManyToManyField, URLField, ImageField
+    DO_NOTHING, CharField, DateField, DateTimeField, ForeignKey,
+    Model, BooleanField, ManyToManyField, URLField, ImageField
 )
 
 class EventType(Model):
@@ -18,6 +18,7 @@ class EventType(Model):
         ]
     def __str__(self):
         return self.name
+
 
 class Event(Model):
   name = CharField(max_length=128)
@@ -47,6 +48,4 @@ class Comment(Model):
   event = ForeignKey(Event, on_delete=models.CASCADE, default="")
   comment_date = models.DateTimeField(default=timezone.now)
   user = ForeignKey(User, on_delete=models.CASCADE, default=1)
-
-
 

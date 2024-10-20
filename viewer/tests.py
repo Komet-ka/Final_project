@@ -71,6 +71,7 @@ class EventTests(TestCase):
         content_str = response.content.decode('utf-8')
         self.assertIn("Nelze", content_str)
 
+
 # pip install selenium
 
 class MySeleniumTests(LiveServerTestCase):
@@ -104,3 +105,4 @@ class MySeleniumTests(LiveServerTestCase):
         time.sleep(2)
         # Test that we successfully logged in (check for a successful redirect or message)
         self.assertIn("MŮJ ÚČET - admin", self.selenium.page_source)
+

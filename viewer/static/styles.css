@@ -1,4 +1,4 @@
-  body {
+.body {
     font-family: RijksText, Arial, sans-serif; /* Zde můžete změnit font na jakýkoliv, který preferujete */
     margin: 0px
 }
@@ -212,7 +212,6 @@ h5 {
 
 a {
     font-size: 15px;
-
 }
 
 .form-control {
@@ -257,7 +256,6 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     cursor: pointer; /* Změna kurzoru na ukazatel */
     transition: background-color 0.3s; /* Plynulý přechod pro změnu barvy */
     text-decoration: none;
-
 }
 
 .btn-danger{
@@ -311,7 +309,6 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
 .button:hover {
     background-color: #000; /* Změna barvy pozadí při najetí myší */
     border-radius: 5px;
-
 }
 
 a {
@@ -326,14 +323,12 @@ a:hover {
     text-decoration: none; /* Podtržení při najetí myší */
     background-color: #000;
     border-radius: 5px;
-
 }
 
 a:active {
     color: #FFFFFF; /* Barva odkazu při kliknutí */
     background-color: #5F9EA0;
     border-radius: 5px;
-
 }
 
 .pagination {
@@ -365,7 +360,7 @@ a:active {
     background-color: #5F9EA0; /* Barva pozadí aktivní stránky */
     color: white; /* Barva textu na aktivní stránce */
     border-color: #007bff; /* Barva rámečku aktivní stránky */
-
+}
 
 .alert-danger {
     color: #ffffff; /* Barva textu */

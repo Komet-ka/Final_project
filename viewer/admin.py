@@ -18,3 +18,4 @@ admin.site.register(EventType)
 admin.site.register(Comment)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Permission)
+

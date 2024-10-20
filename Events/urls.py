@@ -18,12 +18,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 from django.contrib.auth import views
 from django.contrib.auth import views as auth_views
 
-from viewer.views import detail, my_page, main_page, logout_view, attendees, search_view, api_upcoming_events, \
-    list_events, delete_comment, SendEmailToAllView, SendEmailToAttendeeView
+from viewer.views import (detail, my_page, main_page, logout_view, attendees, search_view, api_upcoming_events,
+                          list_events, delete_comment, SendEmailToAllView, SendEmailToAttendeeView)
 from viewer.views import (EventsView, EventCreateView, EventUpdateView, EventDeleteView,
                           EventTypeView, EventTypeCreateView, EventTypeUpdateView,
                           EventTypeDeleteView, SubmittablePasswordChangeView, SignUpView,
@@ -83,3 +83,4 @@ if settings.DEBUG:
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -205,10 +205,6 @@ class EventDeleteView(PermissionRequiredMixin, DeleteView):
       # Odstranit všechny vazby účastníků
       self.object.attendees.clear()  # Odstraní všechny účastníky
 
-      # Pokud máš další související záznamy, jako např. komentáře, které se vztahují na událost,
-      # musíš je také odstranit. Např.:
-      # self.object.comments.all().delete()  # (přizpůsob si podle svého modelu)
-
       # Nyní můžeš událost smazat
       self.object.delete()
       return HttpResponseRedirect(self.get_success_url())
@@ -322,7 +318,6 @@ def detail(request, pk):
     )
 
 
-
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
 
@@ -362,7 +357,6 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
   model = User
   form_class = UserForm
   success_url = reverse_lazy('my_page')
-
 
   def get_object(self, **kwargs):
     return self.request.user
@@ -439,8 +433,8 @@ def custom_403_view(request, exception):
   return render(request, '403.html', status=403)
 
   def my_view(request):
-    if not request.user.has_perm('viewer.add_eventtype'):
-      raise PermissionDenied("Nemáte oprávnění k provedení této akce.")
+     if not request.user.has_perm('viewer.add_eventtype'):
+        raise PermissionDenied("Nemáte oprávnění k provedení této akce.")
 
 
 def api_upcoming_events(request):
@@ -518,5 +512,4 @@ class SendEmailToAttendeeView(View):
 
         # Zobrazit formulář znovu, pokud je neplatný
         return render(request, 'send_email_to_attendee.html', {'form': form, 'attendee': attendee_id})
-
 

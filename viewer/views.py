@@ -153,13 +153,12 @@ class EventCreateView(PermissionRequiredMixin, CreateView):
     # Získání nového typu události z formuláře
     new_event_type_name = form.cleaned_data.get('new_event_type')
     if new_event_type_name:
-        # Vytvoření nebo získání typu události s tímto názvem
-        event_type, created = EventType.objects.get_or_create(
+        # Vytvoření nového typu události s is_approved = False
+        EventType.objects.get_or_create(
             name=new_event_type_name,
             defaults={'is_approved': False}  # Nový typ bude čekat na schválení
         )
-        # Přidání nového typu k události
-        form.instance.eventType.add(event_type)
+        # Uživatel bude informován, že nový typ bude přidán až po schválení administrátorem.
 
     return super().form_valid(form)
   def form_invalid(self, form):

@@ -10,7 +10,7 @@ from django.db.models import (
 
 class EventType(Model):
     name = CharField(max_length=128)
-    is_approved = models.BooleanField(default=False)  # Výchozí hodnota je False (ne schváleno)
+    is_approved = models.BooleanField(default=False)  # Výchozí hodnota je False (neschváleno)
 
     class Meta:
         permissions = [

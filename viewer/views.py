@@ -173,7 +173,7 @@ class EventUpdateView(PermissionRequiredMixin, UpdateView):
   success_url = reverse_lazy('events')
   permission_required = 'viewer.add_event'
 
-  def form_invalid(self, form):
+  def form_valid(self, form):
 
       # Získání nového typu události z formuláře
       new_event_type_name = form.cleaned_data.get('new_event_type')

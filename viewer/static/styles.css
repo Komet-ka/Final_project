@@ -369,6 +369,11 @@ a:active {
 }
 
 .errorlist {
-    margin: 0; /* Odstraní margin */
-    padding: 0; /* Odstraní padding */
+    background-color: red;
+    margin: 0;
+    padding: 0;
+}
+
+.custom-checkbox input:checked + .checkmark {
+  background-color: #4CAF50; /* Barva při zaškrtnutí */
 }

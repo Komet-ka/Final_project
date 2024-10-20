@@ -173,6 +173,7 @@
 
 .card-text {
     font-size: 17px;
+    margin-top: 10px;
 }
 
 .card-title {
@@ -256,6 +257,7 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     cursor: pointer; /* Změna kurzoru na ukazatel */
     transition: background-color 0.3s; /* Plynulý přechod pro změnu barvy */
     text-decoration: none;
+
 }
 
 .btn-danger{
@@ -278,12 +280,21 @@ a.btn { /* pokud máte třídu 'btn' pro odkazy */
     background-color: #5F9EA0;
     color: white;
     border-color: #5F9EA0;
+    bs-btn-bg: #5F9EA0;
+    bs-btn-border-color: #5F9EA0;
+    padding: 0px 5px;
 }
 
-.btn-primary:hover {
+.btn.btn-primary:hover {
     background-color: #5F9EA0;
     color: white;
     border-color: #5F9EA0;
+}
+
+.btn.active {
+    background-color: #5F9EA0; /* Nová barva pozadí */
+    border-color: #5F9EA0; /* Nová barva okraje */
+    color: #fff; /* Nová barva textu */
 }
 
 .button {

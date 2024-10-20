@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from viewer.models import Event, EventType, User, Comment
+from django.test import TestCase
 import re
 from django.forms.widgets import Textarea, DateInput
 from django import forms

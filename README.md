@@ -6,7 +6,6 @@ Pro zajištění efektivního využití jsou implementovány tři úrovně oprá
 <br><br>
 <strong>Nepřihlášený uživatel:</strong> <br>
 Nepřihlášeným uživatelům je umožněn pouze náhled veřejně dostupných událostí, včetně zobrazení jejich detailů a čtení komentářů. Uživatelé se mohou registrovat nebo přihlásit ke svému existujícímu účtu. 
-<br>
 <br><br>
 <strong>Účastník:</strong><br>
 Uživatel s tímto oprávněním může spravovat svůj uživatelský účet (změna jména, emailu, hesla) a přihlašovat se na jednotlivé akce. Dále může přidávat komentáře a také je později mazat. 

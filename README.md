@@ -6,11 +6,13 @@ Pro zajištění efektivního využití jsou implementovány tři úrovně oprá
 <br><br>
 - Nepřihlášený uživatel: <br>
 Nepřihlášeným uživatelům je umožněn pouze náhled veřejně dostupných událostí, včetně zobrazení jejich detailů a čtení komentářů. Uživatelé se mohou registrovat nebo přihlásit ke svému existujícímu účtu. 
-<br><br> 
-- Účastník:<br>
+<br>
+[poradatel (Letad123)]
+<br><br>
+- Účasstník:<br>
 Uživatel s tímto oprávněním může spravovat svůj uživatelský účet (změna jména, emailu, hesla) a přihlašovat se na jednotlivé akce. Dále může přidávat komentáře a také je později mazat. 
 <br>
-[ucastnik (Kints123)]
+[administrator (Rotar123)]
 <br><br>
 - Pořadatel: <br>
 Pořadatelé mají stejná oprávnění jako účastníci a navíc mohou vytvářet nové události. V jejich sekci "Moje akce" jsou události rozděleny na dvě části: jako účastník a jako pořadatel. Pořadatelé mohou své události upravovat a mazat, ale nově vytvořené události jsou nejprve odeslány ke schválení a nejsou tak na webu viditelné okamžitě. Navíc mohou účastníků rozesílat emailové zprávy a to buďto jednotlivě a nebo hromadně.

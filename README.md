@@ -4,24 +4,24 @@ Popis aplikace: <br>Webová aplikace s názvem EventManager je psaná v programo
 Cílem tohoto projektu je vytvoření platformy pro správu a evidenci různých událostí v podobě webové aplikace. <br>
 Pro zajištění efektivního využití jsou implementovány tři úrovně oprávnění, které umožňují různé možnosti správy a přístupu k událostem. 
 <br><br>
-Nepřihlášený uživatel: <br>
+<strong>Nepřihlášený uživatel:</strong> <br>
 Nepřihlášeným uživatelům je umožněn pouze náhled veřejně dostupných událostí, včetně zobrazení jejich detailů a čtení komentářů. Uživatelé se mohou registrovat nebo přihlásit ke svému existujícímu účtu. 
 <br>
 <br><br>
-Účastník:<br>
+<strong>Účastník:</strong><br>
 Uživatel s tímto oprávněním může spravovat svůj uživatelský účet (změna jména, emailu, hesla) a přihlašovat se na jednotlivé akce. Dále může přidávat komentáře a také je později mazat. 
 <br>
-[ucastnik (Kints123)]
+-[ucastnik (Kints123)]
 <br><br>
-Pořadatel: <br>
+<strong>Pořadatel:</strong><br>
 Pořadatelé mají stejná oprávnění jako účastníci a navíc mohou vytvářet nové události. V jejich sekci "Moje akce" jsou události rozděleny na dvě části: jako účastník a jako pořadatel. Pořadatelé mohou své události upravovat a mazat, ale nově vytvořené události jsou nejprve odeslány ke schválení a nejsou tak na webu viditelné okamžitě. Navíc mohou účastníků rozesílat emailové zprávy a to buďto jednotlivě a nebo hromadně.
 <br>
-[poradatel (Letad123)]
+-[poradatel (Letad123)]
 <br><br>
-Administrátor:<br>
+<strong>Administrátor:</strong><br>
 Administrátor má všechna oprávnění pořadatele a účastníka a navíc má právo schvalovat nové události. Administrátor může upravovat a mazat všechny události, spravovat komentáře, a navíc má plnou kontrolu nad typy událostí, které nejsou přístupné jiným uživatelům.
 <br>
-[administrator (Rotar123)]
+-[administrator (Rotar123)]
 <br><br>
 
 

@@ -5,25 +5,25 @@
 <h3>UDÁLOSTI</h3>
 
 <!-- Tlačítko pro zobrazení/skrytí formuláře -->
-<button id="filter-toggle">Zobrazit/skrýt filtr</button>
+<button id="filter-toggle" class="btn btn-primary">Zobrazit/skrýt filtr</button>
 
 <!-- Skrytý formulář pro filtr -->
 <div id="filter-form-container" style="display: none; margin-top: 20px;">
     <form method="GET" id="filter-form">
-        <label for="entry">Entry:</label>
+        <label for="entry">Vstupné:</label>
         <select name="entry" id="entry">
             <option value="">-- Vyberte --</option>
             <option value="yes" {% if request.GET.entry == 'yes' %}selected{% endif %}>Ano</option>
             <option value="no" {% if request.GET.entry == 'no' %}selected{% endif %}>Ne</option>
-        </select>
+        </select> <br>
 
-        <label for="start_date">Od:</label>
+        <label for="start_date">Datum konání Od:</label>
         <input type="date" name="start_date" value="{{ start_date }}">
 
         <label for="end_date">Do:</label>
         <input type="date" name="end_date" value="{{ end_date }}">
 
-        <button type="submit">Filtrovat</button>
+        <button type="submit" class="btn btn-primary">Filtrovat</button>
     </form>
 </div>
 

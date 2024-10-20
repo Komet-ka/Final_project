@@ -521,4 +521,3 @@ class SendEmailToAttendeeView(View):
         return render(request, 'send_email_to_attendee.html', {'form': form, 'attendee': attendee_id})
 
 
-#THANK YOU, BEYONCÉ!

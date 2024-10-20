@@ -4,11 +4,11 @@
 
 <h3>UDÁLOSTI</h3>
 
-<!-- Tlačítko pro zobrazení filtru -->
-<button id="filter-toggle" class="btn btn-secondary">Zobrazit/skrýt filtr</button>
+<!-- Tlačítko pro zobrazení/skrytí formuláře -->
+<button id="filter-toggle">Zobrazit/skrýt filtr</button>
 
 <!-- Skrytý formulář pro filtr -->
-<div id="filter-form" style="display: none; margin-top: 20px;">
+<div id="filter-form-container" style="display: none; margin-top: 20px;">
     <form method="GET" id="filter-form">
         <label for="entry">Entry:</label>
         <select name="entry" id="entry">
@@ -18,22 +18,22 @@
         </select>
 
         <label for="start_date">Od:</label>
-        <input type="date" name="start_date" value="{{ request.GET.start_date }}">
+        <input type="date" name="start_date" value="{{ start_date }}">
 
         <label for="end_date">Do:</label>
-        <input type="date" name="end_date" value="{{ request.GET.end_date }}">
+        <input type="date" name="end_date" value="{{ end_date }}">
 
         <button type="submit">Filtrovat</button>
     </form>
-
 </div>
+
 <script>
     document.getElementById("filter-toggle").addEventListener("click", function() {
-        var filterForm = document.getElementById("filter-form");
-        if (filterForm.style.display === "none" || filterForm.style.display === "") {
-            filterForm.style.display = "block";
+        var filterFormContainer = document.getElementById("filter-form-container");
+        if (filterFormContainer.style.display === "none" || filterFormContainer.style.display === "") {
+            filterFormContainer.style.display = "block";
         } else {
-            filterForm.style.display = "none";
+            filterFormContainer.style.display = "none";
         }
     });
 </script>

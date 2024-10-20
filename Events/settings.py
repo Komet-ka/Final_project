@@ -137,13 +137,7 @@ DATETIME_FORMAT = "d.m.Y H:i"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Cesta k adresáři pro ukládání obrázků
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #EMAILY PRO RESET HESLA
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.example.com'  # Název tvého e-mailového serveru
-EMAIL_PORT = 587  # Port pro SMTP
-EMAIL_USE_TLS = True  # Použít TLS (šifrování)
-EMAIL_HOST_USER = 'your_email@example.com'  # Tvůj e-mail
-EMAIL_HOST_PASSWORD = 'your_email_password'  # Heslo k e-mailu
-DEFAULT_FROM_EMAIL = 'webmaster@example.com'  # Od koho budou e-maily chodit
+

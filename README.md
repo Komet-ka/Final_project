@@ -1,7 +1,7 @@
 # Event Manager
 Popis aplikace: <br>Webová aplikace s názvem EventManager je psaná v programovacím jazyce Python (verzi 3.12) a postavena na webovém frameworku Django.
 <br><br>
-Cílem tohoto projektu je vytvoření platformy pro správu a evidenci různých událostí v podobě webové aplikace. <br>
+Cílem tohoto projektu je vytvoření platformy pro správu a evidenci různých událostí v podobě webové aplikace. Aplikace je vhodná pro všechny organizátory akcí, chtějící mít jejich správu řešenou na jednom místě a také účastníky těchto akcí, kteří se mohou přehledně a pohodlně na jednotlivé akce hlásit a také o nich diskutovat.<br>
 Pro zajištění efektivního využití jsou implementovány tři úrovně oprávnění, které umožňují různé možnosti správy a přístupu k událostem. 
 <br><br>
 <strong>Nepřihlášený uživatel:</strong> <br>
@@ -31,6 +31,14 @@ Ukázka práce s Backlogem:
 ![backlog](media/img/Backlog.png)
 ![backlog_detail](media/img/Backlog_detail.png)
 
+- K aplikaci se můžete dostat jednoduše pomocí git clone https://github.com/Komet-ka/Final_project.git
+
+- API poskytující seznam všech plánovaných událostí je dostupné zde: 127.0.0.1:8000/list_events/
+
+Pro zajištění korektních migrací byl využíván příkaz: python .\manage.py makemigrations viewer
+Následné spuštění zařídí příkaz: python .\manage.py runserver
+<br><br>
+
 Checklist základních bodů ke splnění:
 - [x] zprovoznit git
 - [x] vytvořit aplikaci
@@ -54,5 +62,4 @@ Checklist základních bodů ke splnění:
 - [x] doplnit styly
 - [x] zakomponovat JS
 
-Pro zajištění korektních migrací:
-python .\manage.py makemigrations viewer
+

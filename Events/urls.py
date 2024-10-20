@@ -36,7 +36,6 @@ urlpatterns = [
     path('main_page/', main_page, name='main_page'),
     path('', main_page, name='main_page'),  # Class based view
     path('detail/<pk>', detail, name='detail'),
-    path('delete_comment/<int:comment_id>/', delete_comment, name='delete_comment'),
     path('type_filter/<pk>', EventFilterByTypeView.as_view(), name='type_filter'),
     path('administrace/', EventTypeView.as_view(), name='administrace'),
 
@@ -49,10 +48,8 @@ urlpatterns = [
     path('type/update/<pk>', EventTypeUpdateView.as_view(), name='type_update'),
     path('type/delete/<pk>', EventTypeDeleteView.as_view(), name='type_delete'),
 
-    path('login/', LoginView.as_view(), name='login'),
     path('my_page/', my_page, name='my_page'),
     path('my_page/update/', UserUpdateView.as_view(), name='user_update'),
-    path('logout/', logout_view, name='logout'),
     path('attendees/<pk>', attendees, name='attendees'),
     path('my_attendees/', MyEventsView.as_view(), name='my_attendees'),
 
@@ -61,21 +58,20 @@ urlpatterns = [
 
     path('password_change/', SubmittablePasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', views.PasswordChangeDoneView.as_view(), name='password_change_done'),
-
     path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
     path('sign_up/', SignUpView.as_view(), name='sign_up'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', logout_view, name='logout'),
+
     path('search/', search_view, name='search'),
+    path('delete_comment/<int:comment_id>/', delete_comment, name='delete_comment'),
 
     path('api/get/all_events/', api_upcoming_events, name='api_upcoming_events'),
     path('list_events/', list_events, name='list_events'), #tohle je v jiné aplikaci
-
-    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
 
 if settings.DEBUG:

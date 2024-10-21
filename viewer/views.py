@@ -182,7 +182,6 @@ class EventUpdateView(PermissionRequiredMixin, UpdateView):
               defaults={'is_approved': False}  # Nový typ bude čekat na schválení
           )
           # Přidání nového typu k události
-          form.instance.eventType.add(event_type)
 
       return super().form_valid(form)
 
@@ -347,7 +346,7 @@ def main_page(request):
 class SignUpView(CreateView):
     template_name = 'form.html'
     form_class = SignUpForm
-    success_url = reverse_lazy('my_page')
+    success_url = reverse_lazy('main_page')
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
